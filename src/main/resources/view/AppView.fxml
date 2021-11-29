@@ -7,10 +7,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import views.BoardView?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BoardOverviewController">
     <center>
+<!--        TODO Add BoardView Component-->
         <Canvas fx:id="canvas" height="800.0" width="800.0" />
+        <BoardView height="800" width="200"/>
     </center>
 
     <right>

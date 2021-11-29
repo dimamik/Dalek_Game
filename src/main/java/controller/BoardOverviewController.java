@@ -4,16 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
-import model.Board;
-import utils.CollisionHandler;
-import utils.PositionUtil;
 
 public class BoardOverviewController {
 
-	private GameController gameController;
-	private Board board;
-	private CollisionHandler collisionHandler;
-	private PositionUtil positionUtil;
+	private AppController gameController;
+
 
 	@FXML
 	public Canvas canvas;
@@ -24,12 +19,6 @@ public class BoardOverviewController {
 	@FXML
 	public VBox movementButtons;
 
-//	public void setupGame() {
-//		this.board = new Board(200, 200);
-//		this.collisionHandler = new CollisionHandler(board);
-//		this.positionUtil = new PositionUtil(board, collisionHandler);
-//	}
-
 	@FXML
 	private void initialize() {
 		//TODO
@@ -39,7 +28,7 @@ public class BoardOverviewController {
 		System.out.println("Button pressed!");
 	}
 
-	public void setAppController(GameController gameController) {
+	public void setAppController(AppController gameController) {
 		this.gameController = gameController;
 	}
 }

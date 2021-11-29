@@ -8,9 +8,10 @@ public class PositionUtil {
     private Board board;
     private CollisionHandler collisionHandler;
 
-    public PositionUtil(Board board, CollisionHandler collisionHandler) {
+    public PositionUtil(Board board) {
         this.board = board;
-        this.collisionHandler = collisionHandler;
+        //TODO Wstrzykiwanie
+        this.collisionHandler = new CollisionHandler(board);
     }
 
     public void changePosition(BoardObject boardObject, Vector2D destination) {
