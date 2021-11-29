@@ -11,9 +11,6 @@ public class BoardOverviewController {
 
 
 	@FXML
-	public Canvas canvas;
-
-	@FXML
 	public VBox rightSide;
 
 	@FXML
@@ -21,7 +18,8 @@ public class BoardOverviewController {
 
 	@FXML
 	private void initialize() {
-		//TODO
+		//TODO Tu łączymy view i controllers
+		System.out.println("Hello from initialize");
 	}
 
 	public void onPress(ActionEvent actionEvent) {
