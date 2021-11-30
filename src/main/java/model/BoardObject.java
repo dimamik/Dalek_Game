@@ -1,6 +1,6 @@
 package model;
 
-public abstract class BoardObject {
+public class BoardObject {
     public BoardObject(){
     }
 

@@ -9,7 +9,7 @@
     <center>
         <!--        TODO Add BoardView Component-->
         <!--        <Canvas fx:id="canvas" height="800.0" width="800.0" />-->
-        <BoardView/>
+        <BoardView fx:id="boardView"/>
     </center>
 
     <right>

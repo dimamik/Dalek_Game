@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
@@ -11,7 +12,8 @@ public class Board {
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
-        this.boardCells = Collections.<BoardCell>emptyList();
+//        this.boardCells = Collections.<BoardCell>emptyList();
+        this.boardCells = new LinkedList<>();
 
         for (int i = 0; i <= width; i++) {
             for (int j = 0; j <= height; j++) {

@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import utils.GameUtil;
 
 import java.io.IOException;
 
@@ -28,6 +29,7 @@ public class AppController {
             BoardOverviewController controller = loader.getController();
             controller.setAppController(this);
 //            controller.setupGame();
+            new GameUtil();
 
             // add layout to a scene and show them all
             Scene scene = new Scene(rootLayout);

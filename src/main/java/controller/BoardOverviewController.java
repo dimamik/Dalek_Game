@@ -2,12 +2,13 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
+import views.BoardView;
 
 public class BoardOverviewController {
 
-	private AppController gameController;
+
+	private AppController appController;
 
 
 	@FXML
@@ -17,16 +18,34 @@ public class BoardOverviewController {
 	public VBox movementButtons;
 
 	@FXML
+	public BoardView boardView;
+
+	@FXML
 	private void initialize() {
 		//TODO Tu łączymy view i controllers
-		System.out.println("Hello from initialize");
+		for(int i=0; i<10; i++){
+
+		}
+//		boardView.x
+//		boardView.fillProperty().
+//
+//		);
 	}
 
 	public void onPress(ActionEvent actionEvent) {
-		System.out.println("Button pressed!");
+		System.out.println("Button pressed!" +  actionEvent);
 	}
 
 	public void setAppController(AppController gameController) {
-		this.gameController = gameController;
+		this.appController = gameController;
 	}
+
+	private void bindBoardCellViewWithModel(){
+//		TODO Tu łączymy BoardCellView z BoardCell
+//		W taki sposób, że rejestrujemy zmianę w liście boardObjects
+//		I jak się zmieni to odpowiednio rerendujemy BoardView
+//		Tylko ta klasa ma instancę BoardObject, nie przekazujemy dalej
+	}
+
+
 }
