@@ -1,5 +1,9 @@
 package controller;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import guice.GameModule;
+import guice.StateModule;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -38,6 +42,10 @@ public class AppController {
         controlModel(actionEvent);
     }
 
+    public void onCellChosen(BoardCell cell) {
+        System.out.println("Cell choosed!" + cell);
+    }
+
     private void controlModel(ActionEvent actionEvent) {
 // TODO There we need to control the model beh based on the action type
 
@@ -58,10 +66,11 @@ public class AppController {
 
 
     public void prepareGame() {
-//        TODO There GameUtils should be started and controlled
-//        Can be passed upper to AppController if needed
-        new GameUtil();
-//        TODO Setup setters to feed controller with needed data
-//        Such as: board,
+        Injector injector = Guice.createInjector(new GameModule());
+        gameUtil = injector.getInstance(GameUtil.class);
+
+//        TODO Make StateController which is singleton, give to it BoardView
+//        And Inject it to BoardCell
+
     }
 }

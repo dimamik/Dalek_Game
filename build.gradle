@@ -25,3 +25,8 @@ javafx {
     modules = ['javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.media', 'javafx.swing', 'javafx.web']
 }
 
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    implementation group: 'com.google.inject', name: 'guice', version: '5.0.1'
+}
+

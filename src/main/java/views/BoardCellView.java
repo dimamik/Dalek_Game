@@ -1,19 +1,27 @@
 package views;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class BoardCellView extends Rectangle {
+public class BoardCellView extends Parent {
 
-    public BoardCellView() {
+    @Inject
+    public BoardCellView(@Named("cellSize") int cellSize) {
 //       Done There we need to draw cell
-        super(10, 10);
-        setFill(Color.LIGHTGRAY);
-        setStroke(Color.BLACK);
-        setStrokeWidth(0.2);
+        Rectangle rectangle = new Rectangle(cellSize, cellSize);
+        rectangle.setFill(Color.LIGHTGRAY);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeWidth(0.2);
+        getChildren().add(rectangle);
     }
 
     public void drawBoardObjectView(BoardObjectView boardObjectView) {
-//        TODO Draw board object view
+        if (getChildren().size() > 2) {
+            getChildren().remove(2);
+        }
+        getChildren().add(boardObjectView);
     }
 }

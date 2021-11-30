@@ -19,7 +19,7 @@ public class Main extends Application {
             loader.setLocation(AppController.class.getResource("../view/AppView.fxml"));
             BorderPane rootLayout = loader.load();
 
-            // set up BoardOverviewController
+            // set up AppController
             AppController controller = loader.getController();
             controller.prepareGame();
 

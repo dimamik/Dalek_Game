@@ -21,13 +21,9 @@ public class BoardCell {
 //        this.boardObjects = Collections.<BoardObject>emptyList();
         this.boardObjects = FXCollections.observableArrayList();
 
-//        TODO Tu wstrzykiwamy BoardOverview Controllera, i podpinamy go do updajtów
-//        Cella (wrzucamy jako parametr do addListenerToListChange i tam wywołujemy metodę
-//        )
         addListenerToListChange();
 //        boardObjects.add(new BoardObject());
     }
-
 
     public void addListenerToListChange() {
 //        This method is called when list of cells is updated
