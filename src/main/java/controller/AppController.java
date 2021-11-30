@@ -8,9 +8,12 @@ import utils.GameUtil;
 
 import java.io.IOException;
 
+/**
+ * Responsible for startup and initial primary stage setup
+ */
 public class AppController {
 
-    private Stage primaryStage;
+    private final Stage primaryStage;
 
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -25,11 +28,9 @@ public class AppController {
             loader.setLocation(AppController.class.getResource("../view/AppView.fxml"));
             BorderPane rootLayout = loader.load();
 
-            // set initial data into controller
+            // set up BoardOverviewController
             BoardOverviewController controller = loader.getController();
             controller.setAppController(this);
-//            controller.setupGame();
-            new GameUtil();
 
             // add layout to a scene and show them all
             Scene scene = new Scene(rootLayout);

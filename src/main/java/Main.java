@@ -1,22 +1,17 @@
+import controller.AppController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import controller.AppController;
 
 public class Main extends Application {
-	private Stage primaryStage;
-	private AppController gameController;
 
-	@Override
-	public void start(Stage primaryStage) {
+    @Override
+    public void start(Stage primaryStage) {
 
-		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Board Game");
+        AppController gameController = new AppController(primaryStage);
+        gameController.initRootLayout();
+    }
 
-		this.gameController = new AppController(primaryStage);
-		this.gameController.initRootLayout();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

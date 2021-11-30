@@ -1,41 +1,40 @@
 package model;
 
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class BoardCell {
     private Vector2D position;
 
-    private ObservableList<BoardObject> boardObjects;
-
     public void setBoardObjects(ObservableList<BoardObject> boardObjects) {
         this.boardObjects = boardObjects;
     }
 
+    private ObservableList<BoardObject> boardObjects;
 
 
     public BoardCell(Vector2D position) {
         this.position = position;
 //        this.boardObjects = Collections.<BoardObject>emptyList();
         this.boardObjects = FXCollections.observableArrayList();
-        something();
-        boardObjects.add(new BoardObject());
+
+//        TODO Tu wstrzykiwamy BoardOverview Controllera, i podpinamy go do updajtów
+//        Cella (wrzucamy jako parametr do addListenerToListChange i tam wywołujemy metodę
+//        )
+        addListenerToListChange();
+//        boardObjects.add(new BoardObject());
     }
 
-//    public ObservableList<BoardObject> getBoardObjectsObservable(){
-//        return FXCollections.observableList(this.boardObjects);
-//    }
 
-    public void something(){
+    public void addListenerToListChange() {
+//        This method is called when list of cells is updated
         boardObjects.addListener((ListChangeListener<BoardObject>) c -> {
-            System.out.println("change occured!");
-//                TODO Controller Notification
+            System.out.println("change occurred!");
+//                TODO Notify the controller with cellChangeOccurred
+
         });
     }
 

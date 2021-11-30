@@ -6,12 +6,13 @@
 <?import views.BoardView?>
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.BoardOverviewController">
+
+<!--    Board-->
     <center>
-        <!--        TODO Add BoardView Component-->
-        <!--        <Canvas fx:id="canvas" height="800.0" width="800.0" />-->
         <BoardView fx:id="boardView"/>
     </center>
 
+<!--    TODO Controlls (and menu in the future)-->
     <right>
         <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="750.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">
