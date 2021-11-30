@@ -4,21 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import model.BoardCell;
-import model.BoardObject;
-import model.Vector2D;
 import utils.GameUtil;
 import views.BoardView;
-
-import java.util.Optional;
 
 /**
  * Is responsible for Controlling Board with its objects and movement keys
  * Later we will need to split this up into board controller and menu controller
  */
 public class AppController {
-
-
-    private AppController appController;
+    public GameUtil gameUtil;
 
     @FXML
     public VBox rightSide;
@@ -31,19 +25,12 @@ public class AppController {
 
     @FXML
     private void initialize() {
-//        TODO There GameUtils should be started and controlled
-//        Can be passed upper to AppController if needed
-        new GameUtil();
 
-//        TODO Setup setters to feed controller with needed data
-//        Such as: board,
-
-
-        //TODO There Model And View should be connected using one/two way bindings and event listeners
+// TODO There Model And View should be connected using one/two way bindings and event listeners
         connectViewAndModel();
     }
 
-    private void connectViewAndModel(){
+    private void connectViewAndModel() {
     }
 
     public void onPress(ActionEvent actionEvent) {
@@ -51,13 +38,13 @@ public class AppController {
         controlModel(actionEvent);
     }
 
-    private void controlModel(ActionEvent actionEvent){
-        // TODO There we need to control the model beh based on the action type
+    private void controlModel(ActionEvent actionEvent) {
+// TODO There we need to control the model beh based on the action type
 
     }
 
-//    This can be moved to its own Cell Controller
-    public void cellChangeOccured(BoardCell boardCell){
+    //    This can be moved to its own Cell Controller
+    public void cellChangeOccured(BoardCell boardCell) {
 //        TODO implement CellView rerendering knowing the boardCell
 
     }
@@ -71,5 +58,10 @@ public class AppController {
 
 
     public void prepareGame() {
+//        TODO There GameUtils should be started and controlled
+//        Can be passed upper to AppController if needed
+        new GameUtil();
+//        TODO Setup setters to feed controller with needed data
+//        Such as: board,
     }
 }

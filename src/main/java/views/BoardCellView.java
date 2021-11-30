@@ -1,13 +1,19 @@
 package views;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class BoardCellView extends Rectangle {
 
     public BoardCellView() {
-//       TODO There we need to draw cell
+//       Done There we need to draw cell
         super(10, 10);
-//        TODO There we need to draw boardObjectView in the way that it is
+        setFill(Color.LIGHTGRAY);
+        setStroke(Color.BLACK);
+        setStrokeWidth(0.2);
     }
 
+    public void drawBoardObjectView(BoardObjectView boardObjectView) {
+//        TODO Draw board object view
+    }
 }
