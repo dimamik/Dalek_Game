@@ -12,7 +12,6 @@ public class Board {
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
-//        this.boardCells = Collections.<BoardCell>emptyList();
         this.boardCells = new LinkedList<>();
 
         for (int i = 0; i <= width; i++) {

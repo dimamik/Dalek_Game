@@ -7,7 +7,7 @@ public class BoardView extends Rectangle {
     public BoardView() {
 //        TODO Wstrzyknąć board params żeby wiedzieć jaki będzie rozmiar planszy w px
 //        oraz jaki będzie rozmiar planszy w ilosci klatek x,y
-        super(200, 200);
+        super(400, 400);
 
 //        TODO replace x,y with some params coming from parent
         int x = 10;
