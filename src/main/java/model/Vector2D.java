@@ -13,11 +13,21 @@ public class Vector2D {
         return new Vector2D(this.x + other.getX(), this.y + other.getY());
     }
 
-    public int getX() {
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof Vector2D))
+            return false;
+        Vector2D that = (Vector2D) other;
+
+        return (that.x == x && that.y == y);
+    }
+
+    private int getX() {
         return this.x;
     }
 
-    public int getY() {
+    private int getY() {
         return this.y;
     }
 }

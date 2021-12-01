@@ -1,10 +1,18 @@
 package model;
 
-public class BoardObject {
-    public BoardObject(){
+import java.awt.*;
+
+public abstract class BoardObject {
+
+    private Color color;
+
+    public BoardObject(Color color) {
+        this.color = color;
     }
 
-    public void sayHello() {
-        System.out.println("Hello, I'm BoardObject!");
+    public abstract void handleCollision();
+
+    public Color getColor() {
+        return color;
     }
 }
