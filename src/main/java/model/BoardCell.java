@@ -9,18 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class BoardCell {
-    public Vector2D getPosition() {
-        return position;
-    }
-
     private final Vector2D position;
     private final ObservableList<BoardObject> boardObjects;
-
-
     public BoardCell(Vector2D position) {
         this.position = position;
         this.boardObjects = FXCollections.observableArrayList();
         addListenerToListChange();
+    }
+
+    public Vector2D getPosition() {
+        return position;
     }
 
     public Optional<BoardObject> getBoardObject() {

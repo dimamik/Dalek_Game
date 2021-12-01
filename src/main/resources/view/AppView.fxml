@@ -4,15 +4,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import views.BoardView?>
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="controller.AppController">
 
-<!--    Board-->
+    <!--    Board-->
     <center>
         <BoardView fx:id="boardView"/>
     </center>
 
-<!--    TODO Controlls (and menu in the future)-->
+    <!--    TODO Controlls (and menu in the future)-->
     <right>
         <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="750.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">

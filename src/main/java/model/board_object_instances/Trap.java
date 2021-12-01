@@ -1,9 +1,9 @@
 package model.board_object_instances;
 
+import javafx.scene.paint.Color;
 import model.BoardObject;
 import model.Vector2D;
 
-import java.awt.*;
 
 public class Trap extends BoardObject {
 

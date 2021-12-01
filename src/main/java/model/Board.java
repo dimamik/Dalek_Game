@@ -24,6 +24,10 @@ public class Board {
         }
     }
 
+    public BoardCell[][] getBoardCells() {
+        return boardCells;
+    }
+
     public BoardCell getBoardCell(Vector2D position) {
         return boardCells[position.getX()][position.getY()];
     }

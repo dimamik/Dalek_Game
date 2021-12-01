@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 public class BoardObjectView extends Rectangle {
 
-//    TODO Remove from there
+    //    TODO Remove from there
 //    BoardObjectView is only displaying object
 //    All logic is in BoardObject
     Color objectColor;

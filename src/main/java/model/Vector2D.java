@@ -23,11 +23,11 @@ public class Vector2D {
         return (that.x == x && that.y == y);
     }
 
-    private int getX() {
+    public int getX() {
         return this.x;
     }
 
-    private int getY() {
+    public int getY() {
         return this.y;
     }
 }

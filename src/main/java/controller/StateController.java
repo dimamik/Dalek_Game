@@ -5,6 +5,7 @@ import model.BoardCell;
 import views.BoardCellView;
 import views.BoardObjectView;
 import views.BoardView;
+
 import java.util.Optional;
 
 public final class StateController {
@@ -13,16 +14,16 @@ public final class StateController {
 
     private final BoardView boardView;
 
+    public StateController(BoardView boardView) {
+        this.boardView = boardView;
+        StateController.instance = this;
+    }
+
     public static Optional<StateController> getInstance() {
         if (instance == null) {
             return Optional.empty();
         }
         return Optional.of(instance);
-    }
-
-    public StateController(BoardView boardView) {
-        this.boardView = boardView;
-        StateController.instance = this;
     }
 
     public void cellChangeOccurred(BoardCell boardCell) {
