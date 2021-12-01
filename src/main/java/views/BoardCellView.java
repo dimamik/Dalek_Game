@@ -10,7 +10,6 @@ public class BoardCellView extends Parent {
 
     @Inject
     public BoardCellView(@Named("cellSize") int cellSize) {
-//       Done There we need to draw cell
         Rectangle rectangle = new Rectangle(cellSize, cellSize);
         rectangle.setFill(Color.LIGHTGRAY);
         rectangle.setStroke(Color.BLACK);
@@ -19,9 +18,17 @@ public class BoardCellView extends Parent {
     }
 
     public void drawBoardObjectView(BoardObjectView boardObjectView) {
+//        Change max number of objects from 1 if necessary
         if (getChildren().size() > 2) {
             getChildren().remove(2);
         }
         getChildren().add(boardObjectView);
     }
+
+    public void clearBoardObjectView() {
+        if (getChildren().size() >= 2) {
+            getChildren().remove(1);
+        }
+    }
+
 }

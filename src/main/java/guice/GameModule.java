@@ -4,12 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import javax.inject.Named;
 
-public class GameModule extends AbstractModule{
+public class GameModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-
-    }
 
     @Provides
     @Named("colsNo")

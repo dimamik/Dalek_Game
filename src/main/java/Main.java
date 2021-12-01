@@ -19,9 +19,8 @@ public class Main extends Application {
             loader.setLocation(AppController.class.getResource("../view/AppView.fxml"));
             BorderPane rootLayout = loader.load();
 
-            // set up AppController
-            AppController controller = loader.getController();
-            controller.prepareGame();
+//            // set up AppController
+//            AppController controller = loader.getController();
 
             // add layout to a scene and show them all
             Scene scene = new Scene(rootLayout);

@@ -1,53 +1,56 @@
 package model;
 
+import controller.StateController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BoardCell {
-    private Vector2D position;
-
-    public void setBoardObjects(ObservableList<BoardObject> boardObjects) {
-        this.boardObjects = boardObjects;
+    public Vector2D getPosition() {
+        return position;
     }
 
-    private ObservableList<BoardObject> boardObjects;
+    private final Vector2D position;
+    private final ObservableList<BoardObject> boardObjects;
 
 
     public BoardCell(Vector2D position) {
         this.position = position;
-//        this.boardObjects = Collections.<BoardObject>emptyList();
         this.boardObjects = FXCollections.observableArrayList();
-
         addListenerToListChange();
-//        boardObjects.add(new BoardObject());
     }
+
+    public Optional<BoardObject> getBoardObject() {
+        if (this.boardObjects.size() == 0) {
+            return Optional.empty();
+        }
+        return Optional.of(this.boardObjects.get(0));
+    }
+
+    public void addBoardObject(BoardObject boardObject) {
+        boardObjects.add(boardObject);
+    }
+
+    public void removeBoardObject(BoardObject boardObject) {
+        boardObjects.remove(boardObject);
+    }
+
 
     public void addListenerToListChange() {
-//        This method is called when list of cells is updated
         boardObjects.addListener((ListChangeListener<BoardObject>) c -> {
-            System.out.println("change occurred!");
-//                TODO Notify the controller with cellChangeOccurred
+            try {
+                StateController.getInstance().ifPresent(stateController -> stateController.cellChangeOccurred(this));
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
-    }
-
-
-    public Vector2D getPosition() {
-        return this.position;
-    }
-
-    public void setPosition(Vector2D position) {
-        this.position = position;
     }
 
     public List<BoardObject> getBoardObjects() {
         return this.boardObjects;
-    }
-
-    public void addBoardObject(BoardObject boardObject) {
-        this.boardObjects.add(boardObject);
     }
 }

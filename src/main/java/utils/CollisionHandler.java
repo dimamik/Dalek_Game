@@ -11,6 +11,6 @@ public class CollisionHandler {
     }
 
     public void handleCollision(Vector2D position) {
-        //TODO
+//        TODO
     }
 }
