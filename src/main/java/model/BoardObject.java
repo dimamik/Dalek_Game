@@ -11,4 +11,8 @@ public abstract class BoardObject {
     }
 
     public abstract void handleCollision();
+
+    public Color getColor() {
+        return color;
+    }
 }

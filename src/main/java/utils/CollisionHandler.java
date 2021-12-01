@@ -15,8 +15,6 @@ public class CollisionHandler {
         this.board = board;
     }
 
-
-
     public void handleCollision(BoardCell collisionCell) {
 
         BoardObject boardObject1 = collisionCell.getBoardObjects().get(0);
