@@ -11,6 +11,7 @@ import java.util.Optional;
 public class BoardCell {
     private final Vector2D position;
     private final ObservableList<BoardObject> boardObjects;
+
     public BoardCell(Vector2D position) {
         this.position = position;
         this.boardObjects = FXCollections.observableArrayList();
@@ -41,7 +42,6 @@ public class BoardCell {
         boardObjects.addListener((ListChangeListener<BoardObject>) c -> {
             try {
                 StateController.getInstance().ifPresent(stateController -> stateController.cellChangeOccurred(this));
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

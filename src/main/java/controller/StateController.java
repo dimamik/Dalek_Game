@@ -1,7 +1,7 @@
 package controller;
 
-import javafx.scene.paint.Color;
 import model.BoardCell;
+import model.BoardObject;
 import views.BoardCellView;
 import views.BoardObjectView;
 import views.BoardView;
@@ -28,7 +28,12 @@ public final class StateController {
 
     public void cellChangeOccurred(BoardCell boardCell) {
         BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().getX(), boardCell.getPosition().getY());
-        boardCellView.drawBoardObjectView(new BoardObjectView(Color.BLACK));
+        if (boardCell.getBoardObject().isPresent()) {
+            BoardObject boardObject = boardCell.getBoardObject().get();
+            boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
+        } else {
+            boardCellView.clearBoardObjectView();
+        }
     }
 
     public void onCellChosen(int x, int y) {

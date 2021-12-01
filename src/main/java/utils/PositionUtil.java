@@ -6,9 +6,9 @@ import model.Vector2D;
 
 public class PositionUtil {
 
-    private Board board;
+    private final Board board;
 
-    private CollisionHandler collisionHandler;
+    private final CollisionHandler collisionHandler;
 
     public PositionUtil(Board board) {
         this.board = board;
@@ -22,7 +22,15 @@ public class PositionUtil {
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
         targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
-        sourceCell.getBoardObjects().remove(0);
+
+        sourceCell.getBoardObject().ifPresent(
+                sourceCell::removeBoardObject
+        );
+
+
+        if (targetCell.getBoardObjects().size() > 1) {
+            collisionHandler.handleCollision(targetCell);
+        }
     }
 
     public Board getBoard() {

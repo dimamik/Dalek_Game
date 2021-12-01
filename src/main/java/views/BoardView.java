@@ -26,9 +26,9 @@ public class BoardView extends Parent {
                 arrayOfCells[x][y] = new BoardCellView(cellSize);
                 int finalX = x;
                 int finalY = y;
-                arrayOfCells[x][y].setOnMouseClicked(event -> {
-                    StateController.getInstance().ifPresent(stateController -> stateController.onCellChosen(finalX, finalY));
-                });
+                arrayOfCells[x][y].setOnMouseClicked(event ->
+                        StateController.getInstance()
+                                .ifPresent(stateController -> stateController.onCellChosen(finalX, finalY)));
                 row.getChildren().add(arrayOfCells[x][y]);
             }
             rows.getChildren().add(row);

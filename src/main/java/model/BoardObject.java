@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 
 public abstract class BoardObject {
 
-    private Color color;
+    private final Color color;
 
     public BoardObject(Color color) {
         this.color = color;

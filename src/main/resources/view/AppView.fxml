@@ -12,7 +12,7 @@
         <BoardView fx:id="boardView"/>
     </center>
 
-    <!--    TODO Controlls (and menu in the future)-->
+    <!--    TODO Controls (and menu in the future)-->
     <right>
         <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="750.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">
