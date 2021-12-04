@@ -63,3 +63,4 @@ crashlytics-build.properties
 build
 /.gradle/checksums/md5-checksums.bin
 /.gradle/checksums/sha1-checksums.bin
+/.gradle
