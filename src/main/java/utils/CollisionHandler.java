@@ -8,7 +8,7 @@ import model.board_object_instances.Mouse;
 import model.board_object_instances.Trap;
 
 public class CollisionHandler {
-    Board board;
+    private final Board board;
 
     public CollisionHandler(Board board) {
         this.board = board;
