@@ -27,7 +27,7 @@ public final class StateController {
     }
 
     public void cellChangeOccurred(BoardCell boardCell) {
-        BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().getX(), boardCell.getPosition().getY());
+        BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().x(), boardCell.getPosition().y());
         if (boardCell.getBoardObject().isPresent()) {
             BoardObject boardObject = boardCell.getBoardObject().get();
             boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
