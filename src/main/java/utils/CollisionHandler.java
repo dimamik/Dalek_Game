@@ -21,12 +21,15 @@ public class CollisionHandler {
 
         // TODO implement logic of resolving collision
         if (boardObject1 instanceof Cat && boardObject2 instanceof Cat ||
-                boardObject1 instanceof Mouse && boardObject2 instanceof Mouse)
+                boardObject1 instanceof Mouse && boardObject2 instanceof Mouse) {
             collisionCell.getBoardObjects().remove(1);
+        }
         else if (boardObject1 instanceof Trap && boardObject2 instanceof Cat ||
-                boardObject1 instanceof Trap && boardObject2 instanceof Mouse)
+                boardObject1 instanceof Trap && boardObject2 instanceof Mouse) {
             collisionCell.getBoardObjects().remove(1);
-        else
+        }
+        else {
             collisionCell.getBoardObjects().remove(boardObject2);
+        }
     }
 }
