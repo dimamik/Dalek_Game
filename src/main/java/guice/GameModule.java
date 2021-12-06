@@ -9,13 +9,13 @@ public class GameModule extends AbstractModule {
 
 
     @Provides
-    @Named("colsNo")
+    @Named("cols")
     private int provideColsNo() {
         return 20;
     }
 
     @Provides
-    @Named("rowsNo")
+    @Named("rows")
     private int provideRowsNo() {
         return 20;
     }

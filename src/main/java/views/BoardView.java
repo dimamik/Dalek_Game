@@ -14,8 +14,8 @@ public class BoardView extends Parent {
 
     public BoardView() {
         BoardParams boardParams = Guice.createInjector(new GameModule()).getInstance(BoardParams.class);
-        int x_number = boardParams.getColsNo();
-        int y_number = boardParams.getRowsNo();
+        int x_number = boardParams.getCols();
+        int y_number = boardParams.getRows();
         int cellSize = boardParams.getCellSize();
 
         arrayOfCells = new BoardCellView[x_number][y_number];

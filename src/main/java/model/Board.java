@@ -10,18 +10,12 @@ public class Board {
     private final BoardCell[][] boardCells;
 
     @Inject
-    public Board(@Named("colsNo") int colsNo, @Named("rowsNo") int rowsNo) {
-        this.cols = colsNo;
-        this.rows = rowsNo;
+    public Board(@Named("cols") int cols, @Named("rows") int rows) {
+        this.cols = cols;
+        this.rows = rows;
         this.boardCells = new BoardCell[cols][rows];
 
-        for (int i = 0; i < colsNo; i++) {
-            for (int j = 0; j < rowsNo; j++) {
-                Vector2D position = new Vector2D(i, j);
-                BoardCell boardCell = new BoardCell(position);
-                boardCells[i][j] = boardCell;
-            }
-        }
+        this.initializeBoard();
     }
 
     public BoardCell[][] getBoardCells() {
@@ -42,6 +36,16 @@ public class Board {
 
     public void removeBoardObject(BoardObject boardObject, Vector2D position) {
         getBoardCell(position).removeBoardObject(boardObject);
+    }
+
+    private void initializeBoard() {
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                Vector2D position = new Vector2D(i, j);
+                BoardCell boardCell = new BoardCell(position);
+                boardCells[i][j] = boardCell;
+            }
+        }
     }
 
     @Override

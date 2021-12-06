@@ -5,23 +5,23 @@ import com.google.inject.name.Named;
 
 public class BoardParams {
 
-    private final int colsNo;
-    private final int rowsNo;
+    private final int cols;
+    private final int rows;
     private final int cellSize;
 
     @Inject
-    public BoardParams(@Named("colsNo") int colsNo, @Named("rowsNo") int rowsNo, @Named("cellSize") int cellSize) {
-        this.colsNo = colsNo;
-        this.rowsNo = rowsNo;
+    public BoardParams(@Named("cols") int cols, @Named("rows") int rows, @Named("cellSize") int cellSize) {
+        this.cols = cols;
+        this.rows = rows;
         this.cellSize = cellSize;
     }
 
-    public int getColsNo() {
-        return colsNo;
+    public int getCols() {
+        return cols;
     }
 
-    public int getRowsNo() {
-        return rowsNo;
+    public int getRows() {
+        return rows;
     }
 
     public int getCellSize() {
