@@ -1,5 +1,6 @@
 package utils;
 
+import com.google.inject.Inject;
 import model.Board;
 import model.BoardCell;
 import model.Vector2D;
@@ -10,20 +11,18 @@ public class PositionUtil {
 
     private final CollisionHandler collisionHandler;
 
-    public PositionUtil(Board board) {
+    @Inject
+    public PositionUtil(Board board, CollisionHandler collisionHandler) {
         this.board = board;
-        //TODO Wstrzykiwanie
-        this.collisionHandler = new CollisionHandler(board);
+        this.collisionHandler = collisionHandler;
     }
 
     public void changePosition(BoardCell sourceCell, Vector2D shift) {
-
-        // find destinationCell
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
         targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
 
-        sourceCell.getBoardObject().ifPresent(
+        sourceCell.getTopBoardObject().ifPresent(
                 sourceCell::removeBoardObject
         );
 

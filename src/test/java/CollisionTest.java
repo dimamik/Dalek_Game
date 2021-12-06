@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 public class CollisionTest {
 
+//    TODO Add Mock Objects, don't change model!
+
     @Test
     public void catCatCollisionTest() {
         // given
@@ -49,6 +51,5 @@ public class CollisionTest {
         // then
         assertEquals(Color.RED, collisionCell.getBoardObjects().get(0).getColor());
     }
-
 
 }

@@ -11,23 +11,18 @@ public class GameUtil {
     private PositionUtil positionUtil;
 
     @Inject
-    public GameUtil(Board board) {
+    public GameUtil(Board board, PositionUtil positionUtil) {
         this.board = board;
-        this.positionUtil = new PositionUtil(board);
+        this.positionUtil = positionUtil;
         this.setUpGame();
     }
 
     private void setUpGame() {
-//        set up game
-
-//        BoardObject boardObject = new BoardObject();
-//        board.addBoardObject(boardObject, new Vector2D(0, 0));
-//        board.removeBoardObject(boardObject, new Vector2D(0, 0));
+//        Initial Game Set up
     }
 
     private void playRound(int roundNumber) {
 //        TODO This should be in a separate thread
-//        Place a new board object on the board
         if (roundNumber % 2 == 0) {
             board.addBoardObject(new Cat(Color.BLACK), new Vector2D(0, roundNumber));
         } else {
@@ -41,7 +36,7 @@ public class GameUtil {
     }
 
     public void runGame() {
-//        uses playRound and game logic from GameParameters
+//        Uses playRound and game logic from GameParameters to run the game
         for (int i = 0; i < 10; i++) {
             playRound(i);
         }

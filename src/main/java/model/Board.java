@@ -2,6 +2,7 @@ package model;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Optional;
 
 public class Board {
@@ -10,12 +11,22 @@ public class Board {
     private final BoardCell[][] boardCells;
 
     @Inject
+    @Singleton
     public Board(@Named("cols") int cols, @Named("rows") int rows) {
+        System.out.println("Board constructor");
         this.cols = cols;
         this.rows = rows;
         this.boardCells = new BoardCell[cols][rows];
 
         this.initializeBoard();
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
     }
 
     public BoardCell[][] getBoardCells() {
@@ -27,7 +38,7 @@ public class Board {
     }
 
     public Optional<BoardObject> getBoardObject(Vector2D position) {
-        return getBoardCell(position).getBoardObject();
+        return getBoardCell(position).getTopBoardObject();
     }
 
     public void addBoardObject(BoardObject boardObject, Vector2D position) {

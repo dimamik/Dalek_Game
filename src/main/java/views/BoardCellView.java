@@ -18,7 +18,6 @@ public class BoardCellView extends Parent {
     }
 
     public void drawBoardObjectView(BoardObjectView boardObjectView) {
-//        Change max number of objects from 1 if necessary
         if (getChildren().size() > 2) {
             getChildren().remove(2);
         }
@@ -30,5 +29,4 @@ public class BoardCellView extends Parent {
             getChildren().remove(1);
         }
     }
-
 }
