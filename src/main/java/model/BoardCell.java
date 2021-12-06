@@ -1,6 +1,6 @@
 package model;
 
-import controller.StateController;
+import controller.BoardController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -41,7 +41,7 @@ public class BoardCell {
     public void addListenerToListChange() {
         boardObjects.addListener((ListChangeListener<BoardObject>) c -> {
             try {
-                StateController.getInstance().ifPresent(stateController -> stateController.cellChangeOccurred(this));
+                BoardController.getInstance().ifPresent(boardController -> boardController.cellChangeOccurred(this));
             } catch (Exception e) {
                 e.printStackTrace();
             }

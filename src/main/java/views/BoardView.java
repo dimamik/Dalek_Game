@@ -1,7 +1,7 @@
 package views;
 
 import com.google.inject.Guice;
-import controller.StateController;
+import controller.BoardController;
 import guice.GameModule;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
@@ -27,8 +27,8 @@ public class BoardView extends Parent {
                 int finalX = x;
                 int finalY = y;
                 arrayOfCells[x][y].setOnMouseClicked(event ->
-                        StateController.getInstance()
-                                .ifPresent(stateController -> stateController.onCellChosen(finalX, finalY)));
+                        BoardController.getInstance()
+                                .ifPresent(boardController -> boardController.onCellChosen(finalX, finalY)));
                 row.getChildren().add(arrayOfCells[x][y]);
             }
             rows.getChildren().add(row);

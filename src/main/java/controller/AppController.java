@@ -27,7 +27,7 @@ public class AppController {
 
     @FXML
     private void initialize() {
-        new StateController(boardView);
+        new BoardController(boardView);
         Injector injector = Guice.createInjector(new GameModule());
         gameUtil = injector.getInstance(GameUtil.class);
         gameUtil.runGame();

@@ -8,18 +8,18 @@ import views.BoardView;
 
 import java.util.Optional;
 
-public final class StateController {
+public final class BoardController {
 
-    public static StateController instance;
+    public static BoardController instance;
 
     private final BoardView boardView;
 
-    public StateController(BoardView boardView) {
+    public BoardController(BoardView boardView) {
         this.boardView = boardView;
-        StateController.instance = this;
+        BoardController.instance = this;
     }
 
-    public static Optional<StateController> getInstance() {
+    public static Optional<BoardController> getInstance() {
         if (instance == null) {
             return Optional.empty();
         }
