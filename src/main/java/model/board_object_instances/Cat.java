@@ -1,5 +1,6 @@
 package model.board_object_instances;
 
+import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.BoardObject;
 import model.Vector2D;
@@ -11,6 +12,11 @@ public class Cat extends BoardObject {
 
     public Cat(Color color) {
         super(color);
+    }
+
+    @Override
+    public ObjectType getType() {
+        return ObjectType.CAT;
     }
 
 //    @Override
