@@ -1,5 +1,6 @@
 package model.board_object_instances;
 
+import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.BoardObject;
 import model.Vector2D;
@@ -11,5 +12,11 @@ public class Trap extends BoardObject {
 
     public Trap(Color color) {
         super(color);
+        isMovable = true;
+    }
+
+    @Override
+    public ObjectType getType() {
+        return ObjectType.TRAP;
     }
 }

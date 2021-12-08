@@ -6,50 +6,66 @@ import model.Vector2D;
 import model.board_object_instances.Cat;
 import model.board_object_instances.Mouse;
 import model.board_object_instances.Trap;
-import org.junit.jupiter.api.Assertions;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.mock;
 
 public class CollisionTest {
 
+
 //    TODO Add Mock Objects, don't change model!
+
+    public BoardCell processCollision(BoardObject boardObject1, BoardObject boardObject2, int boardSize, int xV, int yV) {
+        //given
+        Board board = new Board(boardSize, boardSize);
+        CollisionHandler collisionHandler = new CollisionHandler(board);
+        BoardCell collisionCell = board.getBoardCell(new Vector2D(xV, yV));
+        collisionCell.getBoardObjects().add(boardObject1);
+        collisionCell.getBoardObjects().add(boardObject2);
+
+        // when
+        collisionHandler.handleCollision(collisionCell);
+
+        return collisionCell;
+    }
 
     @Test
     public void catCatCollisionTest() {
         // given
-        Board board = new Board(10, 10);
-        CollisionHandler collisionHandler = new CollisionHandler(board);
-        BoardObject boardObject1 = new Cat(Color.BLACK);
-        BoardObject boardObject2 = new Cat(Color.BLACK);
-        BoardCell collisionCell = board.getBoardCell(new Vector2D(0, 0));
-        collisionCell.getBoardObjects().add(boardObject1);
-        collisionCell.getBoardObjects().add(boardObject2);
+        Cat boardObject1 = new Cat(Color.RED);
+        Cat boardObject2 = new Cat(Color.RED);
 
         // when
-        collisionHandler.handleCollision(collisionCell);
+        BoardCell collisionCell = processCollision(boardObject1, boardObject2, 10, 0, 0);
 
-        // then
-        Assertions.assertEquals(1, collisionCell.getBoardObjects().size());
+        //then
+        assertEquals(1, collisionCell.getBoardObjects().size());
     }
+
 
     @Test
     public void trapMouseCollisionTest() {
+
         // given
-        Board board = new Board(10, 10);
-        CollisionHandler collisionHandler = new CollisionHandler(board);
-        BoardObject boardObject1 = new Trap(Color.RED);
+        BoardObject boardObject1 = new Trap(Color.GREEN);
         BoardObject boardObject2 = new Mouse(Color.GRAY);
-        BoardCell collisionCell = board.getBoardCell(new Vector2D(0, 0));
-        collisionCell.getBoardObjects().add(boardObject1);
-        collisionCell.getBoardObjects().add(boardObject2);
 
         // when
-        collisionHandler.handleCollision(collisionCell);
+        // Collision A -> B
+        BoardCell collisionCell1 = processCollision(boardObject1, boardObject2, 10, 0, 0);
+        // Collision B -> A
+        BoardCell collisionCell2 = processCollision(boardObject1, boardObject2, 10, 0, 0);
 
         // then
-        assertEquals(Color.RED, collisionCell.getBoardObjects().get(0).getColor());
+        assertEquals(1, collisionCell1.getBoardObjects().size());
+        assertEquals(Color.BLUE, collisionCell1.getBoardObjects().get(0).getColor());
+
+        assertEquals(1, collisionCell2.getBoardObjects().size());
+        assertEquals(Color.BLUE, collisionCell2.getBoardObjects().get(0).getColor());
     }
 
 }

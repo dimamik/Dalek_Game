@@ -30,6 +30,7 @@ public class GameUtil {
         }
 
         if (roundNumber >= 1) {
+
 //        Make an upper move
             positionUtil.changePosition(board.getBoardCell(new Vector2D(0, roundNumber)), new Vector2D(roundNumber, 0));
         }
