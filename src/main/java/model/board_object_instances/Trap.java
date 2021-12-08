@@ -12,7 +12,7 @@ public class Trap extends BoardObject {
 
     public Trap(Color color) {
         super(color);
-        isMovable = true;
+        isMovable = false;
     }
 
     @Override

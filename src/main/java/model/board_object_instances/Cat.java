@@ -7,7 +7,7 @@ import model.MovableBoardObject;
 import model.Vector2D;
 
 //TODO Remove this classes
-public class Cat extends MovableBoardObject {
+public class Cat extends BoardObject {
 
     private final Vector2D singleMove = new Vector2D(2, 1);
 
