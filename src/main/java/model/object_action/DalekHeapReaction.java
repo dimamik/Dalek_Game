@@ -2,9 +2,9 @@ package model.object_action;
 
 import model.BoardCell;
 
-public class MouseMouseReaction implements CollisionReaction {
+public class DalekHeapReaction implements CollisionReaction {
     @Override
     public void handleCollision(BoardCell boardCell) {
-        System.out.println("Mouse Mouse Collision");
+//        TODO Implement
     }
 }

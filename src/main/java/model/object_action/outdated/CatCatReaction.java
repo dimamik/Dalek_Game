@@ -1,6 +1,7 @@
-package model.object_action;
+package model.object_action.outdated;
 
 import model.BoardCell;
+import model.object_action.CollisionReaction;
 
 public class CatCatReaction implements CollisionReaction {
     @Override

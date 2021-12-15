@@ -1,7 +1,8 @@
-package model.object_action;
+package model.object_action.outdated;
 
 import javafx.scene.paint.Color;
 import model.BoardCell;
+import model.object_action.CollisionReaction;
 
 public class MouseTrapReaction implements CollisionReaction {
     @Override

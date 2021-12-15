@@ -46,7 +46,11 @@ public class AppController implements EventListener<BoardCell> {
     private void initialize() {
         subscribeToCells();
         initViews();
-        gameUtil.runGame();
+//      TODO Change this part to concurencyAPI Task
+//       We need to control this thread and finish with main JAVAFX!
+//        https://stackoverflow.com/questions/44398611/running-a-process-in-a-separate-thread-so-rest-of-java-fx-application-is-usable
+        Thread thread = new Thread(gameUtil);
+        thread.start();
     }
 
     private void initViews() {
@@ -64,6 +68,7 @@ public class AppController implements EventListener<BoardCell> {
     public void onPress(ActionEvent actionEvent) {
 //        TODO Implement button handling
 //        When button from menu is pressed
+        this.gameUtil.moveMade(actionEvent);
         System.out.println("Button pressed!" + actionEvent);
     }
 

@@ -1,17 +1,19 @@
 package utils;
 
 import com.google.inject.Inject;
-import javafx.scene.paint.Color;
+import javafx.event.ActionEvent;
 import model.Board;
 import model.Vector2D;
-import model.board_object_instances.Cat;
 
-public class GameUtil {
+public class GameUtil implements Runnable {
+    private final PositionUtil positionUtil;
     private Board board;
-    private PositionUtil positionUtil;
+    private volatile boolean userMoved;
+
 
     @Inject
     public GameUtil(Board board, PositionUtil positionUtil) {
+        super();
         this.board = board;
         this.positionUtil = positionUtil;
         this.setUpGame();
@@ -21,27 +23,50 @@ public class GameUtil {
 //        Initial Game Set up
     }
 
-    private void playRound(int roundNumber) {
-//        TODO This should be in a separate thread
-        if (roundNumber % 2 == 0) {
-            board.addBoardObject(new Cat(Color.BLACK), new Vector2D(0, roundNumber));
-        } else {
-            board.addBoardObject(new Cat(Color.WHITE), new Vector2D(0, roundNumber));
-        }
+    private void playRound() {
+        Vector2D userMove = awaitGetUserMove();
+//      TODO  Process user move
 
-        if (roundNumber >= 1) {
+//      TODO Process Delek Moves
 
-//        Make an upper move
-            positionUtil.changePosition(board.getBoardCell(new Vector2D(0, roundNumber)), new Vector2D(roundNumber, 0));
-        }
+//      TODO Process Heaps
+
+
+    }
+
+    private boolean isGameOver() {
+//        TODO Add Implementation
+        return false;
     }
 
     public void runGame() {
 //        Uses playRound and game logic from GameParameters to run the game
-        for (int i = 0; i < 10; i++) {
-            playRound(i);
+        while (!isGameOver()) {
+            playRound();
         }
 
+//        TODO Show to user who won and some stats
+
+    }
+
+    public void moveMade(ActionEvent actionEvent) {
+        this.setUserMoved(true);
+//        TODO Set userMoveVector to vector that you get
+//        From events from user and somehow pass it to
+//        the awaitGetUserMove
+
+//        One possible solution is to use global variable
+//        That can be concurrently set and read by this two methods
+
+    }
+
+    public Vector2D awaitGetUserMove() {
+        while (!this.isUserMoved()) {
+            Thread.onSpinWait();
+        }
+        this.setUserMoved(false);
+//        TODO Add Logic to process user move
+        return new Vector2D(1, 1);
     }
 
     public Board getBoard() {
@@ -52,11 +77,16 @@ public class GameUtil {
         this.board = board;
     }
 
-    public PositionUtil getPositionUtil() {
-        return positionUtil;
+    public boolean isUserMoved() {
+        return userMoved;
     }
 
-    public void setPositionUtil(PositionUtil positionUtil) {
-        this.positionUtil = positionUtil;
+    public void setUserMoved(boolean userMoved) {
+        this.userMoved = userMoved;
+    }
+
+    @Override
+    public void run() {
+        runGame();
     }
 }

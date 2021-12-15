@@ -13,6 +13,11 @@ public abstract class BoardObject {
         this.isMovable = true;
     }
 
+    public BoardObject(Color color, boolean isMovable) {
+        this.color = color;
+        this.isMovable = isMovable;
+    }
+
     public boolean isMovable() {
         return isMovable;
     }
