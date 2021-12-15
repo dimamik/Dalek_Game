@@ -11,7 +11,6 @@ public class BoardView extends Parent {
 
     @Inject
     public BoardView() {
-        System.out.println("BoardView");
         int x_number = 20;
         int y_number = 20;
         int cellSize = 50;

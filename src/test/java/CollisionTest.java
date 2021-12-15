@@ -6,13 +6,10 @@ import model.Vector2D;
 import model.board_object_instances.Cat;
 import model.board_object_instances.Mouse;
 import model.board_object_instances.Trap;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.mock;
 
 public class CollisionTest {
 

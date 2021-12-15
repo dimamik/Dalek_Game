@@ -3,11 +3,14 @@ package model.factories;
 import enums.ObjectType;
 import model.object_action.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 record PairOfObjects(ObjectType first, ObjectType second) {
 }
 
+// Should be injected with guice
 public class CollisionActionFactory {
     static Map<PairOfObjects, CollisionReaction> operationMap = new HashMap<>();
 
@@ -26,7 +29,7 @@ public class CollisionActionFactory {
     public static Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {
 
         PairOfObjects pair = (first.getObjectCode() > second.getObjectCode()) ? new PairOfObjects(second, first)
-                                                                            : new PairOfObjects(first, second);
+                : new PairOfObjects(first, second);
 
         return Optional.ofNullable(operationMap.get(pair));
     }

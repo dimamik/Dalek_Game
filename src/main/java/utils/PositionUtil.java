@@ -3,7 +3,6 @@ package utils;
 import com.google.inject.Inject;
 import model.Board;
 import model.BoardCell;
-import model.BoardObject;
 import model.Vector2D;
 
 public class PositionUtil {

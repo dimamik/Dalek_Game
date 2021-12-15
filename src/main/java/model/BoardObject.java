@@ -5,9 +5,8 @@ import enums.ObjectType;
 import javafx.scene.paint.Color;
 
 public abstract class BoardObject {
-    private Color color;
-
     protected boolean isMovable;
+    private Color color;
 
     public BoardObject(Color color) {
         this.color = color;
@@ -22,9 +21,10 @@ public abstract class BoardObject {
         return color;
     }
 
-    public void setColor(Color color) { this.color = color; }
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     public abstract ObjectType getType();
-
 
 }

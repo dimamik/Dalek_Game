@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import interfaces.EventListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import model.Board;
 import model.BoardCell;
@@ -30,19 +31,26 @@ public class AppController implements EventListener<BoardCell> {
     public VBox movementButtons;
 
     @FXML
+    public BorderPane borderPane;
+
     public BoardView boardView;
 
     @Inject
-    public AppController(Board board, GameUtil gameUtil) {
+    public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
         this.board = board;
         this.gameUtil = gameUtil;
+        this.boardView = boardView;
     }
 
     @FXML
     private void initialize() {
         subscribeToCells();
+        initViews();
         gameUtil.runGame();
-        System.out.println(board);
+    }
+
+    private void initViews() {
+        borderPane.setCenter(boardView);
     }
 
     private void subscribeToCells() {

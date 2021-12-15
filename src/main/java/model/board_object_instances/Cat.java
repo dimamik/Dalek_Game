@@ -2,12 +2,11 @@ package model.board_object_instances;
 
 import enums.ObjectType;
 import javafx.scene.paint.Color;
-import model.BoardObject;
 import model.MovableBoardObject;
 import model.Vector2D;
 
 //TODO Remove this classes
-public class Cat extends BoardObject {
+public class Cat extends MovableBoardObject {
 
     private final Vector2D singleMove = new Vector2D(2, 1);
 

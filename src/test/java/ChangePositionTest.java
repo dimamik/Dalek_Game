@@ -1,5 +1,8 @@
 import javafx.scene.paint.Color;
-import model.*;
+import model.Board;
+import model.BoardCell;
+import model.MovableBoardObject;
+import model.Vector2D;
 import model.board_object_instances.Cat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +17,7 @@ import static org.mockito.Mockito.mock;
 
 public class ChangePositionTest {
 
-    public List<BoardCell> processMotion(BoardObject boardObject, int boardSize, int x0, int y0, int x1, int y1) {
+    public List<BoardCell> processMotion(MovableBoardObject boardObject, int boardSize, int x0, int y0, int x1, int y1) {
         //given
         Board board = new Board(boardSize, boardSize);
         PositionUtil positionUtil = new PositionUtil(board, mock(CollisionHandler.class));
@@ -37,7 +40,7 @@ public class ChangePositionTest {
         // given
         int sourceCellIndex = 0;
         int expectedCellIndex = 1;
-        BoardObject cat = new Cat(Color.BLACK);
+        MovableBoardObject cat = new Cat(Color.BLACK);
 
         // when
         List<BoardCell> cells = processMotion(cat, 10, 0, 0, 2, 1);
