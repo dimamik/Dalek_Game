@@ -6,6 +6,7 @@ import model.Vector2D;
 import model.board_object_instances.Cat;
 import model.board_object_instances.Mouse;
 import model.board_object_instances.Trap;
+import model.factories.CollisionActionFactory;
 import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
 
@@ -19,7 +20,9 @@ public class CollisionTest {
     public BoardCell processCollision(BoardObject boardObject1, BoardObject boardObject2, int boardSize, int xV, int yV) {
         //given
         Board board = new Board(boardSize, boardSize);
-        CollisionHandler collisionHandler = new CollisionHandler(board);
+//        TODO Warning, this was a singleton!
+        CollisionActionFactory collisionActionFactory = new CollisionActionFactory();
+        CollisionHandler collisionHandler = new CollisionHandler(board, collisionActionFactory);
         BoardCell collisionCell = board.getBoardCell(new Vector2D(xV, yV));
         collisionCell.getBoardObjects().add(boardObject1);
         collisionCell.getBoardObjects().add(boardObject2);

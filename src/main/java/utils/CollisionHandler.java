@@ -8,16 +8,16 @@ import model.factories.CollisionActionFactory;
 import model.object_action.CollisionReaction;
 
 import java.util.Optional;
-//import model.model.board_object_instances.Cat;
-//import model.model.board_object_instances.Mouse;
-//import model.model.board_object_instances.Trap;
+
 
 public class CollisionHandler {
     private final Board board;
+    private final CollisionActionFactory collisionActionFactory;
 
     @Inject
-    public CollisionHandler(Board board) {
+    public CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {
         this.board = board;
+        this.collisionActionFactory = collisionActionFactory;
     }
 
     public void handleCollision(BoardCell collisionCell) {
@@ -25,7 +25,7 @@ public class CollisionHandler {
         BoardObject boardObject1 = collisionCell.getBoardObjects().get(0);
         BoardObject boardObject2 = collisionCell.getBoardObjects().get(1);
 
-        Optional<CollisionReaction> objectAction = CollisionActionFactory.getCollisionAction(boardObject1.getType(), boardObject2.getType());
+        Optional<CollisionReaction> objectAction = collisionActionFactory.getCollisionAction(boardObject1.getType(), boardObject2.getType());
 
 
 //      TODO Should it use board?
