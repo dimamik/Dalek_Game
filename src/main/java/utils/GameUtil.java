@@ -95,7 +95,7 @@ public class GameUtil implements Runnable {
             System.out.println("GAME ENDED!");
         }
 
-//        TODO - ruch wzystkimi dalekami
+        positionUtil.moveAllDaleks(doctorPosition.add(direction));
 
 //        TODO - sprawdzenie czy gra sie skonczyla
     }

@@ -7,7 +7,8 @@ import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PositionUtil {
 
@@ -47,6 +48,26 @@ public class PositionUtil {
 
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);
+        }
+    }
+
+    public void moveAllDaleks(Vector2D doctorPosition) {
+        List<BoardObject> usedDaleksList = new ArrayList<>();
+
+        for (int i = 0; i < board.getCols(); i++) {
+            for (int j = 0; j < board.getRows(); j++) {
+                if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
+                    BoardObject boardObject =  board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get();
+                    int objectType = boardObject.getType().getObjectCode();
+                    if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
+                        usedDaleksList.add(boardObject);
+//                        TODO - znalezienie optymalnego ruchu dla daleka
+                        if (this.isMovePossible(board.getBoardCell(new Vector2D(i, j)), new Vector2D(0, 1))) {
+                            this.changePosition(board.getBoardCell(new Vector2D(i, j)), new Vector2D(0, 1));
+                        }
+                    }
+                }
+            }
         }
     }
 
