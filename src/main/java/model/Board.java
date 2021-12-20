@@ -2,6 +2,7 @@ package model;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Optional;
 
 public class Board {
@@ -10,18 +11,22 @@ public class Board {
     private final BoardCell[][] boardCells;
 
     @Inject
-    public Board(@Named("colsNo") int colsNo, @Named("rowsNo") int rowsNo) {
-        this.cols = colsNo;
-        this.rows = rowsNo;
+    @Singleton
+    public Board(@Named("cols") int cols, @Named("rows") int rows) {
+        System.out.println("Board constructor");
+        this.cols = cols;
+        this.rows = rows;
         this.boardCells = new BoardCell[cols][rows];
 
-        for (int i = 0; i < colsNo; i++) {
-            for (int j = 0; j < rowsNo; j++) {
-                Vector2D position = new Vector2D(i, j);
-                BoardCell boardCell = new BoardCell(position);
-                boardCells[i][j] = boardCell;
-            }
-        }
+        this.initializeBoard();
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getRows() {
+        return rows;
     }
 
     public BoardCell[][] getBoardCells() {
@@ -29,11 +34,11 @@ public class Board {
     }
 
     public BoardCell getBoardCell(Vector2D position) {
-        return boardCells[position.getX()][position.getY()];
+        return boardCells[position.x()][position.y()];
     }
 
     public Optional<BoardObject> getBoardObject(Vector2D position) {
-        return getBoardCell(position).getBoardObject();
+        return getBoardCell(position).getTopBoardObject();
     }
 
     public void addBoardObject(BoardObject boardObject, Vector2D position) {
@@ -42,6 +47,16 @@ public class Board {
 
     public void removeBoardObject(BoardObject boardObject, Vector2D position) {
         getBoardCell(position).removeBoardObject(boardObject);
+    }
+
+    private void initializeBoard() {
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                Vector2D position = new Vector2D(i, j);
+                BoardCell boardCell = new BoardCell(position);
+                boardCells[i][j] = boardCell;
+            }
+        }
     }
 
     @Override

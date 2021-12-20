@@ -1,17 +1,23 @@
 package utils;
 
+import com.google.inject.Inject;
 import model.Board;
 import model.BoardCell;
 import model.BoardObject;
-import model.board_object_instances.Cat;
-import model.board_object_instances.Mouse;
-import model.board_object_instances.Trap;
+import model.factories.CollisionActionFactory;
+import model.object_action.CollisionReaction;
+
+import java.util.Optional;
+
 
 public class CollisionHandler {
-    Board board;
+    private final Board board;
+    private final CollisionActionFactory collisionActionFactory;
 
-    public CollisionHandler(Board board) {
+    @Inject
+    public CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {
         this.board = board;
+        this.collisionActionFactory = collisionActionFactory;
     }
 
     public void handleCollision(BoardCell collisionCell) {
@@ -19,14 +25,12 @@ public class CollisionHandler {
         BoardObject boardObject1 = collisionCell.getBoardObjects().get(0);
         BoardObject boardObject2 = collisionCell.getBoardObjects().get(1);
 
-        // TODO implement logic of resolving collision
-        if (boardObject1 instanceof Cat && boardObject2 instanceof Cat ||
-                boardObject1 instanceof Mouse && boardObject2 instanceof Mouse)
-            collisionCell.getBoardObjects().remove(1);
-        else if (boardObject1 instanceof Trap && boardObject2 instanceof Cat ||
-                boardObject1 instanceof Trap && boardObject2 instanceof Mouse)
-            collisionCell.getBoardObjects().remove(1);
-        else
-            collisionCell.getBoardObjects().remove(boardObject2);
+        Optional<CollisionReaction> objectAction = collisionActionFactory.getCollisionAction(boardObject1.getType(), boardObject2.getType());
+
+
+//      TODO Should it use board?
+//        If no then remove
+        objectAction.ifPresent(action -> action.handleCollision(collisionCell));
+
     }
 }
