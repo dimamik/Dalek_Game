@@ -35,6 +35,10 @@ public class BoardCell extends EventEmitter<BoardCell> {
         boardObjects.add(boardObject);
     }
 
+    public void clearBoardCell() {
+        boardObjects.clear();
+    }
+
     public void removeBoardObject(BoardObject boardObject) {
         boardObjects.remove(boardObject);
     }
@@ -50,6 +54,9 @@ public class BoardCell extends EventEmitter<BoardCell> {
         return this.boardObjects;
     }
 
+    public boolean isEmpty() {
+        return this.boardObjects.isEmpty();
+    }
 
     @Override
     public void addListener(EventListener<BoardCell> listener) {

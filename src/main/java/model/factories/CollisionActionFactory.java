@@ -3,7 +3,6 @@ package model.factories;
 import com.google.inject.Inject;
 import enums.ObjectType;
 import model.object_action.*;
-import model.object_action.outdated.*;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
@@ -27,18 +26,13 @@ public class CollisionActionFactory {
     }
 
     private void initOperations() {
-
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.DALEK), new DalekDalekReaction());
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.HEAP), new DalekHeapReaction());
+        operationMap.put(new PairOfObjects(ObjectType.HEAP, ObjectType.DALEK), new DalekHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.DALEK), new DoctorDalekReaction());
+        operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.DOCTOR), new DoctorDalekReaction());
         operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.HEAP), new DoctorHeapReaction());
-
-
-        operationMap.put(new PairOfObjects(ObjectType.CAT, ObjectType.CAT), new CatCatReaction());
-        operationMap.put(new PairOfObjects(ObjectType.MOUSE, ObjectType.MOUSE), new MouseMouseReaction());
-        operationMap.put(new PairOfObjects(ObjectType.CAT, ObjectType.MOUSE), new CatMouseReaction());
-        operationMap.put(new PairOfObjects(ObjectType.CAT, ObjectType.TRAP), new CatTrapReaction());
-        operationMap.put(new PairOfObjects(ObjectType.MOUSE, ObjectType.TRAP), new MouseTrapReaction());
+        operationMap.put(new PairOfObjects(ObjectType.HEAP, ObjectType.DOCTOR), new DoctorHeapReaction());
     }
 
     public Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {
@@ -48,5 +42,4 @@ public class CollisionActionFactory {
 
         return Optional.ofNullable(operationMap.get(pair));
     }
-
 }
