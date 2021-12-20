@@ -15,5 +15,4 @@ public final class BoardController {
         this.boardView = boardView;
         this.board = board;
     }
-
 }

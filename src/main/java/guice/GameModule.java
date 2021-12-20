@@ -29,6 +29,12 @@ public class GameModule extends AbstractModule {
     @Provides
     @Named("cellSize")
     private int provideCellSizePx() {
-        return 50;
+        return 40;
+    }
+
+    @Provides
+    @Named("daleksNo")
+    private int provideDaleksNo() {
+        return 20;
     }
 }

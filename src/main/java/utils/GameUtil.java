@@ -1,30 +1,65 @@
 package utils;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javafx.event.ActionEvent;
 import model.Board;
+import model.BoardCell;
+import model.BoardObject;
 import model.Vector2D;
+import model.board_object_instances.Dalek;
+import model.board_object_instances.Doctor;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameUtil implements Runnable {
     private final PositionUtil positionUtil;
     private Board board;
     private volatile boolean userMoved;
+    private int daleksNo;
+    private BoardObject doctor;
 
 
     @Inject
-    public GameUtil(Board board, PositionUtil positionUtil) {
+    public GameUtil(Board board, PositionUtil positionUtil, @Named("daleksNo") int daleksNo) {
         super();
         this.board = board;
         this.positionUtil = positionUtil;
-        this.setUpGame();
+        this.daleksNo = daleksNo;
     }
 
-    private void setUpGame() {
-//        Initial Game Set up
+    public void setUpGame() {
+        this.doctor = new Doctor();
+        positionUtil.getBoard().addBoardObject(doctor, new Vector2D(10, 10));
+
+        placeDaleks(daleksNo);
+
+//        board.addBoardObject(new Dalek(), new Vector2D(0,0));
+//        board.addBoardObject(new Dalek(), new Vector2D(19,19));
+//        positionUtil.changePosition(board.getBoardCell(new Vector2D(1,1)), new Vector2D(1,1));
+//        positionUtil.changePosition(positionUtil.getBoard().getBoardCell(new Vector2D(11, 10)), new Vector2D(1,1));
+    }
+
+    private void placeDaleks(int numberOfDaleks) {
+        for (int i = 0; i < numberOfDaleks; i++) {
+            boolean isOccupied = false;
+
+            Vector2D spawnPlace = null;
+
+            while (!isOccupied) {
+                int newX = ThreadLocalRandom.current().nextInt(0, this.board.getCols());
+                int newY = ThreadLocalRandom.current().nextInt(0, this.board.getRows());
+
+                spawnPlace = new Vector2D(newX, newY);
+
+                isOccupied = this.board.getBoardCell(spawnPlace).isEmpty();
+            }
+
+            this.board.addBoardObject(new Dalek(), spawnPlace);
+        }
     }
 
     private void playRound() {
-        Vector2D userMove = awaitGetUserMove();
 //      TODO  Process user move
 
 //      TODO Process Delek Moves
@@ -49,24 +84,20 @@ public class GameUtil implements Runnable {
 
     }
 
-    public void moveMade(ActionEvent actionEvent) {
-        this.setUserMoved(true);
-//        TODO Set userMoveVector to vector that you get
-//        From events from user and somehow pass it to
-//        the awaitGetUserMove
+    public void handleMove(ActionEvent actionEvent) {
+        Vector2D doctorPosition = positionUtil.getBoardObjectPosition(doctor);
+        Vector2D direction = positionUtil.getDirection(actionEvent);
+        BoardCell sourceCell = board.getBoardCell(doctorPosition);
 
-//        One possible solution is to use global variable
-//        That can be concurrently set and read by this two methods
+        positionUtil.move(sourceCell, direction);
 
-    }
-
-    public Vector2D awaitGetUserMove() {
-        while (!this.isUserMoved()) {
-            Thread.onSpinWait();
+        if (positionUtil.isGameEnded()) {
+            System.out.println("GAME ENDED!");
         }
-        this.setUserMoved(false);
-//        TODO Add Logic to process user move
-        return new Vector2D(1, 1);
+
+//        TODO - ruch wzystkimi dalekami
+
+//        TODO - sprawdzenie czy gra sie skonczyla
     }
 
     public Board getBoard() {

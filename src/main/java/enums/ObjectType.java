@@ -1,14 +1,11 @@
 package enums;
 
 // Object type based on Collision behavior
-//For example ObjectThatCanBeEaten
+// For example ObjectThatCanBeEaten
 public enum ObjectType {
-    CAT(1),
-    MOUSE(2),
-    TRAP(3),
-    DALEK(4),
-    DOCTOR(5),
-    HEAP(6);
+    DALEK(1),
+    DOCTOR(2),
+    HEAP(3);
 
     private final int objectCode;
 

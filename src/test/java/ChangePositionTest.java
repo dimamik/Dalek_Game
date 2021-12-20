@@ -3,7 +3,6 @@ import model.Board;
 import model.BoardCell;
 import model.MovableBoardObject;
 import model.Vector2D;
-import model.board_object_instances.Cat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
