@@ -1,6 +1,7 @@
 package utils;
 
 import com.google.inject.Inject;
+import enums.Direction;
 import javafx.event.ActionEvent;
 import model.Board;
 import model.BoardCell;
@@ -51,23 +52,62 @@ public class PositionUtil {
         }
     }
 
-    public void moveAllDaleks(Vector2D doctorPosition) {
+    public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
+
+//        for (BoardCell cell : occupiedCells) {
+//
+//            if (board.getBoardCell(cell.getPosition()).getTopBoardObject().isPresent()) {
+//                BoardObject boardObject = board.getBoardCell(cell.getPosition()).getTopBoardObject().get();
+//            }
+//
+//            int objectType = boardObject.getType().getObjectCode();
+//        }
+
         List<BoardObject> usedDaleksList = new ArrayList<>();
 
         for (int i = 0; i < board.getCols(); i++) {
             for (int j = 0; j < board.getRows(); j++) {
-                if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
-                    BoardObject boardObject =  board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get();
+                Vector2D currentPosition = new Vector2D(i, j);
+                if (board.getBoardCell(currentPosition).getTopBoardObject().isPresent()) {
+                    BoardObject boardObject = board.getBoardCell(currentPosition).getTopBoardObject().get();
                     int objectType = boardObject.getType().getObjectCode();
                     if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
                         usedDaleksList.add(boardObject);
-//                        TODO - znalezienie optymalnego ruchu dla daleka
-                        if (this.isMovePossible(board.getBoardCell(new Vector2D(i, j)), new Vector2D(0, 1))) {
-                            this.changePosition(board.getBoardCell(new Vector2D(i, j)), new Vector2D(0, 1));
+                        Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
+
+                        if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
+                            this.changePosition(board.getBoardCell(currentPosition), singleMove);
                         }
                     }
                 }
             }
+        }
+    }
+
+    public Vector2D findSingleDalekMove(Vector2D doctorPosition, Vector2D dalekPosition) {
+        if (doctorPosition.x() > dalekPosition.x() && doctorPosition.y() < dalekPosition.y()) {
+            return Direction.NE.toUnitVector();
+        }
+        else if (doctorPosition.x() == dalekPosition.x() && doctorPosition.y() < dalekPosition.y()) {
+            return Direction.N.toUnitVector();
+        }
+        else if (doctorPosition.x() < dalekPosition.x() && doctorPosition.y() < dalekPosition.y()) {
+            return Direction.NW.toUnitVector();
+        }
+        else if (doctorPosition.x() > dalekPosition.x() && doctorPosition.y() == dalekPosition.y()) {
+            return Direction.E.toUnitVector();
+        }
+        else if (doctorPosition.x() < dalekPosition.x() && doctorPosition.y() == dalekPosition.y()) {
+            return Direction.W.toUnitVector();
+        }
+        else if (doctorPosition.x() > dalekPosition.x() && doctorPosition.y() > dalekPosition.y()) {
+            return Direction.SE.toUnitVector();
+        }
+        else if (doctorPosition.x() == dalekPosition.x() && doctorPosition.y() > dalekPosition.y()) {
+            return Direction.S.toUnitVector();
+        }
+        else {
+            return Direction.SW.toUnitVector();
         }
     }
 
@@ -121,39 +161,8 @@ public class PositionUtil {
 
     public Vector2D getDirection(ActionEvent actionEvent) {
         String eventTarget =  actionEvent.getTarget().toString();
-        return this.getPosition(eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'")));
-    }
-
-    public Vector2D getPosition(String direction){
-        switch (direction) {
-            case "N" -> {
-                return new Vector2D(0, -1);
-            }
-            case "NE" -> {
-                return  new Vector2D(1, -1);
-            }
-            case "E" -> {
-                return new Vector2D(1, 0);
-            }
-            case "SE" -> {
-                return new Vector2D(1, 1);
-            }
-            case "S" -> {
-                return new Vector2D(0, 1);
-            }
-            case "SW" -> {
-                return new Vector2D(-1, 1);
-            }
-            case "W" -> {
-                return new Vector2D(-1, 0);
-            }
-            case "NW" -> {
-                return new Vector2D(-1, -1);
-            }
-            default -> {
-                return null;
-            }
-        }
+        Direction direction = Direction.valueOf(eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'")));
+        return direction.toUnitVector();
     }
 
     public Board getBoard() {

@@ -10,6 +10,8 @@ import model.Vector2D;
 import model.board_object_instances.Dalek;
 import model.board_object_instances.Doctor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameUtil implements Runnable {
@@ -18,6 +20,7 @@ public class GameUtil implements Runnable {
     private volatile boolean userMoved;
     private int daleksNo;
     private BoardObject doctor;
+    List<BoardCell> occupiedCells = new ArrayList<>();
 
 
     @Inject
@@ -41,21 +44,19 @@ public class GameUtil implements Runnable {
     }
 
     private void placeDaleks(int numberOfDaleks) {
+
         for (int i = 0; i < numberOfDaleks; i++) {
-            boolean isOccupied = false;
 
-            Vector2D spawnPlace = null;
+            Vector2D spawnPlace;
 
-            while (!isOccupied) {
+            do {
                 int newX = ThreadLocalRandom.current().nextInt(0, this.board.getCols());
                 int newY = ThreadLocalRandom.current().nextInt(0, this.board.getRows());
-
                 spawnPlace = new Vector2D(newX, newY);
-
-                isOccupied = this.board.getBoardCell(spawnPlace).isEmpty();
-            }
+            } while (!board.getBoardCell(spawnPlace).isEmpty());
 
             this.board.addBoardObject(new Dalek(), spawnPlace);
+            occupiedCells.add(board.getBoardCell(spawnPlace));
         }
     }
 
@@ -95,7 +96,7 @@ public class GameUtil implements Runnable {
             System.out.println("GAME ENDED!");
         }
 
-        positionUtil.moveAllDaleks(doctorPosition.add(direction));
+        positionUtil.moveAllDaleks(doctorPosition.add(direction), occupiedCells);
 
 //        TODO - sprawdzenie czy gra sie skonczyla
     }
