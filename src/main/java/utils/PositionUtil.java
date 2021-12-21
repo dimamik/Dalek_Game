@@ -2,6 +2,7 @@ package utils;
 
 import com.google.inject.Inject;
 import enums.Direction;
+import enums.ObjectType;
 import javafx.event.ActionEvent;
 import model.Board;
 import model.BoardCell;
@@ -35,9 +36,9 @@ public class PositionUtil {
         return vector2D.x() >= 0 && vector2D.x() < board.getCols() && vector2D.y() >= 0 && vector2D.y() < board.getRows();
     }
 
-    public void changePosition(BoardCell sourceCell, Vector2D shift) {
+    public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
 
-        if (!sourceCell.getBoardObjects().get(0).isMovable()) return;
+        if (!sourceCell.getBoardObjects().get(0).isMovable()) return null;
 
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
@@ -50,38 +51,44 @@ public class PositionUtil {
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);
         }
+
+        return targetCell;
     }
 
     public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
 
-//        for (BoardCell cell : occupiedCells) {
-//
-//            if (board.getBoardCell(cell.getPosition()).getTopBoardObject().isPresent()) {
-//                BoardObject boardObject = board.getBoardCell(cell.getPosition()).getTopBoardObject().get();
-//            }
-//
-//            int objectType = boardObject.getType().getObjectCode();
-//        }
+        for (int i = 0; i < occupiedCells.size(); i++) {
 
-        List<BoardObject> usedDaleksList = new ArrayList<>();
+            if (occupiedCells.get(i).getTopBoardObject().get().getType() == ObjectType.DALEK) {
+                Vector2D currentPosition = occupiedCells.get(i).getPosition();
+                Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
 
-        for (int i = 0; i < board.getCols(); i++) {
-            for (int j = 0; j < board.getRows(); j++) {
-                Vector2D currentPosition = new Vector2D(i, j);
-                if (board.getBoardCell(currentPosition).getTopBoardObject().isPresent()) {
-                    BoardObject boardObject = board.getBoardCell(currentPosition).getTopBoardObject().get();
-                    int objectType = boardObject.getType().getObjectType();
-                    if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
-                        usedDaleksList.add(boardObject);
-                        Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
-
-                        if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
-                            this.changePosition(board.getBoardCell(currentPosition), singleMove);
-                        }
-                    }
+                if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
+                    BoardCell targetCell = this.changePosition(board.getBoardCell(currentPosition), singleMove);
+                    occupiedCells.set(i, targetCell);
                 }
             }
         }
+
+//        List<BoardObject> usedDaleksList = new ArrayList<>();
+//
+//        for (int i = 0; i < board.getCols(); i++) {
+//            for (int j = 0; j < board.getRows(); j++) {
+//                Vector2D currentPosition = new Vector2D(i, j);
+//                if (board.getBoardCell(currentPosition).getTopBoardObject().isPresent()) {
+//                    BoardObject boardObject = board.getBoardCell(currentPosition).getTopBoardObject().get();
+//                    int objectType = boardObject.getType().getObjectType();
+//                    if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
+//                        usedDaleksList.add(boardObject);
+//                        Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
+//
+//                        if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
+//                            this.changePosition(board.getBoardCell(currentPosition), singleMove);
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     public Vector2D findSingleDalekMove(Vector2D doctorPosition, Vector2D dalekPosition) {
