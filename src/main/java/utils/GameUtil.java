@@ -20,6 +20,8 @@ public class GameUtil implements Runnable {
     private volatile boolean userMoved;
     private int daleksNo;
     private BoardObject doctor;
+
+    BoardCell doctorCell;
     List<BoardCell> occupiedCells = new ArrayList<>();
 
 
@@ -33,7 +35,9 @@ public class GameUtil implements Runnable {
 
     public void setUpGame() {
         this.doctor = new Doctor();
-        positionUtil.getBoard().addBoardObject(doctor, new Vector2D(10, 10));
+        Vector2D doctorInitPosition = new Vector2D(10,10);
+        positionUtil.getBoard().addBoardObject(doctor, doctorInitPosition);
+        doctorCell = getBoard().getBoardCell(doctorInitPosition);
 
         placeDaleks(daleksNo);
 
@@ -86,13 +90,12 @@ public class GameUtil implements Runnable {
     }
 
     public void handleMove(ActionEvent actionEvent) {
-        Vector2D doctorPosition = positionUtil.getBoardObjectPosition(doctor);
+        Vector2D doctorPosition = doctorCell.getPosition();
         Vector2D direction = positionUtil.getDirection(actionEvent);
-        BoardCell sourceCell = board.getBoardCell(doctorPosition);
 
-        positionUtil.move(sourceCell, direction);
+        doctorCell = positionUtil.move(doctorCell, direction);
 
-        if (positionUtil.isGameEnded()) {
+        if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
             System.out.println("GAME ENDED!");
         }
 

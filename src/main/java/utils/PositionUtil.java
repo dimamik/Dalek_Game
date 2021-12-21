@@ -9,6 +9,7 @@ import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
 
+import javax.swing.text.html.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,11 @@ public class PositionUtil {
         this.collisionHandler = collisionHandler;
     }
 
-    public void move(BoardCell boardCell, Vector2D direction) {
-        if (this.isMovePossible(boardCell, direction)) {
-            this.changePosition(boardCell, direction);
+    public BoardCell move(BoardCell sourceCell, Vector2D direction) {
+        if (this.isMovePossible(sourceCell, direction)) {
+            return this.changePosition(sourceCell, direction);
         }
+        return sourceCell;
     }
 
     private boolean isMovePossible(BoardCell boardCell, Vector2D direction) {
@@ -39,14 +41,10 @@ public class PositionUtil {
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
 
         if (!sourceCell.getBoardObjects().get(0).isMovable()) return null;
-
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
-
         targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
 
-        sourceCell.getTopBoardObject().ifPresent(
-                sourceCell::removeBoardObject
-        );
+        sourceCell.getTopBoardObject().ifPresent( sourceCell::removeBoardObject );
 
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);
@@ -69,26 +67,6 @@ public class PositionUtil {
                 }
             }
         }
-
-//        List<BoardObject> usedDaleksList = new ArrayList<>();
-//
-//        for (int i = 0; i < board.getCols(); i++) {
-//            for (int j = 0; j < board.getRows(); j++) {
-//                Vector2D currentPosition = new Vector2D(i, j);
-//                if (board.getBoardCell(currentPosition).getTopBoardObject().isPresent()) {
-//                    BoardObject boardObject = board.getBoardCell(currentPosition).getTopBoardObject().get();
-//                    int objectType = boardObject.getType().getObjectType();
-//                    if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
-//                        usedDaleksList.add(boardObject);
-//                        Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
-//
-//                        if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
-//                            this.changePosition(board.getBoardCell(currentPosition), singleMove);
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     public Vector2D findSingleDalekMove(Vector2D doctorPosition, Vector2D dalekPosition) {
@@ -118,48 +96,48 @@ public class PositionUtil {
         }
     }
 
-    public Vector2D getBoardObjectPosition(BoardObject boardObject) {
-        for (int i = 0; i < board.getCols(); i++) {
-            for (int j = 0; j < board.getRows(); j++) {
-                if (board.getBoardCell(new Vector2D(i, j)).getBoardObjects().contains(boardObject)) {
-                    return new Vector2D(i, j);
-                }
-            }
-        }
-        return null;
-    }
 
-    public boolean atLeastOneDalekExists() {
-        for (int i = 0; i < board.getCols(); i++) {
-            for (int j = 0; j < board.getRows(); j++) {
-                if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
-                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectType();
-                    return objectType == 1;
-                }
-            }
-        }
-        return false;
-    }
+//    public Vector2D getBoardObjectPosition(BoardObject boardObject) {
+//        for (int i = 0; i < board.getCols(); i++) {
+//            for (int j = 0; j < board.getRows(); j++) {
+//                if (board.getBoardCell(new Vector2D(i, j)).getBoardObjects().contains(boardObject)) {
+//                    return new Vector2D(i, j);
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
-    public boolean doctorExists() {
-        for (int i = 0; i < board.getCols(); i++) {
-            for (int j = 0; j < board.getRows(); j++) {
-                if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
-                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectType();
-                    if (objectType == 2) {
-                        return true;
-                    }
-                }
+    public boolean atLeastOneDalekExists(List<BoardCell> occupiedCells) {
+        for (BoardCell cell : occupiedCells) {
+            if (cell.getBoardObjects().get(0).getType() == ObjectType.DALEK) {
+                return true;
             }
         }
         return false;
     }
 
-    public boolean isGameEnded() {
-        if (!doctorExists()) {
+
+    public boolean doctorExists(BoardCell doctorCell) {
+        return doctorCell.getBoardObjects().get(0).getType() == ObjectType.DOCTOR;
+//        for (int i = 0; i < board.getCols(); i++) {
+//            for (int j = 0; j < board.getRows(); j++) {
+//                if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
+//                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectType();
+//                    if (objectType == 2) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+    }
+
+    public boolean isGameEnded(List<BoardCell> occupiedCells, BoardCell doctorCell) {
+        if (!doctorExists(doctorCell)) {
             System.out.println("YOU LOOSE!");
             return true;
-        } else if (!atLeastOneDalekExists()) {
+        } else if (!atLeastOneDalekExists(occupiedCells)) {
             System.out.println("YOU WIN!");
             return true;
         }

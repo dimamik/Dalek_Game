@@ -1,5 +1,6 @@
 package model.board_object_instances;
 
+import enums.Direction;
 import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.ConditionallyMovableBoardObject;
@@ -18,10 +19,27 @@ public class Dalek extends ConditionallyMovableBoardObject {
         return ObjectType.DALEK;
     }
 
-//    This is move logic, not the actual movement.
+
     @Override
-    public Vector2D getMove(Vector2D myPosition, Vector2D conditionPosition) {
-//        TODO Implement logic of calculating the next move
-        return new Vector2D(1, 1);
+    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
+        return null;
     }
+//    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
+//        Vector2D bestMove = null;
+//        double distance = calculateDistance(dalekPosition, doctorPosition);
+//        for (Direction direction : Direction.values()) {
+//            dalekPosition.add(direction.toUnitVector());
+//            double newDistance = calculateDistance(dalekPosition, doctorPosition);
+//            if (newDistance < distance) {
+//                bestMove = direction.toUnitVector();
+//                distance = newDistance;
+//            }
+//        }
+//        return bestMove;
+//    }
+
+//    private double calculateDistance(Vector2D first, Vector2D second) {
+//        return Math.sqrt(Math.pow(first.x() - second.x(), 2) +
+//                Math.pow(first.y() - second.y(), 2));
+//    }
 }
