@@ -61,8 +61,11 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
-    public void onPress(ActionEvent actionEvent) {
-        this.gameUtil.handleMove(actionEvent);
+    public void onDirectionPress(ActionEvent actionEvent) {
+        String eventTarget =  actionEvent.getTarget().toString();
+        String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
+
+        this.gameUtil.handleMove(directionString);
     }
 
     @Override
@@ -70,6 +73,7 @@ public class AppController implements EventListener<BoardCell> {
         BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().x(), boardCell.getPosition().y());
         if (boardCell.getTopBoardObject().isPresent()) {
             BoardObject boardObject = boardCell.getTopBoardObject().get();
+            //        TODO there BoardObjectView needs to be injected
             boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
         } else {
             boardCellView.clearBoardObjectView();

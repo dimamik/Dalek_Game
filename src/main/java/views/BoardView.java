@@ -24,11 +24,6 @@ public class BoardView extends Parent {
             HBox row = new HBox();
             for (int x = 0; x < x_number; x++) {
                 arrayOfCells[x][y] = new BoardCellView(cellSize);
-//                TODO Add Mouse Clicked Event Handling
-//                int finalX = x;
-//                int finalY = y;
-//                arrayOfCells[x][y].setOnMouseClicked(event ->
-//                        ));
                 row.getChildren().add(arrayOfCells[x][y]);
             }
             rows.getChildren().add(row);
