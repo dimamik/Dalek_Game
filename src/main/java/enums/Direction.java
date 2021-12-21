@@ -3,7 +3,6 @@ package enums;
 import model.Vector2D;
 
 public enum Direction {
-
     N,
     NE,
     E,

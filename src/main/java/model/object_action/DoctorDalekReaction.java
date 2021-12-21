@@ -9,5 +9,7 @@ public class DoctorDalekReaction implements CollisionReaction {
 //        TODO What happens when the Doctor collides with a Dalek -> Doctor Looses
         boardCell.clearBoardCell();
         boardCell.addBoardObject(new Heap());
+//        TODO notify gameUtil that game ended (not prior)
+
     }
 }

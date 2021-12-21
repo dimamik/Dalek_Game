@@ -70,7 +70,7 @@ public class PositionUtil {
                 Vector2D currentPosition = new Vector2D(i, j);
                 if (board.getBoardCell(currentPosition).getTopBoardObject().isPresent()) {
                     BoardObject boardObject = board.getBoardCell(currentPosition).getTopBoardObject().get();
-                    int objectType = boardObject.getType().getObjectCode();
+                    int objectType = boardObject.getType().getObjectType();
                     if (objectType == 1 && !usedDaleksList.contains(boardObject)) {
                         usedDaleksList.add(boardObject);
                         Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
@@ -126,7 +126,7 @@ public class PositionUtil {
         for (int i = 0; i < board.getCols(); i++) {
             for (int j = 0; j < board.getRows(); j++) {
                 if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
-                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectCode();
+                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectType();
                     return objectType == 1;
                 }
             }
@@ -138,7 +138,7 @@ public class PositionUtil {
         for (int i = 0; i < board.getCols(); i++) {
             for (int j = 0; j < board.getRows(); j++) {
                 if(board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().isPresent()) {
-                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectCode();
+                    int objectType = board.getBoardCell(new Vector2D(i, j)).getTopBoardObject().get().getType().getObjectType();
                     if (objectType == 2) {
                         return true;
                     }
@@ -160,6 +160,7 @@ public class PositionUtil {
     }
 
     public Vector2D getDirection(ActionEvent actionEvent) {
+//        TODO Change this to get Vector2D from the actionEvent somewhere higher
         String eventTarget =  actionEvent.getTarget().toString();
         Direction direction = Direction.valueOf(eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'")));
         return direction.toUnitVector();

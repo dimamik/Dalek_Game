@@ -10,14 +10,9 @@ import model.object_action.CollisionReaction;
 import java.util.Optional;
 
 
-public class CollisionHandler {
-    private final Board board;
-    private final CollisionActionFactory collisionActionFactory;
-
+public record CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {
     @Inject
-    public CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {
-        this.board = board;
-        this.collisionActionFactory = collisionActionFactory;
+    public CollisionHandler {
     }
 
     public void handleCollision(BoardCell collisionCell) {
@@ -31,6 +26,8 @@ public class CollisionHandler {
 //      TODO Should it use board?
 //        If no then remove
         objectAction.ifPresent(action -> action.handleCollision(collisionCell));
+
+
 
     }
 }

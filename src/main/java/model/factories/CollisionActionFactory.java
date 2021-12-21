@@ -12,15 +12,12 @@ import java.util.Optional;
 record PairOfObjects(ObjectType first, ObjectType second) {
 }
 
-// Should be injected with guice
 public class CollisionActionFactory {
     private final Map<PairOfObjects, CollisionReaction> operationMap;
 
     @Inject
     @Singleton
     public CollisionActionFactory() {
-//        TODO Make sure that this is a singleton
-        System.out.println("CollisionActionFactory created");
         operationMap = new HashMap<>();
         initOperations();
     }
@@ -37,7 +34,7 @@ public class CollisionActionFactory {
 
     public Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {
 
-        PairOfObjects pair = (first.getObjectCode() > second.getObjectCode()) ? new PairOfObjects(second, first)
+        PairOfObjects pair = (first.getObjectType() > second.getObjectType()) ? new PairOfObjects(second, first)
                 : new PairOfObjects(first, second);
 
         return Optional.ofNullable(operationMap.get(pair));

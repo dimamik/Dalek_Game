@@ -18,6 +18,7 @@ public class Dalek extends ConditionallyMovableBoardObject {
         return ObjectType.DALEK;
     }
 
+//    This is move logic, not the actual movement.
     @Override
     public Vector2D getMove(Vector2D myPosition, Vector2D conditionPosition) {
 //        TODO Implement logic of calculating the next move

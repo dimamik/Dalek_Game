@@ -62,6 +62,8 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     public void onPress(ActionEvent actionEvent) {
+//        TODO gameUtil shouldn't know what is actionEvent
+//        So we need to pass it to gameUtil already extracted
         this.gameUtil.handleMove(actionEvent);
     }
 
@@ -70,6 +72,7 @@ public class AppController implements EventListener<BoardCell> {
         BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().x(), boardCell.getPosition().y());
         if (boardCell.getTopBoardObject().isPresent()) {
             BoardObject boardObject = boardCell.getTopBoardObject().get();
+            //        TODO there BoardObjectView needs to be injected
             boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
         } else {
             boardCellView.clearBoardObjectView();

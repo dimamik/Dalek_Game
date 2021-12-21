@@ -7,13 +7,13 @@ public enum ObjectType {
     DOCTOR(2),
     HEAP(3);
 
-    private final int objectCode;
+    private final int objectType;
 
-    ObjectType(int objectCode) {
-        this.objectCode = objectCode;
+    ObjectType(int objectType) {
+        this.objectType = objectType;
     }
 
-    public int getObjectCode() {
-        return this.objectCode;
+    public int getObjectType() {
+        return this.objectType;
     }
 }
