@@ -9,6 +9,4 @@ public abstract class ConditionallyMovableBoardObject extends BoardObject {
     }
 
     public abstract Vector2D getMove(Vector2D myPosition, Vector2D conditionPosition);
-
-
 }
