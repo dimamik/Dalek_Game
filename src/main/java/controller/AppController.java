@@ -61,10 +61,11 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
-    public void onPress(ActionEvent actionEvent) {
-//        TODO gameUtil shouldn't know what is actionEvent
-//        So we need to pass it to gameUtil already extracted
-        this.gameUtil.handleMove(actionEvent);
+    public void onDirectionPress(ActionEvent actionEvent) {
+        String eventTarget =  actionEvent.getTarget().toString();
+        String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
+
+        this.gameUtil.handleMove(directionString);
     }
 
     @Override

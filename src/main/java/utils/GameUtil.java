@@ -2,24 +2,20 @@ package utils;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import javafx.event.ActionEvent;
 import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Dalek;
 import model.board_object_instances.Doctor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameUtil implements Runnable {
+public class GameUtil {
     private final PositionUtil positionUtil;
-    private Board board;
-    private volatile boolean userMoved;
-    private int daleksNo;
-    private BoardObject doctor;
+    private final Board board;
+    private final int daleksNo;
 
     BoardCell doctorCell;
     List<BoardCell> occupiedCells = new ArrayList<>();
@@ -34,23 +30,16 @@ public class GameUtil implements Runnable {
     }
 
     public void setUpGame() {
-        this.doctor = new Doctor();
-        Vector2D doctorInitPosition = new Vector2D(10,10);
+        BoardObject doctor = new Doctor();
+        Vector2D doctorInitPosition = new Vector2D(board.getCols() / 2, board.getRows() / 2);
         positionUtil.getBoard().addBoardObject(doctor, doctorInitPosition);
         doctorCell = getBoard().getBoardCell(doctorInitPosition);
 
         placeDaleks(daleksNo);
-
-//        board.addBoardObject(new Dalek(), new Vector2D(0,0));
-//        board.addBoardObject(new Dalek(), new Vector2D(19,19));
-//        positionUtil.changePosition(board.getBoardCell(new Vector2D(1,1)), new Vector2D(1,1));
-//        positionUtil.changePosition(positionUtil.getBoard().getBoardCell(new Vector2D(11, 10)), new Vector2D(1,1));
     }
 
     private void placeDaleks(int numberOfDaleks) {
-
         for (int i = 0; i < numberOfDaleks; i++) {
-
             Vector2D spawnPlace;
 
             do {
@@ -64,34 +53,9 @@ public class GameUtil implements Runnable {
         }
     }
 
-    private void playRound() {
-//      TODO  Process user move
-
-//      TODO Process Delek Moves
-
-//      TODO Process Heaps
-
-
-    }
-
-    private boolean isGameOver() {
-//        TODO Add Implementation
-        return false;
-    }
-
-    public void runGame() {
-//        Uses playRound and game logic from GameParameters to run the game
-        while (!isGameOver()) {
-            playRound();
-        }
-
-//        TODO Show to user who won and some stats
-
-    }
-
-    public void handleMove(ActionEvent actionEvent) {
+    public void handleMove(String directionString) {
         Vector2D doctorPositionBeforeMove = doctorCell.getPosition();
-        Vector2D direction = positionUtil.getDirection(actionEvent);
+        Vector2D direction = positionUtil.getDirection(directionString);
 
         doctorCell = positionUtil.move(doctorCell, direction);
 
@@ -99,7 +63,9 @@ public class GameUtil implements Runnable {
 
         if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
             System.out.println("GAME ENDED!");
+            return;
         }
+
         if (doctorPositionAfterMove != doctorPositionBeforeMove) {
             positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
             if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
@@ -111,29 +77,9 @@ public class GameUtil implements Runnable {
                 System.out.println("GAME ENDED!");
             }
         }
-
-
-//        TODO - sprawdzenie czy gra sie skonczyla
     }
 
     public Board getBoard() {
         return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public boolean isUserMoved() {
-        return userMoved;
-    }
-
-    public void setUserMoved(boolean userMoved) {
-        this.userMoved = userMoved;
-    }
-
-    @Override
-    public void run() {
-        runGame();
     }
 }

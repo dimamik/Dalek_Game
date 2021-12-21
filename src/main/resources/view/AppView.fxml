@@ -16,7 +16,7 @@
         <!--    TODO Move it to separate fxml-->
         <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="750.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">
-            <Label text="Movement:">
+            <Label text="Sterowanie:">
                 <VBox.margin>
                     <Insets top="10.0" bottom="10.0"/>
                 </VBox.margin>
@@ -28,17 +28,17 @@
                     <VBox.margin>
                         <Insets bottom="0.0" left="15.0" right="15.0" top="0.0"/>
                     </VBox.margin>
-                    <Button fx:id="7" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="NW">
+                    <Button fx:id="7" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="NW">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="8" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="N">
+                    <Button fx:id="8" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="N">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="9" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="NE">
+                    <Button fx:id="9" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="NE">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
@@ -49,17 +49,17 @@
                     <VBox.margin>
                         <Insets bottom="0.0" left="15.0" right="15.0" top="0.0"/>
                     </VBox.margin>
-                    <Button fx:id="4" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="W">
+                    <Button fx:id="4" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="W">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="10" mnemonicParsing="false" prefWidth="50" text="X" disable="true">
+                    <Button fx:id="10" mnemonicParsing="false" prefWidth="50" text="" disable="true">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="6" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="E">
+                    <Button fx:id="6" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="E">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
@@ -70,17 +70,17 @@
                     <VBox.margin>
                         <Insets left="15.0" right="15.0"/>
                     </VBox.margin>
-                    <Button fx:id="1" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="SW">
+                    <Button fx:id="1" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="SW">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="2" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="S">
+                    <Button fx:id="2" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="S">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="3" mnemonicParsing="false" onAction="#onPress" prefWidth="50" text="SE">
+                    <Button fx:id="3" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="SE">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
@@ -88,7 +88,7 @@
                 </HBox>
             </VBox>
 
-            <Label textAlignment="CENTER" wrapText="true" text="Instructions: &#10;&#10; Have fun!">
+            <Label textAlignment="CENTER" wrapText="true" text="Instrukcja: &#10;&#10; Poruszaj się doktorem za pomocą przycisków - postaraj się doprowadzić do kolizji wszystkich daleków.">
                 <VBox.margin>
                     <Insets top="40.0" right="3" left="3"/>
                 </VBox.margin>

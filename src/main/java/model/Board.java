@@ -13,7 +13,6 @@ public class Board {
     @Inject
     @Singleton
     public Board(@Named("cols") int cols, @Named("rows") int rows) {
-        System.out.println("Board constructor");
         this.cols = cols;
         this.rows = rows;
         this.boardCells = new BoardCell[cols][rows];

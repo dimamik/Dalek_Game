@@ -1,6 +1,5 @@
 package model;
 
-
 import enums.ObjectType;
 import javafx.scene.paint.Color;
 
@@ -31,5 +30,4 @@ public abstract class BoardObject {
     }
 
     public abstract ObjectType getType();
-
 }

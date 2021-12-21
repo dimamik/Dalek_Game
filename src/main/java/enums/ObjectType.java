@@ -1,7 +1,5 @@
 package enums;
 
-// Object type based on Collision behavior
-// For example ObjectThatCanBeEaten
 public enum ObjectType {
     DALEK(1),
     DOCTOR(2),

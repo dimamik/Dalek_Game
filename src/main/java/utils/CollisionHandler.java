@@ -6,9 +6,7 @@ import model.BoardCell;
 import model.BoardObject;
 import model.factories.CollisionActionFactory;
 import model.object_action.CollisionReaction;
-
 import java.util.Optional;
-
 
 public record CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {
     @Inject
@@ -22,12 +20,6 @@ public record CollisionHandler(Board board, CollisionActionFactory collisionActi
 
         Optional<CollisionReaction> objectAction = collisionActionFactory.getCollisionAction(boardObject1.getType(), boardObject2.getType());
 
-
-//      TODO Should it use board?
-//        If no then remove
         objectAction.ifPresent(action -> action.handleCollision(collisionCell));
-
-
-
     }
 }

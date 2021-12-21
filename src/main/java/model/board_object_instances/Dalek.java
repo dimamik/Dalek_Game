@@ -21,16 +21,12 @@ public class Dalek extends ConditionallyMovableBoardObject {
 
 
     @Override
-//    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
-//        return null;
-//    }
     public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
         Vector2D bestMove = null;
         double distance = calculateDistance(dalekPosition, doctorPosition);
         for (Direction direction : Direction.values()) {
-            Vector2D tmp = direction.toUnitVector();
-            dalekPosition.add(direction.toUnitVector());
-            double newDistance = calculateDistance(dalekPosition, doctorPosition);
+            Vector2D newPosition = dalekPosition.add(direction.toUnitVector());
+            double newDistance = calculateDistance(newPosition, doctorPosition);
             if (newDistance < distance) {
                 bestMove = direction.toUnitVector();
                 distance = newDistance;

@@ -24,6 +24,4 @@ public enum Direction {
             case NW -> new Vector2D(-1, -1);
         };
     }
-
-
 }
