@@ -1,8 +1,13 @@
+import enums.Direction;
+import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.Board;
 import model.BoardCell;
-import model.MovableBoardObject;
+import model.BoardObject;
 import model.Vector2D;
+import model.board_object_instances.Dalek;
+import model.board_object_instances.Doctor;
+import model.factories.CollisionActionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
@@ -16,36 +21,71 @@ import static org.mockito.Mockito.mock;
 
 public class ChangePositionTest {
 
-    public List<BoardCell> processMotion(MovableBoardObject boardObject, int boardSize, int x0, int y0, int x1, int y1) {
-        //given
-        Board board = new Board(boardSize, boardSize);
-        PositionUtil positionUtil = new PositionUtil(board, mock(CollisionHandler.class));
-        BoardCell sourceCell = positionUtil.getBoard().getBoardCell(new Vector2D(x0, y0));
-        BoardCell expectedCell = positionUtil.getBoard().getBoardCell(new Vector2D(x1, y1));
+    @Test
+    public void doctorMotionTest() {
+        // given
+        Board board = new Board(10, 10);
+        PositionUtil positionUtil = new PositionUtil(board, new CollisionHandler(board, mock(CollisionActionFactory.class)));
+        BoardCell sourceCell = positionUtil.getBoard().getBoardCell(new Vector2D(0, 0));
+        BoardCell expectedCell = positionUtil.getBoard().getBoardCell(new Vector2D(0, 1));
+        Direction direction = Direction.S;
+        BoardObject doctor = new Doctor();
 
         // when
-        sourceCell.getBoardObjects().add(boardObject);
-        positionUtil.changePosition(sourceCell, boardObject.getSingleMove());
+        sourceCell.getBoardObjects().add(doctor);
+        positionUtil.move(sourceCell, direction.toUnitVector());
 
-        List<BoardCell> cells = new ArrayList<>();
-        cells.add(sourceCell);
-        cells.add(expectedCell);
-
-        return cells;
+        // then
+        Assertions.assertEquals(0, sourceCell.getBoardObjects().size());
+        Assertions.assertEquals(Color.BLACK, expectedCell.getBoardObjects().get(0).getColor());
     }
 
     @Test
-    public void motionTest() {
+    public void edgeMotionTest() {
         // given
-        int sourceCellIndex = 0;
-        int expectedCellIndex = 1;
-        MovableBoardObject cat = new Cat(Color.BLACK);
+        Board board = new Board(10, 10);
+        PositionUtil positionUtil = new PositionUtil(board, new CollisionHandler(board, mock(CollisionActionFactory.class)));
+        BoardCell sourceCell = positionUtil.getBoard().getBoardCell(new Vector2D(9, 0));
+        BoardCell expectedCell = positionUtil.getBoard().getBoardCell(new Vector2D(9, 0));
+        Direction forbiddenDirection = Direction.NE;
+        BoardObject doctor = new Doctor();
 
         // when
-        List<BoardCell> cells = processMotion(cat, 10, 0, 0, 2, 1);
+        sourceCell.getBoardObjects().add(doctor);
+        positionUtil.move(sourceCell, forbiddenDirection.toUnitVector());
 
         // then
-        Assertions.assertEquals(0, cells.get(sourceCellIndex).getBoardObjects().size());
-        Assertions.assertEquals(Color.BLACK, cells.get(expectedCellIndex).getBoardObjects().get(0).getColor());
+        Assertions.assertEquals(1, sourceCell.getBoardObjects().size());
+        Assertions.assertEquals(expectedCell.getPosition(), sourceCell.getPosition());
+    }
+
+    @Test
+    public void dalekMotionTest() {
+        // given
+        Board board = new Board(10, 10);
+        PositionUtil positionUtil = new PositionUtil(board, new CollisionHandler(board, mock(CollisionActionFactory.class)));
+        BoardObject doctor = new Doctor();
+        BoardObject dalek1 = new Dalek();
+        BoardObject dalek2 = new Dalek();
+        BoardCell doctorCell = positionUtil.getBoard().getBoardCell(new Vector2D(0, 0));
+        BoardCell sourceDalek1Cell = positionUtil.getBoard().getBoardCell(new Vector2D(5, 0));
+        BoardCell sourceDalek2Cell = positionUtil.getBoard().getBoardCell(new Vector2D(5, 5));
+        List<BoardCell> occupiedCells = new ArrayList<>();
+        occupiedCells.add(sourceDalek1Cell);
+        occupiedCells.add(sourceDalek2Cell);
+        BoardCell expectedDalek1Cell = positionUtil.getBoard().getBoardCell(new Vector2D(4, 0));
+        BoardCell expectedDalek2Cell = positionUtil.getBoard().getBoardCell(new Vector2D(4, 4));
+
+        // when
+        doctorCell.getBoardObjects().add(doctor);
+        sourceDalek1Cell.getBoardObjects().add(dalek1);
+        sourceDalek2Cell.getBoardObjects().add(dalek2);
+        positionUtil.moveAllDaleks(doctorCell.getPosition(), occupiedCells);
+
+        // then
+        Assertions.assertEquals(0, sourceDalek1Cell.getBoardObjects().size());
+        Assertions.assertEquals(0, sourceDalek2Cell.getBoardObjects().size());
+        Assertions.assertEquals(ObjectType.DALEK, expectedDalek1Cell.getBoardObjects().get(0).getType());
+        Assertions.assertEquals(ObjectType.DALEK, expectedDalek2Cell.getBoardObjects().get(0).getType());
     }
 }
