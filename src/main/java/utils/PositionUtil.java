@@ -59,7 +59,8 @@ public class PositionUtil {
 
             if (occupiedCells.get(i).getTopBoardObject().get().getType() == ObjectType.DALEK) {
                 Vector2D currentPosition = occupiedCells.get(i).getPosition();
-                Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
+                Vector2D singleMove = occupiedCells.get(i).getConditionallyMovableObject().getMove(currentPosition,doctorPosition);
+                //Vector2D singleMove = findSingleDalekMove(doctorPosition, currentPosition);
 
                 if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
                     BoardCell targetCell = this.changePosition(board.getBoardCell(currentPosition), singleMove);

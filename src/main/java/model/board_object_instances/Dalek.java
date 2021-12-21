@@ -21,25 +21,26 @@ public class Dalek extends ConditionallyMovableBoardObject {
 
 
     @Override
-    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
-        return null;
-    }
 //    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
-//        Vector2D bestMove = null;
-//        double distance = calculateDistance(dalekPosition, doctorPosition);
-//        for (Direction direction : Direction.values()) {
-//            dalekPosition.add(direction.toUnitVector());
-//            double newDistance = calculateDistance(dalekPosition, doctorPosition);
-//            if (newDistance < distance) {
-//                bestMove = direction.toUnitVector();
-//                distance = newDistance;
-//            }
-//        }
-//        return bestMove;
+//        return null;
 //    }
+    public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
+        Vector2D bestMove = null;
+        double distance = calculateDistance(dalekPosition, doctorPosition);
+        for (Direction direction : Direction.values()) {
+            Vector2D tmp = direction.toUnitVector();
+            dalekPosition.add(direction.toUnitVector());
+            double newDistance = calculateDistance(dalekPosition, doctorPosition);
+            if (newDistance < distance) {
+                bestMove = direction.toUnitVector();
+                distance = newDistance;
+            }
+        }
+        return bestMove;
+    }
 
-//    private double calculateDistance(Vector2D first, Vector2D second) {
-//        return Math.sqrt(Math.pow(first.x() - second.x(), 2) +
-//                Math.pow(first.y() - second.y(), 2));
-//    }
+    private double calculateDistance(Vector2D first, Vector2D second) {
+        return Math.sqrt(Math.pow(first.x() - second.x(), 2) +
+                Math.pow(first.y() - second.y(), 2));
+    }
 }

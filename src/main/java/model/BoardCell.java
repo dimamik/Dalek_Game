@@ -31,6 +31,10 @@ public class BoardCell extends EventEmitter<BoardCell> {
         return Optional.of(this.boardObjects.get(0));
     }
 
+    public ConditionallyMovableBoardObject getConditionallyMovableObject() {
+        return (ConditionallyMovableBoardObject) this.boardObjects.get(0);
+    }
+
     public void addBoardObject(BoardObject boardObject) {
         boardObjects.add(boardObject);
     }

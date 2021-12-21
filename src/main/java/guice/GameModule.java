@@ -35,6 +35,6 @@ public class GameModule extends AbstractModule {
     @Provides
     @Named("daleksNo")
     private int provideDaleksNo() {
-        return 20;
+        return 2;
     }
 }

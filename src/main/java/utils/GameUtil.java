@@ -90,16 +90,28 @@ public class GameUtil implements Runnable {
     }
 
     public void handleMove(ActionEvent actionEvent) {
-        Vector2D doctorPosition = doctorCell.getPosition();
+        Vector2D doctorPositionBeforeMove = doctorCell.getPosition();
         Vector2D direction = positionUtil.getDirection(actionEvent);
 
         doctorCell = positionUtil.move(doctorCell, direction);
 
+        Vector2D doctorPositionAfterMove = doctorCell.getPosition();
+
         if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
             System.out.println("GAME ENDED!");
         }
+        if (doctorPositionAfterMove != doctorPositionBeforeMove) {
+            positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
+            if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
+                System.out.println("GAME ENDED!");
+            }
+        } else {
+            positionUtil.moveAllDaleks(doctorPositionBeforeMove, occupiedCells);
+            if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
+                System.out.println("GAME ENDED!");
+            }
+        }
 
-        positionUtil.moveAllDaleks(doctorPosition.add(direction), occupiedCells);
 
 //        TODO - sprawdzenie czy gra sie skonczyla
     }
