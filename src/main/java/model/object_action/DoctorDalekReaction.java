@@ -8,6 +8,6 @@ public class DoctorDalekReaction implements CollisionReaction {
     public void handleCollision(BoardCell boardCell) {
         boardCell.clearBoardCell();
 //        End of the game :)
-//        boardCell.addBoardObject(new Heap());
+        boardCell.addBoardObject(new Heap());
     }
 }
