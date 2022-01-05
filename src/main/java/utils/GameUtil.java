@@ -2,7 +2,6 @@ package utils;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import controller.GameStateController;
 import enums.GameState;
 import interfaces.EventEmitter;
 import lombok.extern.slf4j.Slf4j;

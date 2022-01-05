@@ -23,23 +23,16 @@ import views.BoardView;
  */
 public class AppController implements EventListener<BoardCell> {
     private final Board board;
-
+    private final GameStateController gameStateController;
     public GameUtil gameUtil;
-
-
     public GameState gameState = GameState.GAME_RUNNING;
-
     @FXML
     public VBox rightSide;
-
     @FXML
     public VBox movementButtons;
-
     @FXML
     public BorderPane borderPane;
-
     public BoardView boardView;
-    private final GameStateController gameStateController;
     @FXML
     public Label instructionsText;
 

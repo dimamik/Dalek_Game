@@ -88,7 +88,8 @@
                 </HBox>
             </VBox>
 
-            <Label fx:id="instructionsText" textAlignment="CENTER" wrapText="true" text="Instrukcja: &#10;&#10; Poruszaj się doktorem za pomocą przycisków - postaraj się doprowadzić do kolizji wszystkich daleków.">
+            <Label fx:id="instructionsText" textAlignment="CENTER" wrapText="true"
+                   text="Instrukcja: &#10;&#10; Poruszaj się doktorem za pomocą przycisków - postaraj się doprowadzić do kolizji wszystkich daleków.">
                 <VBox.margin>
                     <Insets top="40.0" right="3" left="3"/>
                 </VBox.margin>
