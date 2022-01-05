@@ -39,18 +39,32 @@ public class GameUtil {
     }
 
     private void placeDaleks(int numberOfDaleks) {
+
+        List<Vector2D> availableSpots = new ArrayList<>();
+        for (int i = 0; i < board.getRows(); i++)
+            for (int j = 0; j < board.getRows(); j++)
+                availableSpots.add(new Vector2D(i, j));
+
         for (int i = 0; i < numberOfDaleks; i++) {
-            Vector2D spawnPlace;
-
-            do {
-                int newX = ThreadLocalRandom.current().nextInt(0, this.board.getCols());
-                int newY = ThreadLocalRandom.current().nextInt(0, this.board.getRows());
-                spawnPlace = new Vector2D(newX, newY);
-            } while (!board.getBoardCell(spawnPlace).isEmpty());
-
+            int randomIndex = ThreadLocalRandom.current().nextInt(0, availableSpots.size());
+            Vector2D spawnPlace = availableSpots.get(randomIndex);
             this.board.addBoardObject(new Dalek(), spawnPlace);
             occupiedCells.add(board.getBoardCell(spawnPlace));
+            availableSpots.remove(randomIndex);
         }
+
+//        for (int i = 0; i < numberOfDaleks; i++) {
+//            Vector2D spawnPlace;
+//
+//            do {
+//                int newX = ThreadLocalRandom.current().nextInt(0, this.board.getCols());
+//                int newY = ThreadLocalRandom.current().nextInt(0, this.board.getRows());
+//                spawnPlace = new Vector2D(newX, newY);
+//            } while (!board.getBoardCell(spawnPlace).isEmpty());
+//
+//            this.board.addBoardObject(new Dalek(), spawnPlace);
+//            occupiedCells.add(board.getBoardCell(spawnPlace));
+//        }
     }
 
     public void handleMove(String directionString) {
@@ -82,4 +96,5 @@ public class GameUtil {
     public Board getBoard() {
         return board;
     }
+
 }
