@@ -4,11 +4,13 @@ import com.google.inject.Inject;
 import enums.Direction;
 import enums.ObjectType;
 import javafx.event.ActionEvent;
+import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
 import model.Vector2D;
 import java.util.List;
 
+@Slf4j
 public class PositionUtil {
 
     private final Board board;
@@ -86,10 +88,10 @@ public class PositionUtil {
 
     public boolean isGameEnded(List<BoardCell> occupiedCells, BoardCell doctorCell) {
         if (!doctorExists(doctorCell)) {
-            System.out.println("YOU LOOSE!");
+            log.info("YOU LOOSE!");
             return true;
         } else if (!atLeastOneDalekExists(occupiedCells)) {
-            System.out.println("YOU WIN!");
+            log.info("YOU WIN!");
             return true;
         }
         return false;

@@ -8,17 +8,14 @@ import model.Vector2D;
 
 public class Dalek extends ConditionallyMovableBoardObject {
 
-    public final static Color COLOR = Color.RED;
-
     public Dalek() {
-        super(COLOR);
+        super(Color.RED);
     }
 
     @Override
     public ObjectType getType() {
         return ObjectType.DALEK;
     }
-
 
     @Override
     public Vector2D getMove(Vector2D dalekPosition, Vector2D doctorPosition) {
