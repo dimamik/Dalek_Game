@@ -2,17 +2,22 @@ package utils;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import enums.GameState;
+import interfaces.EventEmitter;
+import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Dalek;
 import model.board_object_instances.Doctor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameUtil {
+@Slf4j
+public class GameUtil extends EventEmitter<GameState> {
     private final PositionUtil positionUtil;
     private final Board board;
     private final int daleksNo;
@@ -52,23 +57,9 @@ public class GameUtil {
             occupiedCells.add(board.getBoardCell(spawnPlace));
             availableSpots.remove(randomIndex);
         }
-
-//        for (int i = 0; i < numberOfDaleks; i++) {
-//            Vector2D spawnPlace;
-//
-//            do {
-//                int newX = ThreadLocalRandom.current().nextInt(0, this.board.getCols());
-//                int newY = ThreadLocalRandom.current().nextInt(0, this.board.getRows());
-//                spawnPlace = new Vector2D(newX, newY);
-//            } while (!board.getBoardCell(spawnPlace).isEmpty());
-//
-//            this.board.addBoardObject(new Dalek(), spawnPlace);
-//            occupiedCells.add(board.getBoardCell(spawnPlace));
-//        }
     }
 
     public void handleMove(String directionString) {
-        Vector2D doctorPositionBeforeMove = doctorCell.getPosition();
         Vector2D direction = positionUtil.getDirection(directionString);
 
         doctorCell = positionUtil.move(doctorCell, direction);
@@ -76,25 +67,24 @@ public class GameUtil {
         Vector2D doctorPositionAfterMove = doctorCell.getPosition();
 
         if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
-            System.out.println("GAME ENDED!");
+            gameEnded();
             return;
         }
 
-        if (doctorPositionAfterMove != doctorPositionBeforeMove) {
-            positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
-            if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
-                System.out.println("GAME ENDED!");
-            }
-        } else {
-            positionUtil.moveAllDaleks(doctorPositionBeforeMove, occupiedCells);
-            if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
-                System.out.println("GAME ENDED!");
-            }
+        positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
+        if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
+            gameEnded();
         }
+    }
+
+
+    private void gameEnded() {
+        log.info("GAME ENDED!");
+        emit(GameState.GAME_ENDED);
     }
 
     public Board getBoard() {
         return board;
     }
-
 }
+

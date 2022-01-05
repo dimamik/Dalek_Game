@@ -1,6 +1,8 @@
 import enums.ObjectType;
-import javafx.scene.paint.Color;
-import model.*;
+import model.Board;
+import model.BoardCell;
+import model.BoardObject;
+import model.Vector2D;
 import model.board_object_instances.Dalek;
 import model.board_object_instances.Doctor;
 import model.board_object_instances.Heap;
