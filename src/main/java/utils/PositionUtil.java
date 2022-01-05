@@ -3,11 +3,11 @@ package utils;
 import com.google.inject.Inject;
 import enums.Direction;
 import enums.ObjectType;
-import javafx.event.ActionEvent;
 import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
 import model.Vector2D;
+
 import java.util.List;
 
 @Slf4j
@@ -46,7 +46,7 @@ public class PositionUtil {
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
         targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
-        sourceCell.getTopBoardObject().ifPresent( sourceCell::removeBoardObject );
+        sourceCell.getTopBoardObject().ifPresent(sourceCell::removeBoardObject);
 
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);
@@ -59,10 +59,9 @@ public class PositionUtil {
 
         for (int i = 0; i < occupiedCells.size(); i++) {
             BoardCell boardCell = occupiedCells.get(i);
-
-            if (boardCell.getTopBoardObject().get().getType() == ObjectType.DALEK) {
+            if (boardCell.getTopBoardObject().isPresent() && boardCell.getTopBoardObject().get().getType() == ObjectType.DALEK) {
                 Vector2D currentPosition = occupiedCells.get(i).getPosition();
-                Vector2D singleMove = boardCell.getConditionallyMovableObject().getMove(currentPosition,doctorPosition);
+                Vector2D singleMove = boardCell.getConditionallyMovableObject().getMove(currentPosition, doctorPosition);
 
                 if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
                     BoardCell targetCell = this.changePosition(board.getBoardCell(currentPosition), singleMove);

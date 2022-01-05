@@ -1,9 +1,11 @@
 package controller;
 
 import com.google.inject.Inject;
+import enums.GameState;
 import interfaces.EventListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import model.Board;
@@ -24,6 +26,9 @@ public class AppController implements EventListener<BoardCell> {
 
     public GameUtil gameUtil;
 
+
+    public GameState gameState = GameState.GAME_RUNNING;
+
     @FXML
     public VBox rightSide;
 
@@ -34,17 +39,23 @@ public class AppController implements EventListener<BoardCell> {
     public BorderPane borderPane;
 
     public BoardView boardView;
+    private final GameStateController gameStateController;
+    @FXML
+    public Label instructionsText;
 
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
+        this.gameStateController = new GameStateController(this);
+
     }
 
     @FXML
     private void initialize() {
         subscribeToCells();
+        gameUtil.addListener(gameStateController);
         initViews();
         gameUtil.setUpGame();
     }
@@ -62,10 +73,16 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     public void onDirectionPress(ActionEvent actionEvent) {
-        String eventTarget =  actionEvent.getTarget().toString();
-        String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
+        if (gameState == GameState.GAME_RUNNING) {
+            String eventTarget = actionEvent.getTarget().toString();
+            String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
 
-        this.gameUtil.handleMove(directionString);
+            this.gameUtil.handleMove(directionString);
+        }
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     @Override
@@ -79,4 +96,6 @@ public class AppController implements EventListener<BoardCell> {
             boardCellView.clearBoardObjectView();
         }
     }
+
+
 }
