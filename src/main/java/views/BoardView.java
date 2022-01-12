@@ -11,8 +11,9 @@ public class BoardView extends Parent {
 
     @Inject
     public BoardView() {
-        int x_number = 20;
-        int y_number = 20;
+//        TODO Inject this values to be consistent with the model
+        int x_number = 10;
+        int y_number = 10;
         int cellSize = 50;
         arrayOfCells = new BoardCellView[x_number][y_number];
         this.initBoardCellViews(x_number, y_number, cellSize);

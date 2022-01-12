@@ -30,6 +30,8 @@ public class CollisionActionFactory {
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.DOCTOR), new DoctorDalekReaction());
         operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.HEAP), new DoctorHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.HEAP, ObjectType.DOCTOR), new DoctorHeapReaction());
+        operationMap.put(new PairOfObjects(ObjectType.TIME_TRAVEL, ObjectType.DOCTOR), new DoctorPowerUpReaction());
+        operationMap.put(new PairOfObjects(ObjectType.TELEPORT, ObjectType.DOCTOR), new DoctorPowerUpReaction());
     }
 
     public Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {

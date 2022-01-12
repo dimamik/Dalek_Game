@@ -5,6 +5,7 @@ import enums.GameState;
 import interfaces.EventListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -35,6 +36,10 @@ public class AppController implements EventListener<BoardCell> {
     public BoardView boardView;
     @FXML
     public Label instructionsText;
+    @FXML
+    public Button Teleport;
+    @FXML
+    public Button TimeTravel;
 
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
@@ -71,6 +76,18 @@ public class AppController implements EventListener<BoardCell> {
             String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
 
             this.gameUtil.handleMove(directionString);
+        }
+    }
+
+    public void onTeleportPress(ActionEvent actionEvent) {
+        if (gameState == GameState.GAME_RUNNING) {
+            gameUtil.handleTeleport();
+        }
+    }
+
+    public void onTimeTravelPress(ActionEvent actionEvent) {
+        if (gameState == GameState.GAME_RUNNING) {
+            gameUtil.handleTimeTravel();
         }
     }
 

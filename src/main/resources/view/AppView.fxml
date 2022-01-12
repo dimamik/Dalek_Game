@@ -14,7 +14,7 @@
     <!--    TODO Controls (and menu in the future)-->
     <right>
         <!--    TODO Move it to separate fxml-->
-        <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="750.0" prefWidth="200.0"
+        <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="500.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">
             <Label text="Sterowanie:">
                 <VBox.margin>
@@ -94,7 +94,18 @@
                     <Insets top="40.0" right="3" left="3"/>
                 </VBox.margin>
             </Label>
+            <HBox>
+                <Button fx:id="Teleport" disable="true" mnemonicParsing="false" onAction="#onTeleportPress"
+                        text="TELEPORT:      0">
 
+                </Button>
+            </HBox>
+            <HBox>
+                <Button fx:id="TimeTravel" disable="true" mnemonicParsing="false" onAction="#onTimeTravelPress"
+                        text="TIME TRAVEL: 0">
+
+                </Button>
+            </HBox>
         </VBox>
     </right>
 </BorderPane>

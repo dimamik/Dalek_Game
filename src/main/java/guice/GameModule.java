@@ -17,24 +17,24 @@ public class GameModule extends AbstractModule {
     @Provides
     @Named("cols")
     private int provideColsNo() {
-        return 20;
+        return 10;
     }
 
     @Provides
     @Named("rows")
     private int provideRowsNo() {
-        return 20;
+        return 10;
     }
 
     @Provides
     @Named("cellSize")
     private int provideCellSizePx() {
-        return 40;
+        return 50;
     }
 
     @Provides
     @Named("daleksNo")
     private int provideDaleksNo() {
-        return 20;
+        return 2;
     }
 }

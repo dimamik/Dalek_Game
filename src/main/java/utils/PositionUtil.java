@@ -2,7 +2,9 @@ package utils;
 
 import com.google.inject.Inject;
 import enums.Direction;
+import enums.GameState;
 import enums.ObjectType;
+import interfaces.EventEmitter;
 import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
@@ -11,7 +13,7 @@ import model.Vector2D;
 import java.util.List;
 
 @Slf4j
-public class PositionUtil {
+public class PositionUtil extends EventEmitter<GameState> {
 
     private final Board board;
 
