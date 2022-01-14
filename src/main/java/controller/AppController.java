@@ -41,13 +41,15 @@ public class AppController implements EventListener<BoardCell> {
     @FXML
     public Button TimeTravel;
 
+//    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
+//      FIXME board is not needed there
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
+//      FIXME This part is ugly, we need to inject GameStateController somehow, but it generates recursion
         this.gameStateController = new GameStateController(this);
-
     }
 
     @FXML
@@ -55,6 +57,16 @@ public class AppController implements EventListener<BoardCell> {
         subscribeToCells();
         gameUtil.addListener(gameStateController);
         initViews();
+
+//        TODO There Menu needs to be implemented
+//        Idea is simple: we do have one and the same board, which is cleaned after
+//        Each round/game by some external worker.
+
+//        I see there 2 options:
+//        1. We are dynamically controlling gameUtil
+//        2. We are creating a new gameUtil for each round/game
+//        I personally prefer the first option, because it is more flexible
+
         gameUtil.setUpGame();
     }
 

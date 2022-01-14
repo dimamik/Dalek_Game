@@ -10,19 +10,17 @@ import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
-import model.board_object_instances.Dalek;
 import model.board_object_instances.Doctor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class GameUtil extends EventEmitter<GameState> implements EventListener<GameState> {
     private final PositionUtil positionUtil;
     private final Board board;
-    private final int daleksNo;
-
+    private final GameStateHistoryUtil gameStateHistoryUtil;
+    private final MapStartStateUtil mapStartStateUtil;
     private int TELEPORTS_NUMBER = 0;
 
     private int TIME_TRAVEL_NUMBER = 0;
@@ -32,10 +30,19 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     @Inject
     public GameUtil(Board board, PositionUtil positionUtil, @Named("daleksNo") int daleksNo) {
+//        FIXME This needs to work the following way:
+//        First of all we initialize the game with predefined map/parameters, validated before
+//        This game is like a server, and data is coming from client, so input validation is needed
+//        Then game is played like before, and app is controlling the game global state (game ended, game started, etc)
+//        Also App is responsible for game menu and handling user interaction
+//        Later App needs to be split into multiple modules, so that it can be easily tracked and tested
+
         super();
         this.board = board;
         this.positionUtil = positionUtil;
-        this.daleksNo = daleksNo;
+        this.gameStateHistoryUtil = new GameStateHistoryUtil();
+//        FIXME This needs to be done in a better way
+        this.mapStartStateUtil = new MapStartStateUtil(board, new MapStartParams(daleksNo));
     }
 
     public void handleTeleport() {
@@ -58,27 +65,36 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         positionUtil.getBoard().addBoardObject(doctor, doctorInitPosition);
         doctorCell = getBoard().getBoardCell(doctorInitPosition);
 
-        placeDaleks(daleksNo);
+//        placeDaleks(daleksNo);
+        this.mapStartStateUtil.placeDaleks(occupiedCells);
+
     }
 
-    private void placeDaleks(int numberOfDaleks) {
 
-        List<Vector2D> availableSpots = new ArrayList<>();
-        for (int i = 0; i < board.getRows(); i++)
-            for (int j = 0; j < board.getRows(); j++)
-                if (board.getBoardCell(new Vector2D(i, j)).isEmpty())
-                    availableSpots.add(new Vector2D(i, j));
-
-        for (int i = 0; i < numberOfDaleks; i++) {
-            int randomIndex = ThreadLocalRandom.current().nextInt(0, availableSpots.size());
-            Vector2D spawnPlace = availableSpots.get(randomIndex);
-            this.board.addBoardObject(new Dalek(), spawnPlace);
-            occupiedCells.add(board.getBoardCell(spawnPlace));
-            availableSpots.remove(randomIndex);
-        }
-    }
+//    TODO Remove unused
+//    private void placeDaleks(int numberOfDaleks) {
+//
+//        List<Vector2D> availableSpots = new ArrayList<>();
+//        for (int i = 0; i < board.getRows(); i++)
+//            for (int j = 0; j < board.getRows(); j++)
+//                if (board.getBoardCell(new Vector2D(i, j)).isEmpty())
+//                    availableSpots.add(new Vector2D(i, j));
+//
+//        for (int i = 0; i < numberOfDaleks; i++) {
+//            int randomIndex = ThreadLocalRandom.current().nextInt(0, availableSpots.size());
+//            Vector2D spawnPlace = availableSpots.get(randomIndex);
+//            this.board.addBoardObject(new Dalek(), spawnPlace);
+//            occupiedCells.add(board.getBoardCell(spawnPlace));
+//            availableSpots.remove(randomIndex);
+//        }
+//    }
 
     public void handleMove(String directionString) {
+//        TODO Add Previous State to StateTable
+//        FIXME This can be a commander pattern
+        gameStateHistoryUtil.recordDay(board);
+
+
         Vector2D direction = positionUtil.getDirection(directionString);
 
         doctorCell = positionUtil.move(doctorCell, direction);
@@ -91,6 +107,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         }
 
         positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
+
         if (positionUtil.isGameEnded(occupiedCells, doctorCell)) {
             gameEnded();
         }
@@ -102,22 +119,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         emit(GameState.GAME_ENDED);
     }
 
-    public int getTELEPORTS_NUMBER() {
-        return TELEPORTS_NUMBER;
-    }
-
-    public void setTELEPORTS_NUMBER(int TELEPORTS_NUMBER) {
-        this.TELEPORTS_NUMBER = TELEPORTS_NUMBER;
-    }
-
-    public int getTIME_TRAVEL_NUMBER() {
-        return TIME_TRAVEL_NUMBER;
-    }
-
-    public void setTIME_TRAVEL_NUMBER(int TIME_TRAVEL_NUMBER) {
-        this.TIME_TRAVEL_NUMBER = TIME_TRAVEL_NUMBER;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -125,12 +126,11 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     @Override
     public void onEvent(GameState e) {
         if (e == GameState.TELEPORT_GAINED) {
+//            FIXME This can be setters
             TELEPORTS_NUMBER++;
-        }
-        else if (e == GameState.TIME_TRAVEL_GAINED) {
+        } else if (e == GameState.TIME_TRAVEL_GAINED) {
             TIME_TRAVEL_NUMBER++;
-        }
-        else{
+        } else {
             log.error("GameUtil: onEvent: " + e);
         }
     }

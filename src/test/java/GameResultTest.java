@@ -20,6 +20,7 @@ public class GameResultTest {
 
     @Test
     public void gameEndTest() {
+//        FIXME -> Write some sensible tests pls
         // given
         Board board = new Board(10, 10);
         PositionUtil positionUtil = new PositionUtil(board, new CollisionHandler(board, mock(CollisionActionFactory.class)));

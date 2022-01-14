@@ -21,5 +21,4 @@ public class GameStateController implements EventListener<GameState> {
         appController.instructionsText.setText("Game over!");
     }
 
-
 }
