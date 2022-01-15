@@ -31,11 +31,12 @@ public class GameStateController implements EventListener<GameState> {
             appController.movementButtons.setDisable(false);
             appController.instructionsText.setText("Next round!");
         } else if (e == GameState.TELEPORT_GAINED) {
-            System.out.println("TELEPORT_GAINED");
+            log.info("TELEPORT GAINED");
             appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
 
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
-            appController.Teleport.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
+            log.info("TIME_TRAVEL GAINED");
+            appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
         }
 
     }

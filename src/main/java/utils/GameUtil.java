@@ -14,11 +14,9 @@ import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Doctor;
 import model.board_object_instances.Teleport;
+import model.board_object_instances.TimeTravel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class GameUtil extends EventEmitter<GameState> implements EventListener<GameState> {
@@ -27,27 +25,35 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private final GameStateHistoryUtil gameStateHistoryUtil;
     private final MapStartStateUtil mapStartStateUtil;
     private final List<BoardCell> occupiedCells;
+    //    TODO Change this to injected  from game module values
     private final double TELEPORT_PROBABILITY = 0.6;
-    public int teleportsNumber = 10;
-    public int timeTravelNumber = 10;
+    private final double TIME_TRAVEL_PROBABILITY = 0.6;
+    public int teleportsNumber = 0;
+    public int timeTravelNumber = 0;
     int numberOfDaleks;
     private BoardCell doctorCell;
 
     @Inject
-    public GameUtil(Board board, PositionUtil positionUtil, @Named("daleksNo") int daleksNo) {
+    public GameUtil(Board board, PositionUtil positionUtil, MapStartStateUtil mapStartStateUtil, @Named("daleksNo") int daleksNo) {
         super();
         this.board = board;
         this.numberOfDaleks = daleksNo;
         this.positionUtil = positionUtil;
         this.occupiedCells = new ArrayList<>();
         this.gameStateHistoryUtil = new GameStateHistoryUtil();
-//        FIXME This needs to be done in a better way
-        this.mapStartStateUtil = new MapStartStateUtil(board);
+        this.mapStartStateUtil = mapStartStateUtil;
+        init();
+    }
+
+    private void init() {
+        this.positionUtil.addListener(this);
+
     }
 
     public void handleTeleport(Button teleport) {
         if (teleportsNumber > 0) {
             teleportsNumber--;
+//            TODO Extract duplicate code
             List<BoardCell> freeCells = new ArrayList<>();
             for (int i = 0; i < board.getRows(); i++) {
                 for (int j = 0; j < board.getCols(); j++) {
@@ -70,23 +76,24 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     public void handleTimeTravel(Button timeTravel) {
         if (timeTravelNumber > 0) {
-            timeTravelNumber--;
-            board.clearBoard();
-            occupiedCells.clear();
-            HashMap<Vector2D, LinkedList<BoardObject>> lastDay = gameStateHistoryUtil.popLastDay();
-            for (Vector2D cellPosition : lastDay.keySet()) {
-                BoardCell cell = board.getBoardCell(cellPosition);
-                LinkedList<BoardObject> objectsToAdd = lastDay.get(cellPosition);
-                for (BoardObject object : objectsToAdd) {
-                    if (object.getType() == ObjectType.DOCTOR) {
-                        doctorCell = cell;
+            Optional<HashMap<Vector2D, LinkedList<BoardObject>>> lastDay = gameStateHistoryUtil.popLastDay();
+            if (lastDay.isPresent()) {
+                timeTravelNumber--;
+                board.clearBoard();
+                occupiedCells.clear();
+                for (Vector2D cellPosition : lastDay.get().keySet()) {
+                    BoardCell cell = board.getBoardCell(cellPosition);
+                    LinkedList<BoardObject> objectsToAdd = lastDay.get().get(cellPosition);
+                    for (BoardObject object : objectsToAdd) {
+                        if (object.getType() == ObjectType.DOCTOR) {
+                            doctorCell = cell;
+                        }
+                        cell.addBoardObject(object);
+
                     }
-                    cell.addBoardObject(object);
-
+                    occupiedCells.add(cell);
                 }
-                occupiedCells.add(cell);
             }
-
         }
         timeTravel.setText("TIME TRAVEL: " + timeTravelNumber);
     }
@@ -102,8 +109,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void resetGame() {
         gameStateHistoryUtil.reset();
         occupiedCells.clear();
-//        TELEPORTS_NUMBER = 0;
-//        TIME_TRAVEL_NUMBER = 0;
+        teleportsNumber = 0;
+        timeTravelNumber = 0;
         board.clearBoard();
     }
 
@@ -121,9 +128,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         gameStateHistoryUtil.recordDay(board);
 
         Vector2D direction = positionUtil.getDirection(directionString);
-
         doctorCell = positionUtil.move(doctorCell, direction);
-
         Vector2D doctorPositionAfterMove = doctorCell.getPosition();
 
         if (isGameEnded()) {
@@ -137,7 +142,12 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             gameEnded();
         }
 
-//        Spawn a teleport if randomly needed
+        spawnTeleport();
+        spawnTimeTravel();
+
+    }
+
+    private void spawnTeleport() {
         if (Math.random() < TELEPORT_PROBABILITY) {
 //          Find a free cell
 //          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
@@ -155,7 +165,26 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             board.addBoardObject(new Teleport(), freeCells.get(randomIndex).getPosition());
             occupiedCells.add(freeCells.get(randomIndex));
         }
+    }
 
+    private void spawnTimeTravel() {
+        if (Math.random() < TIME_TRAVEL_PROBABILITY) {
+//          Find a free cell
+//          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
+            List<BoardCell> freeCells = new ArrayList<>();
+            for (int i = 0; i < board.getRows(); i++) {
+                for (int j = 0; j < board.getCols(); j++) {
+                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
+                    if (!occupiedCells.contains(cell)) {
+                        freeCells.add(cell);
+
+                    }
+                }
+            }
+            int randomIndex = (int) (Math.random() * freeCells.size());
+            board.addBoardObject(new TimeTravel(), freeCells.get(randomIndex).getPosition());
+            occupiedCells.add(freeCells.get(randomIndex));
+        }
     }
 
     public boolean atLeastOneDalekExists(List<BoardCell> occupiedCells) {
@@ -202,7 +231,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     @Override
     public void onEvent(GameState e) {
         if (e == GameState.TELEPORT_GAINED) {
-//          FIXME This can be setters
+//          FIXME This can be done in better way!
             teleportsNumber++;
             emit(GameState.TELEPORT_GAINED);
 

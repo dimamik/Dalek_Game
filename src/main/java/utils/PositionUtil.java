@@ -47,6 +47,12 @@ public class PositionUtil extends EventEmitter<GameState> {
 
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
+        targetCell.getBoardObjects().stream().filter(boardObject -> boardObject.getType() == ObjectType.TELEPORT || boardObject.getType() == ObjectType.TIME_TRAVEL)
+                .forEach(boardObject ->
+                        emit(boardObject.getType() == ObjectType.TIME_TRAVEL ? GameState.TIME_TRAVEL_GAINED : GameState.TELEPORT_GAINED)
+                );
+
+
         targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
         sourceCell.getTopBoardObject().ifPresent(sourceCell::removeBoardObject);
 

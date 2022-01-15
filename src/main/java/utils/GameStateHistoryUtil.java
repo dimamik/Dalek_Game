@@ -7,12 +7,13 @@ import model.Vector2D;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 
 
 public class GameStateHistoryUtil {
 
 
-    //    TODO FIXME THERE WE CAN STORE OBJECT TYPES, WHICH WOULD BE MORE SUFFICIENT
+    // FIXME THERE WE CAN STORE OBJECT TYPES, WHICH WOULD BE MORE SUFFICIENT
     LinkedList<HashMap<Vector2D, LinkedList<BoardObject>>> history;
 
     public GameStateHistoryUtil() {
@@ -35,12 +36,11 @@ public class GameStateHistoryUtil {
         this.history.addLast(currentDay);
     }
 
-    public HashMap<Vector2D, LinkedList<BoardObject>> popLastDay() {
+    public Optional<HashMap<Vector2D, LinkedList<BoardObject>>> popLastDay() {
         if (history.size() > 0) {
-            return this.history.removeLast();
+            return Optional.of(history.removeLast());
         } else {
-//            TODO Fix this to never happen
-            throw new IllegalStateException("No more days to pop");
+            return Optional.empty();
         }
 
     }

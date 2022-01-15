@@ -1,27 +1,40 @@
 package utils;
 
+import com.google.inject.Inject;
 import model.Board;
 import model.BoardCell;
+import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Dalek;
+import service.DatabaseService;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class MapStartStateUtil {
 
+    private final DatabaseService databaseService;
     Board board;
     String PATH_TO_ROUNDS = "rounds";
 
     //    TODO this Util is responsible for initializing map with daleks randomly or load them from file
-    public MapStartStateUtil(Board board) {
+    @Inject
+    public MapStartStateUtil(Board board, DatabaseService databaseService) {
         this.board = board;
+        this.databaseService = databaseService;
     }
 
     public void placeFromDatabase(List<BoardCell> occupiedCells, int roundNumber) {
-//        TODO load daleks from database
+        LinkedList<Vector2D> daleksPositions = this.databaseService.loadRoundData(roundNumber);
+
+        for (Vector2D daleksPosition : daleksPositions) {
+            BoardObject dalek = new Dalek();
+            board.addBoardObject(dalek, daleksPosition);
+            occupiedCells.add(board.getBoardCell(daleksPosition));
+        }
     }
 
 

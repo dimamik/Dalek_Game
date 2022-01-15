@@ -108,7 +108,7 @@
             </Label>
             <HBox>
                 <Button fx:id="Teleport" mnemonicParsing="false" onAction="#onTeleportPress"
-                        text="TELEPORT:      0">
+                        text="TELEPORT: 0">
 
                 </Button>
             </HBox>
