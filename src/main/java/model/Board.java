@@ -48,6 +48,15 @@ public class Board {
         getBoardCell(position).removeBoardObject(boardObject);
     }
 
+    public void clearBoard() {
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                BoardCell boardCell = getBoardCell(new Vector2D(i, j));
+                boardCell.clearBoardCell();
+            }
+        }
+    }
+
     private void initializeBoard() {
         for (int i = 0; i < this.cols; i++) {
             for (int j = 0; j < this.rows; j++) {

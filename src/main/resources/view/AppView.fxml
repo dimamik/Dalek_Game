@@ -6,16 +6,28 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="controller.AppController" fx:id="borderPane">
 
-    <!--    Board-->
-    <!--        <center>-->
-    <!--            <BoardView fx:id="boardView"/>-->
-    <!--        </center>-->
+    <!--    There Board is injected via Controllers-->
 
-    <!--    TODO Controls (and menu in the future)-->
+    <center>
+
+        <!--        TODO Add Some Best Scores and so on...-->
+        <VBox fx:id="centerSide" alignment="TOP_CENTER" prefHeight="500.0" prefWidth="200.0"
+              BorderPane.alignment="CENTER">
+
+            <Button onAction="#handlePlayRandomGame" text="Play New Random Game"/>
+            <Button onAction="#handlePLayRoundGame" text="PLay New Round Game"/>
+
+
+            <Button fx:id="resumeGameButton" visible="false" onAction="#handleResumeGame" text="Resume The Game"/>
+        </VBox>
+    </center>
+
     <right>
-        <!--    TODO Move it to separate fxml-->
+
         <VBox fx:id="rightSide" alignment="TOP_CENTER" prefHeight="500.0" prefWidth="200.0"
               BorderPane.alignment="CENTER">
+
+
             <Label text="Sterowanie:">
                 <VBox.margin>
                     <Insets top="10.0" bottom="10.0"/>
@@ -103,6 +115,12 @@
             <HBox>
                 <Button fx:id="TimeTravel" disable="true" mnemonicParsing="false" onAction="#onTimeTravelPress"
                         text="TIME TRAVEL: 0">
+
+                </Button>
+            </HBox>
+            <HBox>
+                <Button mnemonicParsing="false" onAction="#handlePauseGame"
+                        text="PAUSE GAME">
 
                 </Button>
             </HBox>

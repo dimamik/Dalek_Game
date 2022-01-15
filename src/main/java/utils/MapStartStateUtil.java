@@ -13,27 +13,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MapStartStateUtil {
 
     Board board;
-    MapStartParams mapStartParams;
+    String PATH_TO_ROUNDS = "rounds";
 
     //    TODO this Util is responsible for initializing map with daleks randomly or load them from file
-    public MapStartStateUtil(Board board, MapStartParams mapStartParams) {
+    public MapStartStateUtil(Board board) {
         this.board = board;
-        this.mapStartParams = mapStartParams;
     }
 
-    public void placeDaleks(List<BoardCell> occupiedCells) {
-//        FIXME replace with getter
-        if (mapStartParams.isRandomlyPlaced) {
-            placeRandomly(occupiedCells);
-        }
-        else{
-//          TODO  Initialize from file
-
-        }
-
+    public void placeFromDatabase(List<BoardCell> occupiedCells, int roundNumber) {
+//        TODO load daleks from database
     }
-    private void placeRandomly(List<BoardCell> occupiedCells){
-        int numberOfDaleks = mapStartParams.numberOfDaleks;
+
+
+    public void placeRandomly(List<BoardCell> occupiedCells, int numberOfDaleks) {
         List<Vector2D> availableSpots = new ArrayList<>();
         for (int i = 0; i < board.getRows(); i++)
             for (int j = 0; j < board.getRows(); j++)

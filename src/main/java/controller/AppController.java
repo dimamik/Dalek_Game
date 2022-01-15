@@ -25,8 +25,12 @@ import views.BoardView;
 public class AppController implements EventListener<BoardCell> {
     private final Board board;
     private final GameStateController gameStateController;
+    @FXML
+    public VBox centerSide;
+    @FXML
+    public Button resumeGameButton;
     public GameUtil gameUtil;
-    public GameState gameState = GameState.GAME_RUNNING;
+    public GameState gameState = GameState.GAME_PAUSED;
     @FXML
     public VBox rightSide;
     @FXML
@@ -40,11 +44,11 @@ public class AppController implements EventListener<BoardCell> {
     public Button Teleport;
     @FXML
     public Button TimeTravel;
+    private int roundNumber = 0;
 
-//    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
+    //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
-//      FIXME board is not needed there
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
@@ -56,22 +60,34 @@ public class AppController implements EventListener<BoardCell> {
     private void initialize() {
         subscribeToCells();
         gameUtil.addListener(gameStateController);
-        initViews();
+//        initViews();
+        showMenu();
+    }
 
-//        TODO There Menu needs to be implemented
-//        Idea is simple: we do have one and the same board, which is cleaned after
-//        Each round/game by some external worker.
+    private void showGame() {
+        borderPane.setCenter(boardView);
+        this.borderPane.getRight().setVisible(true);
+    }
 
-//        I see there 2 options:
-//        1. We are dynamically controlling gameUtil
-//        2. We are creating a new gameUtil for each round/game
-//        I personally prefer the first option, because it is more flexible
+    private void showMenu() {
+        borderPane.setCenter(centerSide);
+        this.borderPane.getRight().setVisible(false);
+    }
 
+    public void startGame() {
         gameUtil.setUpGame();
+        gameState = GameState.GAME_RUNNING;
+    }
+
+    public void startNextRound() {
+//      TODO Check if there are more rounds to play
+        gameUtil.restartGame();
+        gameUtil.startNewDefinedRound(++roundNumber);
     }
 
     private void initViews() {
-        borderPane.setCenter(boardView);
+        borderPane.centerProperty().setValue(boardView);
+//        borderPane.setCenter(boardView);
     }
 
     private void subscribeToCells() {
@@ -120,4 +136,22 @@ public class AppController implements EventListener<BoardCell> {
     }
 
 
+    public void handleResumeGame(ActionEvent actionEvent) {
+        showGame();
+    }
+
+    public void handlePLayRoundGame(ActionEvent actionEvent) {
+        showGame();
+        startNextRound();
+    }
+
+    public void handlePlayRandomGame(ActionEvent actionEvent) {
+        showGame();
+        startGame();
+    }
+
+    public void handlePauseGame(ActionEvent actionEvent) {
+        resumeGameButton.setVisible(true);
+        showMenu();
+    }
 }

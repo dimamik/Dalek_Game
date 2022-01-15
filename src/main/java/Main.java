@@ -27,7 +27,7 @@ public class Main extends Application {
 
             FXMLLoader loader = fxmlLoaderService.getLoader(getClass().getResource("/view/AppView.fxml"));
             BorderPane rootLayout = loader.load();
-
+            rootLayout.setPrefSize(800, 600);
 //            set up AppController
 //            AppController controller = loader.getController();
 
