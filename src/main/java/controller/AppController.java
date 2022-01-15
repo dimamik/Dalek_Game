@@ -1,6 +1,7 @@
 package controller;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import enums.GameState;
 import interfaces.EventListener;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import views.BoardView;
 public class AppController implements EventListener<BoardCell> {
     private final Board board;
     private final GameStateController gameStateController;
+    private final int MAX_ROUNDS;
     @FXML
     public VBox centerSide;
     @FXML
@@ -44,15 +46,19 @@ public class AppController implements EventListener<BoardCell> {
     public Button Teleport;
     @FXML
     public Button TimeTravel;
-    private int roundNumber = 0;
+    @FXML
+    public Button pauseGame;
+    @FXML
+    public Button backToMenu;
+    private int roundNumber;
 
     //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
-    public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
+    public AppController(Board board, GameUtil gameUtil, BoardView boardView, @Named("roundsNumber") int roundsNumber) {
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
-//      FIXME This part is ugly, we need to inject GameStateController somehow, but it generates recursion
+        this.MAX_ROUNDS = roundsNumber;
         this.gameStateController = new GameStateController(this);
     }
 
@@ -60,13 +66,7 @@ public class AppController implements EventListener<BoardCell> {
     private void initialize() {
         subscribeToCells();
         gameUtil.addListener(gameStateController);
-//        initViews();
         showMenu();
-    }
-
-    private void showGame() {
-        borderPane.setCenter(boardView);
-        this.borderPane.getRight().setVisible(true);
     }
 
     private void showMenu() {
@@ -74,20 +74,41 @@ public class AppController implements EventListener<BoardCell> {
         this.borderPane.getRight().setVisible(false);
     }
 
-    public void startGame() {
-        gameUtil.setUpGame();
+    private void showGame() {
+        borderPane.setCenter(boardView);
+        movementButtons.setDisable(false);
+        instructionsText.setText("Welcome to game!");
+        pauseGame.setVisible(true);
+        backToMenu.setVisible(true);
+        resumeGameButton.setVisible(true);
+        this.borderPane.getRight().setVisible(true);
+    }
+
+    public void startRandomGame() {
+        gameUtil.resetGame();
+        System.out.println(board);
+        gameUtil.setUpRandomGame();
+        backToMenu.setVisible(false);
         gameState = GameState.GAME_RUNNING;
     }
 
-    public void startNextRound() {
-//      TODO Check if there are more rounds to play
-        gameUtil.restartGame();
+    public void startRoundGame() {
+        if (roundNumber > MAX_ROUNDS) {
+            endGame();
+        }
+        gameUtil.resetGame();
+        backToMenu.setVisible(false);
+        gameState = GameState.GAME_RUNNING;
         gameUtil.startNewDefinedRound(++roundNumber);
     }
 
-    private void initViews() {
-        borderPane.centerProperty().setValue(boardView);
-//        borderPane.setCenter(boardView);
+    public void endGame() {
+        setGameState(GameState.GAME_ENDED);
+        movementButtons.setDisable(true);
+        instructionsText.setText("Game over!");
+        pauseGame.setVisible(false);
+        backToMenu.setVisible(true);
+        resumeGameButton.setVisible(false);
     }
 
     private void subscribeToCells() {
@@ -107,20 +128,16 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
-    public void onTeleportPress(ActionEvent actionEvent) {
+    public void onTeleportPress() {
         if (gameState == GameState.GAME_RUNNING) {
             gameUtil.handleTeleport();
         }
     }
 
-    public void onTimeTravelPress(ActionEvent actionEvent) {
+    public void onTimeTravelPress() {
         if (gameState == GameState.GAME_RUNNING) {
             gameUtil.handleTimeTravel();
         }
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     @Override
@@ -128,30 +145,37 @@ public class AppController implements EventListener<BoardCell> {
         BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().x(), boardCell.getPosition().y());
         if (boardCell.getTopBoardObject().isPresent()) {
             BoardObject boardObject = boardCell.getTopBoardObject().get();
-            //        TODO there BoardObjectView needs to be injected
             boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
         } else {
             boardCellView.clearBoardObjectView();
         }
     }
 
-
-    public void handleResumeGame(ActionEvent actionEvent) {
+    public void handleResumeGame() {
         showGame();
     }
 
-    public void handlePLayRoundGame(ActionEvent actionEvent) {
+    public void handlePlayRoundGame() {
+        roundNumber = 0;
         showGame();
-        startNextRound();
+        startRoundGame();
     }
 
-    public void handlePlayRandomGame(ActionEvent actionEvent) {
+    public void handlePlayRandomGame() {
         showGame();
-        startGame();
+        startRandomGame();
     }
 
-    public void handlePauseGame(ActionEvent actionEvent) {
+    public void handlePauseGame() {
         resumeGameButton.setVisible(true);
         showMenu();
+    }
+
+    public void handleGoBackToMenu() {
+        showMenu();
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

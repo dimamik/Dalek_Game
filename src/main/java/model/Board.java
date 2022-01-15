@@ -51,8 +51,7 @@ public class Board {
     public void clearBoard() {
         for (int i = 0; i < this.cols; i++) {
             for (int j = 0; j < this.rows; j++) {
-                BoardCell boardCell = getBoardCell(new Vector2D(i, j));
-                boardCell.clearBoardCell();
+                boardCells[i][j].clearBoardCell();
             }
         }
     }
@@ -69,6 +68,17 @@ public class Board {
 
     @Override
     public String toString() {
-        return "Board{" + "cols=" + cols + ", rows=" + rows + "}";
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                if (boardCells[i][j].getTopBoardObject().isPresent()) {
+                    sb.append(boardCells[i][j].toString());
+                }
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }

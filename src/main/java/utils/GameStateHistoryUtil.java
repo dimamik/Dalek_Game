@@ -41,5 +41,9 @@ public class GameStateHistoryUtil {
         return this.history.removeLast();
     }
 
+    public void reset() {
+        history.clear();
+    }
+
 
 }

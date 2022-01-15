@@ -37,4 +37,11 @@ public class GameModule extends AbstractModule {
     private int provideDaleksNo() {
         return 2;
     }
+
+
+    @Provides
+    @Named("roundsNumber")
+    private int provideRoundsNumber() {
+        return 3;
+    }
 }

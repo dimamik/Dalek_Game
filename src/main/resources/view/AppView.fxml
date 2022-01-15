@@ -15,7 +15,7 @@
               BorderPane.alignment="CENTER">
 
             <Button onAction="#handlePlayRandomGame" text="Play New Random Game"/>
-            <Button onAction="#handlePLayRoundGame" text="PLay New Round Game"/>
+            <Button onAction="#handlePlayRoundGame" text="PLay New Round Game"/>
 
 
             <Button fx:id="resumeGameButton" visible="false" onAction="#handleResumeGame" text="Resume The Game"/>
@@ -119,9 +119,13 @@
                 </Button>
             </HBox>
             <HBox>
-                <Button mnemonicParsing="false" onAction="#handlePauseGame"
+                <Button fx:id="pauseGame" mnemonicParsing="false" onAction="#handlePauseGame"
                         text="PAUSE GAME">
-
+                </Button>
+            </HBox>
+            <HBox>
+                <Button fx:id="backToMenu" mnemonicParsing="false" onAction="#handleGoBackToMenu"
+                        text="Go Back to menu">
                 </Button>
             </HBox>
         </VBox>

@@ -18,17 +18,15 @@ public class GameStateController implements EventListener<GameState> {
     public void onEvent(GameState e) {
 
         if (e == GameState.GAME_RUNNING) {
-            appController.startGame();
+            appController.startRandomGame();
             appController.setGameState(GameState.GAME_RUNNING);
         }
 
         if (e == GameState.GAME_ENDED) {
-//            Check if we are playing round game or not
-            appController.setGameState(e);
-            appController.movementButtons.setDisable(true);
-            appController.instructionsText.setText("Game over!");
+            appController.endGame();
+
         } else if (e == GameState.NEXT_ROUND) {
-            appController.startNextRound();
+            appController.startRoundGame();
             appController.setGameState(GameState.GAME_RUNNING);
             appController.movementButtons.setDisable(false);
             appController.instructionsText.setText("Next round!");

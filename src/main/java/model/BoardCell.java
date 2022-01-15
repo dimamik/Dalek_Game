@@ -71,4 +71,11 @@ public class BoardCell extends EventEmitter<BoardCell> {
     public void removeListener(EventListener<BoardCell> listener) {
         eventListeners.remove(listener);
     }
+
+    @Override
+    public String toString() {
+        return "BoardCell{" +
+                "boardObjects=" + boardObjects +
+                '}';
+    }
 }

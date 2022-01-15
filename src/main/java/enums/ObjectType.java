@@ -5,7 +5,7 @@ public enum ObjectType {
     DOCTOR(2),
     HEAP(3),
     TELEPORT(4),
-    //    Takes back move
+    DEAD_DOCTOR(5),
     TIME_TRAVEL(5);
 
     private final int objectType;

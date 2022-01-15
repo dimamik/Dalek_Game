@@ -50,7 +50,20 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void handleTeleport() {
         if (TELEPORTS_NUMBER > 0) {
             TELEPORTS_NUMBER--;
-//            TODO Handle
+//            Find a random cell that is not occupied
+            List<BoardCell> freeCells = new ArrayList<>();
+            for (int i = 0; i < board.getRows(); i++) {
+                for (int j = 0; j < board.getCols(); j++) {
+                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
+                    if (!occupiedCells.contains(cell)) {
+                        freeCells.add(cell);
+                    }
+                }
+            }
+            int randomIndex = (int) (Math.random() * freeCells.size());
+            BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
+            doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
+            freeCells.get(randomIndex).addBoardObject(doctorObject);
         }
     }
 
@@ -61,7 +74,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         }
     }
 
-    public void setUpGame() {
+    public void setUpRandomGame() {
         BoardObject doctor = new Doctor();
         Vector2D doctorInitPosition = new Vector2D(board.getCols() / 2, board.getRows() / 2);
         board.addBoardObject(doctor, doctorInitPosition);
@@ -69,7 +82,11 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         this.mapStartStateUtil.placeRandomly(occupiedCells, numberOfDaleks);
     }
 
-    public void restartGame() {
+    public void resetGame() {
+        gameStateHistoryUtil.reset();
+        occupiedCells.clear();
+        TELEPORTS_NUMBER = 0;
+        TIME_TRAVEL_NUMBER = 0;
         board.clearBoard();
     }
 
@@ -114,7 +131,10 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     public boolean doctorExists(BoardCell doctorCell) {
-        return doctorCell.getBoardObjects().get(0).getType() == ObjectType.DOCTOR;
+        if (doctorCell.getTopBoardObject().isPresent()) {
+            return doctorCell.getBoardObjects().get(0).getType() == ObjectType.DOCTOR;
+        }
+        return false;
     }
 
     public boolean isGameEnded() {
@@ -130,6 +150,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
 
     private void gameEnded() {
+//        resetGame();
         log.info("GAME ENDED!");
         emit(GameState.GAME_ENDED);
     }
