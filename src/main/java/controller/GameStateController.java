@@ -30,6 +30,12 @@ public class GameStateController implements EventListener<GameState> {
             appController.setGameState(GameState.GAME_RUNNING);
             appController.movementButtons.setDisable(false);
             appController.instructionsText.setText("Next round!");
+        } else if (e == GameState.TELEPORT_GAINED) {
+            System.out.println("TELEPORT_GAINED");
+            appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
+
+        } else if (e == GameState.TIME_TRAVEL_GAINED) {
+            appController.Teleport.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
         }
 
     }

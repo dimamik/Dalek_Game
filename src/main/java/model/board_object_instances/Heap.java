@@ -6,10 +6,8 @@ import model.BoardObject;
 
 public class Heap extends BoardObject {
 
-    public final static Color COLOR = Color.BLUE;
-
     public Heap() {
-        super(COLOR, false);
+        super(Color.GREEN, false);
     }
 
     @Override

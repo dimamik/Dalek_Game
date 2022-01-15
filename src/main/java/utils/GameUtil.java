@@ -6,14 +6,18 @@ import enums.GameState;
 import enums.ObjectType;
 import interfaces.EventEmitter;
 import interfaces.EventListener;
+import javafx.scene.control.Button;
 import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Doctor;
+import model.board_object_instances.Teleport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -23,20 +27,14 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private final GameStateHistoryUtil gameStateHistoryUtil;
     private final MapStartStateUtil mapStartStateUtil;
     private final List<BoardCell> occupiedCells;
+    private final double TELEPORT_PROBABILITY = 0.6;
+    public int teleportsNumber = 10;
+    public int timeTravelNumber = 10;
     int numberOfDaleks;
-    private int TELEPORTS_NUMBER = 0;
-    private int TIME_TRAVEL_NUMBER = 0;
     private BoardCell doctorCell;
 
     @Inject
     public GameUtil(Board board, PositionUtil positionUtil, @Named("daleksNo") int daleksNo) {
-//        FIXME This needs to work the following way:
-//        First of all we initialize the game with predefined map/parameters, validated before
-//        This game is like a server, and data is coming from client, so input validation is needed
-//        Then game is played like before, and app is controlling the game global state (game ended, game started, etc)
-//        Also App is responsible for game menu and handling user interaction
-//        Later App needs to be split into multiple modules, so that it can be easily tracked and tested
-
         super();
         this.board = board;
         this.numberOfDaleks = daleksNo;
@@ -47,10 +45,9 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         this.mapStartStateUtil = new MapStartStateUtil(board);
     }
 
-    public void handleTeleport() {
-        if (TELEPORTS_NUMBER > 0) {
-            TELEPORTS_NUMBER--;
-//            Find a random cell that is not occupied
+    public void handleTeleport(Button teleport) {
+        if (teleportsNumber > 0) {
+            teleportsNumber--;
             List<BoardCell> freeCells = new ArrayList<>();
             for (int i = 0; i < board.getRows(); i++) {
                 for (int j = 0; j < board.getCols(); j++) {
@@ -64,14 +61,34 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
             doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
             freeCells.get(randomIndex).addBoardObject(doctorObject);
+            occupiedCells.add(freeCells.get(randomIndex));
+            occupiedCells.remove(doctorCell);
+            doctorCell = freeCells.get(randomIndex);
         }
+        teleport.setText("TELEPORTS: " + teleportsNumber);
     }
 
-    public void handleTimeTravel() {
-        if (TIME_TRAVEL_NUMBER > 0) {
-            TIME_TRAVEL_NUMBER--;
-//            TODO Handle
+    public void handleTimeTravel(Button timeTravel) {
+        if (timeTravelNumber > 0) {
+            timeTravelNumber--;
+            board.clearBoard();
+            occupiedCells.clear();
+            HashMap<Vector2D, LinkedList<BoardObject>> lastDay = gameStateHistoryUtil.popLastDay();
+            for (Vector2D cellPosition : lastDay.keySet()) {
+                BoardCell cell = board.getBoardCell(cellPosition);
+                LinkedList<BoardObject> objectsToAdd = lastDay.get(cellPosition);
+                for (BoardObject object : objectsToAdd) {
+                    if (object.getType() == ObjectType.DOCTOR) {
+                        doctorCell = cell;
+                    }
+                    cell.addBoardObject(object);
+
+                }
+                occupiedCells.add(cell);
+            }
+
         }
+        timeTravel.setText("TIME TRAVEL: " + timeTravelNumber);
     }
 
     public void setUpRandomGame() {
@@ -85,8 +102,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void resetGame() {
         gameStateHistoryUtil.reset();
         occupiedCells.clear();
-        TELEPORTS_NUMBER = 0;
-        TIME_TRAVEL_NUMBER = 0;
+//        TELEPORTS_NUMBER = 0;
+//        TIME_TRAVEL_NUMBER = 0;
         board.clearBoard();
     }
 
@@ -119,11 +136,31 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         if (isGameEnded()) {
             gameEnded();
         }
+
+//        Spawn a teleport if randomly needed
+        if (Math.random() < TELEPORT_PROBABILITY) {
+//          Find a free cell
+//          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
+            List<BoardCell> freeCells = new ArrayList<>();
+            for (int i = 0; i < board.getRows(); i++) {
+                for (int j = 0; j < board.getCols(); j++) {
+                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
+                    if (!occupiedCells.contains(cell)) {
+                        freeCells.add(cell);
+
+                    }
+                }
+            }
+            int randomIndex = (int) (Math.random() * freeCells.size());
+            board.addBoardObject(new Teleport(), freeCells.get(randomIndex).getPosition());
+            occupiedCells.add(freeCells.get(randomIndex));
+        }
+
     }
 
     public boolean atLeastOneDalekExists(List<BoardCell> occupiedCells) {
         for (BoardCell cell : occupiedCells) {
-            if (cell.getBoardObjects().get(0).getType() == ObjectType.DALEK) {
+            if (!cell.isEmpty() && cell.getBoardObjects().get(0).getType() == ObjectType.DALEK) {
                 return true;
             }
         }
@@ -132,7 +169,11 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     public boolean doctorExists(BoardCell doctorCell) {
         if (doctorCell.getTopBoardObject().isPresent()) {
-            return doctorCell.getBoardObjects().get(0).getType() == ObjectType.DOCTOR;
+            for (BoardObject boardObject : doctorCell.getBoardObjects()) {
+                if (boardObject.getType() == ObjectType.DOCTOR) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -150,7 +191,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
 
     private void gameEnded() {
-//        resetGame();
         log.info("GAME ENDED!");
         emit(GameState.GAME_ENDED);
     }
@@ -163,12 +203,15 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void onEvent(GameState e) {
         if (e == GameState.TELEPORT_GAINED) {
 //          FIXME This can be setters
-            TELEPORTS_NUMBER++;
+            teleportsNumber++;
+            emit(GameState.TELEPORT_GAINED);
+
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
-            TIME_TRAVEL_NUMBER++;
-        } else {
-            log.error("GameUtil: onEvent: " + e);
+            timeTravelNumber++;
+            emit(GameState.TIME_TRAVEL_GAINED);
         }
+        log.error("GameUtil: onEvent: " + e);
+
     }
 }
 

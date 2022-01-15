@@ -107,13 +107,13 @@
                 </VBox.margin>
             </Label>
             <HBox>
-                <Button fx:id="Teleport" disable="true" mnemonicParsing="false" onAction="#onTeleportPress"
+                <Button fx:id="Teleport" mnemonicParsing="false" onAction="#onTeleportPress"
                         text="TELEPORT:      0">
 
                 </Button>
             </HBox>
             <HBox>
-                <Button fx:id="TimeTravel" disable="true" mnemonicParsing="false" onAction="#onTimeTravelPress"
+                <Button fx:id="TimeTravel" mnemonicParsing="false" onAction="#onTimeTravelPress"
                         text="TIME TRAVEL: 0">
 
                 </Button>

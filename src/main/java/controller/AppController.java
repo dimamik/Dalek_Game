@@ -27,19 +27,19 @@ public class AppController implements EventListener<BoardCell> {
     private final Board board;
     private final GameStateController gameStateController;
     private final int MAX_ROUNDS;
+    public GameUtil gameUtil;
+    public GameState gameState = GameState.GAME_PAUSED;
+    public BoardView boardView;
     @FXML
     public VBox centerSide;
     @FXML
     public Button resumeGameButton;
-    public GameUtil gameUtil;
-    public GameState gameState = GameState.GAME_PAUSED;
     @FXML
     public VBox rightSide;
     @FXML
     public VBox movementButtons;
     @FXML
     public BorderPane borderPane;
-    public BoardView boardView;
     @FXML
     public Label instructionsText;
     @FXML
@@ -86,7 +86,6 @@ public class AppController implements EventListener<BoardCell> {
 
     public void startRandomGame() {
         gameUtil.resetGame();
-        System.out.println(board);
         gameUtil.setUpRandomGame();
         backToMenu.setVisible(false);
         gameState = GameState.GAME_RUNNING;
@@ -130,13 +129,13 @@ public class AppController implements EventListener<BoardCell> {
 
     public void onTeleportPress() {
         if (gameState == GameState.GAME_RUNNING) {
-            gameUtil.handleTeleport();
+            gameUtil.handleTeleport(Teleport);
         }
     }
 
     public void onTimeTravelPress() {
         if (gameState == GameState.GAME_RUNNING) {
-            gameUtil.handleTimeTravel();
+            gameUtil.handleTimeTravel(TimeTravel);
         }
     }
 

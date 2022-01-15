@@ -23,6 +23,7 @@ public class CollisionActionFactory {
     }
 
     private void initOperations() {
+//        FIXME Fix the map not to add pairs of objects
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.DALEK), new DalekDalekReaction());
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.HEAP), new DalekHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.HEAP, ObjectType.DALEK), new DalekHeapReaction());
@@ -31,7 +32,9 @@ public class CollisionActionFactory {
         operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.HEAP), new DoctorHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.HEAP, ObjectType.DOCTOR), new DoctorHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.TIME_TRAVEL, ObjectType.DOCTOR), new DoctorPowerUpReaction());
+        operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.TIME_TRAVEL), new DoctorPowerUpReaction());
         operationMap.put(new PairOfObjects(ObjectType.TELEPORT, ObjectType.DOCTOR), new DoctorPowerUpReaction());
+        operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.TELEPORT), new DoctorPowerUpReaction());
     }
 
     public Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {
