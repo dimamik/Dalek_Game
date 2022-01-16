@@ -71,7 +71,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             occupiedCells.remove(doctorCell);
             doctorCell = freeCells.get(randomIndex);
         }
-        teleport.setText("TELEPORTS: " + teleportsNumber);
+        teleport.setText("TELEPORT: " + teleportsNumber);
     }
 
     public void handleTimeTravel(Button timeTravel) {
@@ -99,6 +99,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     public void setUpRandomGame() {
+        resetGame();
         BoardObject doctor = new Doctor();
         Vector2D doctorInitPosition = new Vector2D(board.getCols() / 2, board.getRows() / 2);
         board.addBoardObject(doctor, doctorInitPosition);
@@ -109,12 +110,13 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void resetGame() {
         gameStateHistoryUtil.reset();
         occupiedCells.clear();
-        teleportsNumber = 0;
-        timeTravelNumber = 0;
+//        teleportsNumber = 0;
+//        timeTravelNumber = 0;
         board.clearBoard();
     }
 
     public void startNewDefinedRound(int roundNumber) {
+        resetGame();
         BoardObject doctor = new Doctor();
         Vector2D doctorInitPosition = new Vector2D(board.getCols() / 2, board.getRows() / 2);
         board.addBoardObject(doctor, doctorInitPosition);
@@ -218,10 +220,25 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         return false;
     }
 
+    public boolean didDoctorWin() {
+        if (!doctorExists(doctorCell)) {
+            log.info("YOU LOOSE!");
+            return false;
+        } else if (!atLeastOneDalekExists(occupiedCells)) {
+            log.info("YOU WIN!");
+            return true;
+        }
+        throw new IllegalStateException("Game is not ended");
+    }
+
 
     private void gameEnded() {
         log.info("GAME ENDED!");
-        emit(GameState.GAME_ENDED);
+        if (didDoctorWin()) {
+            emit(GameState.NEXT_ROUND);
+        } else {
+            emit(GameState.GAME_ENDED);
+        }
     }
 
     public Board getBoard() {
@@ -239,7 +256,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             timeTravelNumber++;
             emit(GameState.TIME_TRAVEL_GAINED);
         }
-        log.error("GameUtil: onEvent: " + e);
 
     }
 }

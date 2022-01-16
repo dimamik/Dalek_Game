@@ -24,9 +24,9 @@ import views.BoardView;
  * Later we will need to split this up into board controller and menu controller
  */
 public class AppController implements EventListener<BoardCell> {
+    public final int MAX_ROUNDS;
     private final Board board;
     private final GameStateController gameStateController;
-    private final int MAX_ROUNDS;
     public GameUtil gameUtil;
     public GameState gameState = GameState.GAME_PAUSED;
     public BoardView boardView;
@@ -50,7 +50,7 @@ public class AppController implements EventListener<BoardCell> {
     public Button pauseGame;
     @FXML
     public Button backToMenu;
-    private int roundNumber;
+    public int roundNumber = 0;
 
     //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
@@ -92,13 +92,16 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     public void startRoundGame() {
+        roundNumber = roundNumber + 1;
         if (roundNumber > MAX_ROUNDS) {
             endGame();
+            roundNumber = 0;
         }
         gameUtil.resetGame();
         backToMenu.setVisible(false);
         gameState = GameState.GAME_RUNNING;
-        gameUtil.startNewDefinedRound(++roundNumber);
+        gameUtil.startNewDefinedRound(roundNumber);
+        instructionsText.setText("Round " + roundNumber + " started!");
     }
 
     public void endGame() {

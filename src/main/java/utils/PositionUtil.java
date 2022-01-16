@@ -8,8 +8,10 @@ import interfaces.EventEmitter;
 import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
+import model.BoardObject;
 import model.Vector2D;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -41,9 +43,20 @@ public class PositionUtil extends EventEmitter<GameState> {
     }
 
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
-        if (!sourceCell.getBoardObjects().get(0).isMovable()) {
-            return null;
+//        Find movable object
+
+        LinkedList<BoardObject> movableObjects = new LinkedList<>();
+
+        sourceCell.getBoardObjects().stream().filter(BoardObject::isMovable).forEach(movableObjects::add);
+
+
+        if (movableObjects.size() != 1) {
+//            TODO Hardcode removing everything except doctor
+            movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
         }
+
+        BoardObject objectToMove = movableObjects.getFirst();
+
 
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
@@ -53,8 +66,8 @@ public class PositionUtil extends EventEmitter<GameState> {
                 );
 
 
-        targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
-        sourceCell.getTopBoardObject().ifPresent(sourceCell::removeBoardObject);
+        targetCell.getBoardObjects().add(objectToMove);
+        sourceCell.removeBoardObject(objectToMove);
 
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);

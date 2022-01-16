@@ -21,15 +21,16 @@ public class GameStateController implements EventListener<GameState> {
             appController.startRandomGame();
             appController.setGameState(GameState.GAME_RUNNING);
         }
+        if (e == GameState.NEXT_ROUND) {
+//            THERE WE CAN PLAY NON-ROUND MATCHES
+//            TODO FIX TO make it clear what state are we playing at
 
-        if (e == GameState.GAME_ENDED) {
-            appController.endGame();
+            if (appController.roundNumber != 0 && appController.roundNumber < appController.MAX_ROUNDS) {
+                appController.startRoundGame();
+            } else {
+                appController.endGame();
+            }
 
-        } else if (e == GameState.NEXT_ROUND) {
-            appController.startRoundGame();
-            appController.setGameState(GameState.GAME_RUNNING);
-            appController.movementButtons.setDisable(false);
-            appController.instructionsText.setText("Next round!");
         } else if (e == GameState.TELEPORT_GAINED) {
             log.info("TELEPORT GAINED");
             appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
@@ -37,6 +38,10 @@ public class GameStateController implements EventListener<GameState> {
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
             log.info("TIME_TRAVEL GAINED");
             appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
+        } else if (e == GameState.GAME_ENDED) {
+            if (appController.gameUtil.timeTravelNumber == 0) {
+                appController.endGame();
+            }
         }
 
     }
