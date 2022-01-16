@@ -2,7 +2,9 @@ package enums;
 
 public enum GameState {
     GAME_RUNNING,
-    NEXT_ROUND,
+    PLAYING_RANDOM,
+    PLAYING_ROUND,
+    DOCTOR_WON,
     GAME_ENDED,
     GAME_PAUSED,
     TELEPORT_GAINED,

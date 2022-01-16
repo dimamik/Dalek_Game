@@ -51,10 +51,13 @@ public class PositionUtil extends EventEmitter<GameState> {
 
 
         if (movableObjects.size() != 1) {
-//            TODO Hardcode removing everything except doctor
+//            FIXME Hardcode removing everything except doctor
             movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
         }
 
+        if (movableObjects.size() == 0) {
+            throw new RuntimeException("There is no movable object in the cell");
+        }
         BoardObject objectToMove = movableObjects.getFirst();
 
 

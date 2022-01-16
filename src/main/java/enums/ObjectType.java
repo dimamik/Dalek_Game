@@ -6,7 +6,7 @@ public enum ObjectType {
     HEAP(3),
     TELEPORT(4),
     DEAD_DOCTOR(5),
-    TIME_TRAVEL(5);
+    TIME_TRAVEL(6);
 
     private final int objectType;
 

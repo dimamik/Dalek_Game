@@ -12,21 +12,19 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class DatabaseService {
+public record DatabaseService(int cols, int rows, String db_path) {
 //    This is a mock for real db service
 
-    private final int cols;
-    private final int rows;
-
     @Inject
-    public DatabaseService(@Named("cols") int cols, @Named("rows") int rows) {
+    public DatabaseService(@Named("cols") int cols, @Named("rows") int rows, @Named("db_path") String db_path) {
         this.cols = cols;
         this.rows = rows;
+        this.db_path = db_path;
     }
 
 
     public LinkedList<Vector2D> loadRoundData(int roundNumber) {
-        URL resource = getClass().getClassLoader().getResource(String.format("db//round_%d.txt", roundNumber));
+        URL resource = getClass().getClassLoader().getResource(String.format("%s//round_%d.txt", db_path, roundNumber));
         LinkedList<Vector2D> points = new LinkedList<>();
         try {
             File file = new File(Objects.requireNonNull(resource).toURI());

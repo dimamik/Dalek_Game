@@ -2,9 +2,9 @@ package model.board_object_instances;
 
 import enums.ObjectType;
 import javafx.scene.paint.Color;
-import model.Board;
+import model.BoardObject;
 
-public class Teleport extends PowerUp {
+public class Teleport extends BoardObject {
     public Teleport() {
         super(Color.BLUE);
     }
@@ -14,8 +14,5 @@ public class Teleport extends PowerUp {
         return ObjectType.TELEPORT;
     }
 
-    @Override
-    public void applyPowerUp(Board board, Doctor doctor) {
-//        TODO Apply teleport
-    }
+
 }

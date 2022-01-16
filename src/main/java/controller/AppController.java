@@ -52,6 +52,8 @@ public class AppController implements EventListener<BoardCell> {
     public Button backToMenu;
     public int roundNumber = 0;
 
+    public boolean isRoundGame;
+
     //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView, @Named("roundsNumber") int roundsNumber) {
@@ -87,8 +89,11 @@ public class AppController implements EventListener<BoardCell> {
     public void startRandomGame() {
         gameUtil.resetGame();
         gameUtil.setUpRandomGame();
+        isRoundGame = false;
         backToMenu.setVisible(false);
-        gameState = GameState.GAME_RUNNING;
+        Teleport.setDisable(false);
+        TimeTravel.setDisable(false);
+        gameState = GameState.PLAYING_RANDOM;
     }
 
     public void startRoundGame() {
@@ -99,7 +104,10 @@ public class AppController implements EventListener<BoardCell> {
         }
         gameUtil.resetGame();
         backToMenu.setVisible(false);
-        gameState = GameState.GAME_RUNNING;
+        isRoundGame = true;
+        Teleport.setDisable(false);
+        TimeTravel.setDisable(false);
+        gameState = GameState.PLAYING_ROUND;
         gameUtil.startNewDefinedRound(roundNumber);
         instructionsText.setText("Round " + roundNumber + " started!");
     }
@@ -107,6 +115,9 @@ public class AppController implements EventListener<BoardCell> {
     public void endGame() {
         setGameState(GameState.GAME_ENDED);
         movementButtons.setDisable(true);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
+
         instructionsText.setText("Game over!");
         pauseGame.setVisible(false);
         backToMenu.setVisible(true);
@@ -121,8 +132,12 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
+    private boolean isGameActive() {
+        return gameState == GameState.PLAYING_RANDOM || gameState == GameState.PLAYING_ROUND;
+    }
+
     public void onDirectionPress(ActionEvent actionEvent) {
-        if (gameState == GameState.GAME_RUNNING) {
+        if (isGameActive()) {
             String eventTarget = actionEvent.getTarget().toString();
             String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
 
@@ -131,13 +146,13 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     public void onTeleportPress() {
-        if (gameState == GameState.GAME_RUNNING) {
+        if (isGameActive()) {
             gameUtil.handleTeleport(Teleport);
         }
     }
 
     public void onTimeTravelPress() {
-        if (gameState == GameState.GAME_RUNNING) {
+        if (isGameActive()) {
             gameUtil.handleTimeTravel(TimeTravel);
         }
     }

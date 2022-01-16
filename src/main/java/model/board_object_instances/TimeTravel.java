@@ -2,9 +2,9 @@ package model.board_object_instances;
 
 import enums.ObjectType;
 import javafx.scene.paint.Color;
-import model.Board;
+import model.BoardObject;
 
-public class TimeTravel extends PowerUp {
+public class TimeTravel extends BoardObject {
     public TimeTravel() {
         super(Color.YELLOW);
     }
@@ -13,11 +13,4 @@ public class TimeTravel extends PowerUp {
     public ObjectType getType() {
         return ObjectType.TIME_TRAVEL;
     }
-
-    @Override
-    public void applyPowerUp(Board board, Doctor doctor) {
-//    TODO Apply time travel logic
-
-    }
-
 }

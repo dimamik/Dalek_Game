@@ -18,9 +18,7 @@ public class MapStartStateUtil {
 
     private final DatabaseService databaseService;
     Board board;
-    String PATH_TO_ROUNDS = "rounds";
 
-    //    TODO this Util is responsible for initializing map with daleks randomly or load them from file
     @Inject
     public MapStartStateUtil(Board board, DatabaseService databaseService) {
         this.board = board;

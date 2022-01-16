@@ -45,5 +45,24 @@ public class GameModule extends AbstractModule {
         return 3;
     }
 
+    @Provides
+    @Named("TELEPORT_PROBABILITY")
+    private double provideTELEPORT_PROBABILITY() {
+        return 0.6;
+    }
+
+    @Provides
+    @Named("TIME_TRAVEL_PROBABILITY")
+    private double provideTIME_TRAVEL_PROBABILITY() {
+        return 0.6;
+    }
+
+
+    @Provides
+    @Named("db_path")
+    private String provideDbPath() {
+        return "db";
+    }
+
 
 }

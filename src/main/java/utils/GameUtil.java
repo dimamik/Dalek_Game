@@ -25,16 +25,18 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private final GameStateHistoryUtil gameStateHistoryUtil;
     private final MapStartStateUtil mapStartStateUtil;
     private final List<BoardCell> occupiedCells;
-    //    TODO Change this to injected  from game module values
-    private final double TELEPORT_PROBABILITY = 0.6;
-    private final double TIME_TRAVEL_PROBABILITY = 0.6;
+    private final double TELEPORT_PROBABILITY;
+    private final double TIME_TRAVEL_PROBABILITY;
     public int teleportsNumber = 0;
     public int timeTravelNumber = 0;
     int numberOfDaleks;
     private BoardCell doctorCell;
 
     @Inject
-    public GameUtil(Board board, PositionUtil positionUtil, MapStartStateUtil mapStartStateUtil, @Named("daleksNo") int daleksNo) {
+    public GameUtil(Board board, PositionUtil positionUtil, MapStartStateUtil mapStartStateUtil,
+                    @Named("daleksNo") int daleksNo,
+                    @Named("TELEPORT_PROBABILITY") double TELEPORT_PROBABILITY,
+                    @Named("TIME_TRAVEL_PROBABILITY") double TIME_TRAVEL_PROBABILITY) {
         super();
         this.board = board;
         this.numberOfDaleks = daleksNo;
@@ -42,6 +44,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         this.occupiedCells = new ArrayList<>();
         this.gameStateHistoryUtil = new GameStateHistoryUtil();
         this.mapStartStateUtil = mapStartStateUtil;
+        this.TELEPORT_PROBABILITY = TELEPORT_PROBABILITY;
+        this.TIME_TRAVEL_PROBABILITY = TIME_TRAVEL_PROBABILITY;
         init();
     }
 
@@ -108,10 +112,9 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     public void resetGame() {
+//        TODO There we can reset teleports if needed
         gameStateHistoryUtil.reset();
         occupiedCells.clear();
-//        teleportsNumber = 0;
-//        timeTravelNumber = 0;
         board.clearBoard();
     }
 
@@ -189,43 +192,36 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         }
     }
 
-    public boolean atLeastOneDalekExists(List<BoardCell> occupiedCells) {
+    public boolean noDaleksOnBoard(List<BoardCell> occupiedCells) {
         for (BoardCell cell : occupiedCells) {
             if (!cell.isEmpty() && cell.getBoardObjects().get(0).getType() == ObjectType.DALEK) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public boolean doctorExists(BoardCell doctorCell) {
+    public boolean noDoctorOnBoard(BoardCell doctorCell) {
         if (doctorCell.getTopBoardObject().isPresent()) {
             for (BoardObject boardObject : doctorCell.getBoardObjects()) {
                 if (boardObject.getType() == ObjectType.DOCTOR) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public boolean isGameEnded() {
-        if (!doctorExists(doctorCell)) {
-            log.info("YOU LOOSE!");
+        if (noDoctorOnBoard(doctorCell)) {
             return true;
-        } else if (!atLeastOneDalekExists(occupiedCells)) {
-            log.info("YOU WIN!");
-            return true;
-        }
-        return false;
+        } else return noDaleksOnBoard(occupiedCells);
     }
 
     public boolean didDoctorWin() {
-        if (!doctorExists(doctorCell)) {
-            log.info("YOU LOOSE!");
+        if (noDoctorOnBoard(doctorCell)) {
             return false;
-        } else if (!atLeastOneDalekExists(occupiedCells)) {
-            log.info("YOU WIN!");
+        } else if (noDaleksOnBoard(occupiedCells)) {
             return true;
         }
         throw new IllegalStateException("Game is not ended");
@@ -233,9 +229,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
 
     private void gameEnded() {
-        log.info("GAME ENDED!");
         if (didDoctorWin()) {
-            emit(GameState.NEXT_ROUND);
+            emit(GameState.DOCTOR_WON);
         } else {
             emit(GameState.GAME_ENDED);
         }

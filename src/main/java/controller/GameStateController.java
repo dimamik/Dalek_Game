@@ -17,17 +17,19 @@ public class GameStateController implements EventListener<GameState> {
     @Override
     public void onEvent(GameState e) {
 
-        if (e == GameState.GAME_RUNNING) {
-            appController.startRandomGame();
-            appController.setGameState(GameState.GAME_RUNNING);
-        }
-        if (e == GameState.NEXT_ROUND) {
-//            THERE WE CAN PLAY NON-ROUND MATCHES
-//            TODO FIX TO make it clear what state are we playing at
+//        if (e == GameState.GAME_RUNNING) {
+//            appController.startRandomGame();
+//            appController.setGameState(GameState.GAME_RUNNING);
+//        }
+        if (e == GameState.DOCTOR_WON) {
 
-            if (appController.roundNumber != 0 && appController.roundNumber < appController.MAX_ROUNDS) {
+            log.info("Doctor Won!");
+
+            if (appController.isRoundGame && appController.roundNumber < appController.MAX_ROUNDS) {
+                log.info("NEXT_ROUND");
                 appController.startRoundGame();
             } else {
+                log.info("Game Over");
                 appController.endGame();
             }
 
@@ -39,8 +41,11 @@ public class GameStateController implements EventListener<GameState> {
             log.info("TIME_TRAVEL GAINED");
             appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
         } else if (e == GameState.GAME_ENDED) {
+            log.info("GAME ENDED!");
             if (appController.gameUtil.timeTravelNumber == 0) {
                 appController.endGame();
+            } else {
+                appController.instructionsText.setText("You have time travel left, you can use it to go back in time and maybe win a game!");
             }
         }
 

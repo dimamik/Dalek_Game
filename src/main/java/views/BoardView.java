@@ -1,6 +1,7 @@
 package views;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -10,13 +11,9 @@ public class BoardView extends Parent {
     private final BoardCellView[][] arrayOfCells;
 
     @Inject
-    public BoardView() {
-//        TODO Inject this values to be consistent with the model
-        int x_number = 10;
-        int y_number = 10;
-        int cellSize = 50;
-        arrayOfCells = new BoardCellView[x_number][y_number];
-        this.initBoardCellViews(x_number, y_number, cellSize);
+    public BoardView(@Named("cols") int cols, @Named("rows") int rows, @Named("cellSize") int cellSize) {
+        arrayOfCells = new BoardCellView[cols][rows];
+        this.initBoardCellViews(cols, rows, cellSize);
     }
 
     private void initBoardCellViews(int x_number, int y_number, int cellSize) {

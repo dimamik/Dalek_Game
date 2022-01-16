@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.mock;
 
+// TODO OUTDATED
 public class GameResultTest {
 
     @Test
