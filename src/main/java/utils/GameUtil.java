@@ -54,26 +54,37 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     }
 
+    public Optional<BoardCell> findRandomEmptyCell() {
+        List<BoardCell> freeCells = new ArrayList<>();
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getCols(); j++) {
+                BoardCell cell = board.getBoardCell(new Vector2D(i, j));
+                if (!occupiedCells.contains(cell)) {
+                    freeCells.add(cell);
+                }
+            }
+        }
+        if (freeCells.size() == 0) {
+            return Optional.empty();
+        }
+
+        int emptyIndex = (int) (Math.random() * freeCells.size());
+        return Optional.of(freeCells.get(emptyIndex));
+    }
+
     public void handleTeleport(Button teleport) {
         if (teleportsNumber > 0) {
             teleportsNumber--;
-//            TODO Extract duplicate code
-            List<BoardCell> freeCells = new ArrayList<>();
-            for (int i = 0; i < board.getRows(); i++) {
-                for (int j = 0; j < board.getCols(); j++) {
-                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
-                    if (!occupiedCells.contains(cell)) {
-                        freeCells.add(cell);
-                    }
-                }
+            Optional<BoardCell> boardCell = findRandomEmptyCell();
+            if (boardCell.isEmpty()) {
+                return;
             }
-            int randomIndex = (int) (Math.random() * freeCells.size());
             BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
             doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
-            freeCells.get(randomIndex).addBoardObject(doctorObject);
-            occupiedCells.add(freeCells.get(randomIndex));
+            boardCell.get().addBoardObject(doctorObject);
+            occupiedCells.add(boardCell.get());
             occupiedCells.remove(doctorCell);
-            doctorCell = freeCells.get(randomIndex);
+            doctorCell = boardCell.get();
         }
         teleport.setText("TELEPORT: " + teleportsNumber);
     }
@@ -155,20 +166,12 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private void spawnTeleport() {
         if (Math.random() < TELEPORT_PROBABILITY) {
 //          Find a free cell
-//          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
-            List<BoardCell> freeCells = new ArrayList<>();
-            for (int i = 0; i < board.getRows(); i++) {
-                for (int j = 0; j < board.getCols(); j++) {
-                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
-                    if (!occupiedCells.contains(cell)) {
-                        freeCells.add(cell);
-
-                    }
-                }
+            Optional<BoardCell> boardCell = findRandomEmptyCell();
+            if (boardCell.isEmpty()) {
+                return;
             }
-            int randomIndex = (int) (Math.random() * freeCells.size());
-            board.addBoardObject(new Teleport(), freeCells.get(randomIndex).getPosition());
-            occupiedCells.add(freeCells.get(randomIndex));
+            board.addBoardObject(new Teleport(), boardCell.get().getPosition());
+            occupiedCells.add(boardCell.get());
         }
     }
 
@@ -176,19 +179,13 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         if (Math.random() < TIME_TRAVEL_PROBABILITY) {
 //          Find a free cell
 //          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
-            List<BoardCell> freeCells = new ArrayList<>();
-            for (int i = 0; i < board.getRows(); i++) {
-                for (int j = 0; j < board.getCols(); j++) {
-                    BoardCell cell = board.getBoardCell(new Vector2D(i, j));
-                    if (!occupiedCells.contains(cell)) {
-                        freeCells.add(cell);
 
-                    }
-                }
+            Optional<BoardCell> boardCell = findRandomEmptyCell();
+            if (boardCell.isEmpty()) {
+                return;
             }
-            int randomIndex = (int) (Math.random() * freeCells.size());
-            board.addBoardObject(new TimeTravel(), freeCells.get(randomIndex).getPosition());
-            occupiedCells.add(freeCells.get(randomIndex));
+            board.addBoardObject(new TimeTravel(), boardCell.get().getPosition());
+            occupiedCells.add(boardCell.get());
         }
     }
 
