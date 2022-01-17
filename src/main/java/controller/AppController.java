@@ -41,7 +41,7 @@ public class AppController implements EventListener<BoardCell> {
     @FXML
     public BorderPane borderPane;
     @FXML
-    public Label instructionsText;
+    public Label infoLabel;
     @FXML
     public Button Teleport;
     @FXML
@@ -53,6 +53,7 @@ public class AppController implements EventListener<BoardCell> {
     public int roundNumber = 0;
 
     public boolean isRoundGame;
+
 
     //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
@@ -79,7 +80,7 @@ public class AppController implements EventListener<BoardCell> {
     private void showGame() {
         borderPane.setCenter(boardView);
         movementButtons.setDisable(false);
-        instructionsText.setText("Welcome to game!");
+        infoLabel.setText("Have Fun!");
         pauseGame.setVisible(true);
         backToMenu.setVisible(true);
         resumeGameButton.setVisible(true);
@@ -91,8 +92,10 @@ public class AppController implements EventListener<BoardCell> {
         gameUtil.setUpRandomGame();
         isRoundGame = false;
         backToMenu.setVisible(false);
-        Teleport.setDisable(false);
-        TimeTravel.setDisable(false);
+        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
         gameState = GameState.PLAYING_RANDOM;
     }
 
@@ -105,11 +108,13 @@ public class AppController implements EventListener<BoardCell> {
         gameUtil.resetGame();
         backToMenu.setVisible(false);
         isRoundGame = true;
-        Teleport.setDisable(false);
-        TimeTravel.setDisable(false);
+        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
         gameState = GameState.PLAYING_ROUND;
         gameUtil.startNewDefinedRound(roundNumber);
-        instructionsText.setText("Round " + roundNumber + " started!");
+        infoLabel.setText("ROUND " + roundNumber);
     }
 
     public void endGame() {
@@ -118,7 +123,7 @@ public class AppController implements EventListener<BoardCell> {
         Teleport.setDisable(true);
         TimeTravel.setDisable(true);
 
-        instructionsText.setText("Game over!");
+        infoLabel.setText("Game over!");
         pauseGame.setVisible(false);
         backToMenu.setVisible(true);
         resumeGameButton.setVisible(false);

@@ -75,16 +75,21 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     public void handleTeleport(Button teleport) {
         if (teleportsNumber > 0) {
             teleportsNumber--;
+
             Optional<BoardCell> boardCell = findRandomEmptyCell();
             if (boardCell.isEmpty()) {
                 return;
             }
+
             BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
             doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
             boardCell.get().addBoardObject(doctorObject);
             occupiedCells.add(boardCell.get());
             occupiedCells.remove(doctorCell);
             doctorCell = boardCell.get();
+        }
+        if (teleportsNumber == 0) {
+            teleport.setDisable(true);
         }
         teleport.setText("TELEPORT: " + teleportsNumber);
     }
@@ -110,6 +115,9 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
                 }
             }
         }
+        if (timeTravelNumber == 0) {
+            timeTravel.setDisable(true);
+        }
         timeTravel.setText("TIME TRAVEL: " + timeTravelNumber);
     }
 
@@ -123,7 +131,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     public void resetGame() {
-//        TODO There we can reset teleports if needed
+        teleportsNumber = 0;
+        timeTravelNumber = 0;
         gameStateHistoryUtil.reset();
         occupiedCells.clear();
         board.clearBoard();
@@ -165,7 +174,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     private void spawnTeleport() {
         if (Math.random() < TELEPORT_PROBABILITY) {
-//          Find a free cell
             Optional<BoardCell> boardCell = findRandomEmptyCell();
             if (boardCell.isEmpty()) {
                 return;
@@ -177,9 +185,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     private void spawnTimeTravel() {
         if (Math.random() < TIME_TRAVEL_PROBABILITY) {
-//          Find a free cell
-//          TODO THIS IS DUPLCIATE CODE, NEEDS TO BE FIXED
-
             Optional<BoardCell> boardCell = findRandomEmptyCell();
             if (boardCell.isEmpty()) {
                 return;
@@ -248,7 +253,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             timeTravelNumber++;
             emit(GameState.TIME_TRAVEL_GAINED);
         }
-
     }
 }
 

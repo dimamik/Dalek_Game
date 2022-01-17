@@ -36,16 +36,18 @@ public class GameStateController implements EventListener<GameState> {
         } else if (e == GameState.TELEPORT_GAINED) {
             log.info("TELEPORT GAINED");
             appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
+            appController.Teleport.setDisable(false);
 
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
             log.info("TIME_TRAVEL GAINED");
             appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
+            appController.TimeTravel.setDisable(false);
         } else if (e == GameState.GAME_ENDED) {
             log.info("GAME ENDED!");
             if (appController.gameUtil.timeTravelNumber == 0) {
                 appController.endGame();
             } else {
-                appController.instructionsText.setText("You have time travel left, you can use it to go back in time and maybe win a game!");
+                appController.infoLabel.setText("Use teleport!");
             }
         }
 
