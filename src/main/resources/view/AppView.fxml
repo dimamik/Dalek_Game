@@ -106,7 +106,7 @@
 
             <Label fx:id="infoLabel" textAlignment="CENTER" wrapText="true" prefWidth="300">
                 <VBox.margin>
-                    <Insets top="20.0" right="3" left="3"/>
+                    <Insets top="15.0" right="3" left="3"/>
                 </VBox.margin>
             </Label>
             <HBox alignment="CENTER">
@@ -121,7 +121,7 @@
                 <Button fx:id="TimeTravel" styleClass="power-up-button" mnemonicParsing="false" onAction="#onTimeTravelPress"
                         text="TIME TRAVEL: 0">
                     <HBox.margin>
-                        <Insets top="10.0" bottom="10.0"/>
+                        <Insets top="10.0"/>
                     </HBox.margin>
                 </Button>
             </HBox>
@@ -129,7 +129,7 @@
                 <Button fx:id="pauseGame" styleClass="power-up-button" mnemonicParsing="false" onAction="#handlePauseGame"
                         text="PAUSE">
                     <HBox.margin>
-                        <Insets top="10.0" bottom="10.0"/>
+                        <Insets top="10.0"/>
                     </HBox.margin>
                 </Button>
             </HBox>
@@ -140,6 +140,84 @@
                         <Insets top="10.0" bottom="10.0"/>
                     </HBox.margin>
                 </Button>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: black">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Doctor" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: red">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Dalek" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: blue">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Teleport" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: yellow">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Time travel" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: orange">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Dead doctor" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: green">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="game-chart" text="Dead dalek" prefWidth="80">
+                    <HBox.margin>
+                        <Insets top="10.0"/>
+                    </HBox.margin>
+                </Label>
             </HBox>
         </VBox>
     </right>

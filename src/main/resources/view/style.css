@@ -31,3 +31,11 @@
 #gameMessage{
     -fx-padding: 4 8 4 8;
 }
+
+.game-chart{
+    -fx-padding: 0 0 0 8;
+}
+
+.rec{
+    -fx-padding: 2 0 0 0;
+}
