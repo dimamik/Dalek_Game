@@ -5,7 +5,6 @@ import interfaces.EventListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -70,5 +69,12 @@ public class BoardCell extends EventEmitter<BoardCell> {
     @Override
     public void removeListener(EventListener<BoardCell> listener) {
         eventListeners.remove(listener);
+    }
+
+    @Override
+    public String toString() {
+        return "BoardCell{" +
+                "boardObjects=" + boardObjects +
+                '}';
     }
 }

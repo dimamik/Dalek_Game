@@ -1,10 +1,12 @@
 package controller;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import enums.GameState;
 import interfaces.EventListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -22,39 +24,106 @@ import views.BoardView;
  * Later we will need to split this up into board controller and menu controller
  */
 public class AppController implements EventListener<BoardCell> {
+    public final int MAX_ROUNDS;
     private final Board board;
     private final GameStateController gameStateController;
     public GameUtil gameUtil;
-    public GameState gameState = GameState.GAME_RUNNING;
+    public GameState gameState = GameState.GAME_PAUSED;
+    public BoardView boardView;
+    @FXML
+    public VBox centerSide;
+    @FXML
+    public Button resumeGameButton;
     @FXML
     public VBox rightSide;
     @FXML
     public VBox movementButtons;
     @FXML
     public BorderPane borderPane;
-    public BoardView boardView;
     @FXML
-    public Label instructionsText;
+    public Label infoLabel;
+    @FXML
+    public Button Teleport;
+    @FXML
+    public Button TimeTravel;
+    @FXML
+    public Button pauseGame;
+    @FXML
+    public Button backToMenu;
+    public int roundNumber = 0;
+    public boolean campaignMode;
 
     @Inject
-    public AppController(Board board, GameUtil gameUtil, BoardView boardView) {
+    public AppController(Board board, GameUtil gameUtil, BoardView boardView, @Named("roundsNumber") int roundsNumber) {
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
+        this.MAX_ROUNDS = roundsNumber;
         this.gameStateController = new GameStateController(this);
-
     }
 
     @FXML
     private void initialize() {
         subscribeToCells();
         gameUtil.addListener(gameStateController);
-        initViews();
-        gameUtil.setUpGame();
+        showMenu();
     }
 
-    private void initViews() {
+    private void showMenu() {
+        borderPane.setCenter(centerSide);
+        this.borderPane.getRight().setVisible(false);
+    }
+
+    private void showGame() {
         borderPane.setCenter(boardView);
+        movementButtons.setDisable(false);
+        infoLabel.setText("Have Fun!");
+        pauseGame.setVisible(true);
+        backToMenu.setVisible(true);
+        resumeGameButton.setVisible(true);
+        this.borderPane.getRight().setVisible(true);
+    }
+
+    public void startQuickGame() {
+        gameUtil.resetGame();
+        gameUtil.setUpRandomGame();
+        campaignMode = false;
+        backToMenu.setVisible(false);
+        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
+        gameState = GameState.PLAYING_RANDOM;
+    }
+
+    public void startCampaignGame() {
+        roundNumber = roundNumber + 1;
+        if (roundNumber > MAX_ROUNDS) {
+            endGame();
+            roundNumber = 0;
+        }
+        gameUtil.resetGame();
+        backToMenu.setVisible(false);
+        campaignMode = true;
+        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
+        gameState = GameState.PLAYING_ROUND;
+        gameUtil.startNewDefinedRound(roundNumber);
+        infoLabel.setText("ROUND " + roundNumber);
+    }
+
+    public void endGame() {
+        setGameState(GameState.GAME_ENDED);
+        movementButtons.setDisable(true);
+        Teleport.setDisable(true);
+        TimeTravel.setDisable(true);
+
+        infoLabel.setText("Game over!");
+        pauseGame.setVisible(false);
+        backToMenu.setVisible(true);
+        resumeGameButton.setVisible(false);
     }
 
     private void subscribeToCells() {
@@ -65,8 +134,12 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
+    private boolean isGameActive() {
+        return gameState == GameState.PLAYING_RANDOM || gameState == GameState.PLAYING_ROUND;
+    }
+
     public void onDirectionPress(ActionEvent actionEvent) {
-        if (gameState == GameState.GAME_RUNNING) {
+        if (isGameActive()) {
             String eventTarget = actionEvent.getTarget().toString();
             String directionString = eventTarget.substring(eventTarget.indexOf("'") + 1, eventTarget.lastIndexOf("'"));
 
@@ -74,8 +147,16 @@ public class AppController implements EventListener<BoardCell> {
         }
     }
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
+    public void onTeleportPress() {
+        if (isGameActive()) {
+            gameUtil.handleTeleport(Teleport);
+        }
+    }
+
+    public void onTimeTravelPress() {
+        if (isGameActive()) {
+            gameUtil.handleTimeTravel(TimeTravel);
+        }
     }
 
     @Override
@@ -83,12 +164,37 @@ public class AppController implements EventListener<BoardCell> {
         BoardCellView boardCellView = boardView.getBoardCellView(boardCell.getPosition().x(), boardCell.getPosition().y());
         if (boardCell.getTopBoardObject().isPresent()) {
             BoardObject boardObject = boardCell.getTopBoardObject().get();
-            //        TODO there BoardObjectView needs to be injected
             boardCellView.drawBoardObjectView(new BoardObjectView(boardObject));
         } else {
             boardCellView.clearBoardObjectView();
         }
     }
 
+    public void handleResumeGame() {
+        showGame();
+    }
 
+    public void handlePlayRoundGame() {
+        roundNumber = 0;
+        showGame();
+        startCampaignGame();
+    }
+
+    public void handlePlayRandomGame() {
+        showGame();
+        startQuickGame();
+    }
+
+    public void handlePauseGame() {
+        resumeGameButton.setVisible(true);
+        showMenu();
+    }
+
+    public void handleGoBackToMenu() {
+        showMenu();
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 }

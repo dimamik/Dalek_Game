@@ -17,24 +17,48 @@ public class GameModule extends AbstractModule {
     @Provides
     @Named("cols")
     private int provideColsNo() {
-        return 20;
+        return 10;
     }
 
     @Provides
     @Named("rows")
     private int provideRowsNo() {
-        return 20;
+        return 10;
     }
 
     @Provides
     @Named("cellSize")
     private int provideCellSizePx() {
-        return 40;
+        return 50;
     }
 
     @Provides
     @Named("daleksNo")
     private int provideDaleksNo() {
-        return 20;
+        return 2;
+    }
+
+    @Provides
+    @Named("roundsNumber")
+    private int provideRoundsNumber() {
+        return 3;
+    }
+
+    @Provides
+    @Named("TELEPORT_PROBABILITY")
+    private double provideTELEPORT_PROBABILITY() {
+        return 0.6;
+    }
+
+    @Provides
+    @Named("TIME_TRAVEL_PROBABILITY")
+    private double provideTIME_TRAVEL_PROBABILITY() {
+        return 0.6;
+    }
+
+    @Provides
+    @Named("db_path")
+    private String provideDbPath() {
+        return "db";
     }
 }

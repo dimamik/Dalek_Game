@@ -2,16 +2,20 @@ package utils;
 
 import com.google.inject.Inject;
 import enums.Direction;
+import enums.GameState;
 import enums.ObjectType;
+import interfaces.EventEmitter;
 import lombok.extern.slf4j.Slf4j;
 import model.Board;
 import model.BoardCell;
+import model.BoardObject;
 import model.Vector2D;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
-public class PositionUtil {
+public class PositionUtil extends EventEmitter<GameState> {
 
     private final Board board;
 
@@ -39,14 +43,31 @@ public class PositionUtil {
     }
 
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
-        if (!sourceCell.getBoardObjects().get(0).isMovable()) {
-            return null;
+        LinkedList<BoardObject> movableObjects = new LinkedList<>();
+
+        sourceCell.getBoardObjects().stream().filter(BoardObject::isMovable).forEach(movableObjects::add);
+
+
+        if (movableObjects.size() != 1) {
+            movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
         }
+
+        if (movableObjects.size() == 0) {
+            throw new RuntimeException("There is no movable object in the cell");
+        }
+        BoardObject objectToMove = movableObjects.getFirst();
+
 
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
-        targetCell.getBoardObjects().add(sourceCell.getBoardObjects().get(0));
-        sourceCell.getTopBoardObject().ifPresent(sourceCell::removeBoardObject);
+        targetCell.getBoardObjects().stream().filter(boardObject -> boardObject.getType() == ObjectType.TELEPORT || boardObject.getType() == ObjectType.TIME_TRAVEL)
+                .forEach(boardObject ->
+                        emit(boardObject.getType() == ObjectType.TIME_TRAVEL ? GameState.TIME_TRAVEL_GAINED : GameState.TELEPORT_GAINED)
+                );
+
+
+        targetCell.getBoardObjects().add(objectToMove);
+        sourceCell.removeBoardObject(objectToMove);
 
         if (targetCell.getBoardObjects().size() > 1) {
             collisionHandler.handleCollision(targetCell);

@@ -6,7 +6,6 @@ import model.BoardCell;
 import model.BoardObject;
 import model.factories.CollisionActionFactory;
 import model.object_action.CollisionReaction;
-
 import java.util.Optional;
 
 public record CollisionHandler(Board board, CollisionActionFactory collisionActionFactory) {

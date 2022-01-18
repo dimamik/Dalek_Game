@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+// TODO OUTDATED
 
 public class CollisionTest {
 

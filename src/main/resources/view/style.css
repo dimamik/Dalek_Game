@@ -1,0 +1,41 @@
+#centerSide{
+    -fx-padding: 0 0 0 200;
+}
+
+.menu-button {
+    -fx-min-width: 180px;
+    -fx-padding: 8px;
+    -fx-font-size: 18px;
+}
+
+.menu-label{
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+}
+
+#rightSide{
+    -fx-background-color: #bebebe;
+}
+.power-up-button{
+    -fx-min-width: 140px;
+    -fx-padding: 6px;
+    -fx-font-size: 13px;
+}
+
+#infoLabel{
+    -fx-padding: 0 5 6 5;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+}
+
+#gameMessage{
+    -fx-padding: 4 8 4 8;
+}
+
+.game-chart{
+    -fx-padding: 0 0 0 8;
+}
+
+.rec{
+    -fx-padding: 2 0 0 0;
+}

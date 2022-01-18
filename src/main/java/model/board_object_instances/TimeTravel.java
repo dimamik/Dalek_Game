@@ -4,14 +4,13 @@ import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.BoardObject;
 
-public class Heap extends BoardObject {
-
-    public Heap() {
-        super(Color.GREEN, false);
+public class TimeTravel extends BoardObject {
+    public TimeTravel() {
+        super(Color.YELLOW);
     }
 
     @Override
     public ObjectType getType() {
-        return ObjectType.HEAP;
+        return ObjectType.TIME_TRAVEL;
     }
 }

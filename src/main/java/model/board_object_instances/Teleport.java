@@ -4,14 +4,13 @@ import enums.ObjectType;
 import javafx.scene.paint.Color;
 import model.BoardObject;
 
-public class Heap extends BoardObject {
-
-    public Heap() {
-        super(Color.GREEN, false);
+public class Teleport extends BoardObject {
+    public Teleport() {
+        super(Color.BLUE);
     }
 
     @Override
     public ObjectType getType() {
-        return ObjectType.HEAP;
+        return ObjectType.TELEPORT;
     }
 }

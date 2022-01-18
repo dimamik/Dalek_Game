@@ -48,6 +48,14 @@ public class Board {
         getBoardCell(position).removeBoardObject(boardObject);
     }
 
+    public void clearBoard() {
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                boardCells[i][j].clearBoardCell();
+            }
+        }
+    }
+
     private void initializeBoard() {
         for (int i = 0; i < this.cols; i++) {
             for (int j = 0; j < this.rows; j++) {
@@ -60,6 +68,17 @@ public class Board {
 
     @Override
     public String toString() {
-        return "Board{" + "cols=" + cols + ", rows=" + rows + "}";
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows; j++) {
+                if (boardCells[i][j].getTopBoardObject().isPresent()) {
+                    sb.append(boardCells[i][j].toString());
+                }
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 }

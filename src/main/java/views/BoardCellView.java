@@ -25,6 +25,11 @@ public class BoardCellView extends Parent {
     }
 
     public void clearBoardObjectView() {
+        if (getChildren().size() >= 3) {
+            getChildren().remove(1);
+            getChildren().remove(1);
+            return;
+        }
         if (getChildren().size() >= 2) {
             getChildren().remove(1);
         }
