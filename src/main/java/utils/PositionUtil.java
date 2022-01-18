@@ -18,7 +18,6 @@ import java.util.List;
 public class PositionUtil extends EventEmitter<GameState> {
 
     private final Board board;
-
     private final CollisionHandler collisionHandler;
 
     @Inject
@@ -38,15 +37,12 @@ public class PositionUtil extends EventEmitter<GameState> {
     private boolean isMovePossible(BoardCell boardCell, Vector2D direction) {
         Vector2D vector2D = boardCell.getPosition();
         vector2D = vector2D.add(direction);
-
         return vector2D.x() >= 0 && vector2D.x() < board.getCols() && vector2D.y() >= 0 && vector2D.y() < board.getRows();
     }
 
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
         LinkedList<BoardObject> movableObjects = new LinkedList<>();
-
         sourceCell.getBoardObjects().stream().filter(BoardObject::isMovable).forEach(movableObjects::add);
-
 
         if (movableObjects.size() != 1) {
             movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
@@ -56,16 +52,12 @@ public class PositionUtil extends EventEmitter<GameState> {
             throw new RuntimeException("There is no movable object in the cell");
         }
         BoardObject objectToMove = movableObjects.getFirst();
-
-
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
 
         targetCell.getBoardObjects().stream().filter(boardObject -> boardObject.getType() == ObjectType.TELEPORT || boardObject.getType() == ObjectType.TIME_TRAVEL)
                 .forEach(boardObject ->
                         emit(boardObject.getType() == ObjectType.TIME_TRAVEL ? GameState.TIME_TRAVEL_GAINED : GameState.TELEPORT_GAINED)
                 );
-
-
         targetCell.getBoardObjects().add(objectToMove);
         sourceCell.removeBoardObject(objectToMove);
 
@@ -77,7 +69,6 @@ public class PositionUtil extends EventEmitter<GameState> {
     }
 
     public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
-
         for (int i = 0; i < occupiedCells.size(); i++) {
             BoardCell boardCell = occupiedCells.get(i);
             if (boardCell.getTopBoardObject().isPresent() && boardCell.getTopBoardObject().get().getType() == ObjectType.DALEK) {

@@ -9,7 +9,6 @@ public class BoardObjectView extends Rectangle {
     @Inject
     public BoardObjectView(BoardObject boardObject) {
         super(20, 20);
-
         setTranslateX(15);
         setTranslateY(15);
         setFill(boardObject.getColor());

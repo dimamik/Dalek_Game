@@ -119,7 +119,6 @@ public class AppController implements EventListener<BoardCell> {
         movementButtons.setDisable(true);
         Teleport.setDisable(true);
         TimeTravel.setDisable(true);
-
         infoLabel.setText("Game over!");
         pauseGame.setVisible(false);
         backToMenu.setVisible(true);

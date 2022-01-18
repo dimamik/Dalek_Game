@@ -4,6 +4,7 @@ import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -16,7 +17,6 @@ public class GameStateHistoryUtil {
     }
 
     public void recordDay(Board board) {
-
         HashMap<Vector2D, LinkedList<BoardObject>> currentDay = new HashMap<>();
 
         for (int i = 0; i < board.getRows(); i++) {

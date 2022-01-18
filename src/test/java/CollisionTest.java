@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import utils.CollisionHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// TODO OUTDATED
 
 public class CollisionTest {
 
@@ -69,7 +68,6 @@ public class CollisionTest {
 
         //then
         assertEquals(1, collisionCell.getBoardObjects().size());
-        assertEquals(ObjectType.HEAP, collisionCell.getBoardObjects().get(0).getType());
     }
 
     @Test

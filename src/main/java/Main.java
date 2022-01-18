@@ -20,18 +20,10 @@ public class Main extends Application {
 
         try {
             primaryStage.setTitle("Board Game");
-
-//            load layout from FXML file
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(AppController.class.getResource("../view/AppView.fxml"));
-
             FXMLLoader loader = fxmlLoaderService.getLoader(getClass().getResource("/view/AppView.fxml"));
             BorderPane rootLayout = loader.load();
             rootLayout.setPrefSize(800, 600);
-//            set up AppController
-//            AppController controller = loader.getController();
 
-//            add layout to a scene and show them all
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();

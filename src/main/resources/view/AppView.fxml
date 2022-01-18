@@ -23,7 +23,8 @@
                     <Insets top="10.0" bottom="10.0"/>
                 </VBox.margin>
             </Button>
-            <Button fx:id="resumeGameButton" styleClass="menu-button" visible="false" onAction="#handleResumeGame" text="Resume">
+            <Button fx:id="resumeGameButton" styleClass="menu-button" visible="false" onAction="#handleResumeGame"
+                    text="Resume">
                 <VBox.margin>
                     <Insets top="10.0" bottom="10.0"/>
                 </VBox.margin>
@@ -110,7 +111,8 @@
                 </VBox.margin>
             </Label>
             <HBox alignment="CENTER">
-                <Button fx:id="Teleport" styleClass="power-up-button" mnemonicParsing="false" onAction="#onTeleportPress" disable="true"
+                <Button fx:id="Teleport" styleClass="power-up-button" mnemonicParsing="false"
+                        onAction="#onTeleportPress" disable="true"
                         text="TELEPORT: 0">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
@@ -118,7 +120,8 @@
                 </Button>
             </HBox>
             <HBox alignment="CENTER">
-                <Button fx:id="TimeTravel" styleClass="power-up-button" mnemonicParsing="false" onAction="#onTimeTravelPress"
+                <Button fx:id="TimeTravel" styleClass="power-up-button" mnemonicParsing="false"
+                        onAction="#onTimeTravelPress"
                         text="TIME TRAVEL: 0">
                     <HBox.margin>
                         <Insets top="10.0"/>
@@ -126,7 +129,8 @@
                 </Button>
             </HBox>
             <HBox alignment="CENTER">
-                <Button fx:id="pauseGame" styleClass="power-up-button" mnemonicParsing="false" onAction="#handlePauseGame"
+                <Button fx:id="pauseGame" styleClass="power-up-button" mnemonicParsing="false"
+                        onAction="#handlePauseGame"
                         text="PAUSE">
                     <HBox.margin>
                         <Insets top="10.0"/>
@@ -134,7 +138,8 @@
                 </Button>
             </HBox>
             <HBox alignment="CENTER">
-                <Button fx:id="backToMenu" styleClass="power-up-button" mnemonicParsing="false" onAction="#handleGoBackToMenu"
+                <Button fx:id="backToMenu" styleClass="power-up-button" mnemonicParsing="false"
+                        onAction="#handleGoBackToMenu"
                         text="MENU">
                     <HBox.margin>
                         <Insets top="10.0" bottom="10.0"/>
@@ -143,7 +148,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: black">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: black">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -156,7 +162,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: red">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: red">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -169,7 +176,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: blue">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: blue">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -182,7 +190,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: yellow">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: yellow">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -195,7 +204,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: orange">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: orange">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -208,7 +218,8 @@
             </HBox>
 
             <HBox alignment="CENTER">
-                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20" style="-fx-background-color: green">
+                <Label styleClass="rec" alignment="CENTER" prefWidth="20" prefHeight="20"
+                       style="-fx-background-color: green">
                     <HBox.margin>
                         <Insets top="10.0"/>
                     </HBox.margin>
@@ -222,6 +233,6 @@
         </VBox>
     </right>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@style.css"/>
     </stylesheets>
 </BorderPane>
