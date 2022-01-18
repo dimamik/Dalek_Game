@@ -26,7 +26,6 @@ public class BoardCellView extends Parent {
 
     public void clearBoardObjectView() {
         if (getChildren().size() >= 3) {
-//            THIS IS TEMPORARY FIX
             getChildren().remove(1);
             getChildren().remove(1);
             return;
@@ -34,6 +33,5 @@ public class BoardCellView extends Parent {
         if (getChildren().size() >= 2) {
             getChildren().remove(1);
         }
-
     }
 }

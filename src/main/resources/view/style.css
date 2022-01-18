@@ -9,8 +9,8 @@
 }
 
 .menu-label{
-    -fx-padding: 0 0 0 66;
     -fx-font-size: 14px;
+    -fx-alignment: center;
 }
 
 #rightSide{
@@ -23,8 +23,9 @@
 }
 
 #infoLabel{
-    -fx-padding: 0 0 20 70;
+    -fx-padding: 0 5 6 5;
     -fx-font-size: 14px;
+    -fx-alignment: center;
 }
 
 #gameMessage{

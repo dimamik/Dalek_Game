@@ -13,6 +13,4 @@ public class Teleport extends BoardObject {
     public ObjectType getType() {
         return ObjectType.TELEPORT;
     }
-
-
 }

@@ -38,7 +38,6 @@ public class GameModule extends AbstractModule {
         return 2;
     }
 
-
     @Provides
     @Named("roundsNumber")
     private int provideRoundsNumber() {
@@ -57,12 +56,9 @@ public class GameModule extends AbstractModule {
         return 0.6;
     }
 
-
     @Provides
     @Named("db_path")
     private String provideDbPath() {
         return "db";
     }
-
-
 }

@@ -3,7 +3,6 @@ package model.factories;
 import com.google.inject.Inject;
 import enums.ObjectType;
 import model.object_action.*;
-
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,16 +32,16 @@ public class CollisionActionFactory {
     }
 
     public Optional<CollisionReaction> getCollisionAction(ObjectType first, ObjectType second) {
-
         PairOfObjects firstSecond = new PairOfObjects(first, second);
         PairOfObjects secondFirst = new PairOfObjects(second, first);
+
         if (operationMap.containsKey(firstSecond)) {
             return Optional.of(operationMap.get(firstSecond));
         }
         if (operationMap.containsKey(secondFirst)) {
             return Optional.of(operationMap.get(secondFirst));
         }
-        return Optional.empty();
 
+        return Optional.empty();
     }
 }

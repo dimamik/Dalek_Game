@@ -3,7 +3,6 @@ package service;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import model.Vector2D;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -13,8 +12,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public record DatabaseService(int cols, int rows, String db_path) {
-//    This is a mock for real db service
-
     @Inject
     public DatabaseService(@Named("cols") int cols, @Named("rows") int rows, @Named("db_path") String db_path) {
         this.cols = cols;
@@ -45,6 +42,4 @@ public record DatabaseService(int cols, int rows, String db_path) {
         }
         return points;
     }
-
-
 }

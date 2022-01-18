@@ -1,7 +1,6 @@
 package enums;
 
 public enum GameState {
-    GAME_RUNNING,
     PLAYING_RANDOM,
     PLAYING_ROUND,
     DOCTOR_WON,

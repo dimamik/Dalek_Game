@@ -4,16 +4,11 @@ import model.Board;
 import model.BoardCell;
 import model.BoardObject;
 import model.Vector2D;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 
-
 public class GameStateHistoryUtil {
-
-
-    // FIXME THERE WE CAN STORE OBJECT TYPES, WHICH WOULD BE MORE SUFFICIENT
     LinkedList<HashMap<Vector2D, LinkedList<BoardObject>>> history;
 
     public GameStateHistoryUtil() {
@@ -48,6 +43,4 @@ public class GameStateHistoryUtil {
     public void reset() {
         history.clear();
     }
-
-
 }

@@ -43,15 +43,12 @@ public class PositionUtil extends EventEmitter<GameState> {
     }
 
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
-//        Find movable object
-
         LinkedList<BoardObject> movableObjects = new LinkedList<>();
 
         sourceCell.getBoardObjects().stream().filter(BoardObject::isMovable).forEach(movableObjects::add);
 
 
         if (movableObjects.size() != 1) {
-//            FIXME Hardcode removing everything except doctor
             movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
         }
 

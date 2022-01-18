@@ -7,7 +7,6 @@ import model.BoardObject;
 
 public abstract class PowerUp extends BoardObject {
 
-
     public PowerUp(Color color) {
         super(color, false);
     }

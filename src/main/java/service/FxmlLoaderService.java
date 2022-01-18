@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 

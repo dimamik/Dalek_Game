@@ -51,11 +51,8 @@ public class AppController implements EventListener<BoardCell> {
     @FXML
     public Button backToMenu;
     public int roundNumber = 0;
+    public boolean campaignMode;
 
-    public boolean isRoundGame;
-
-
-    //    FIXME NEEDS TO BE DIVIDED INTO SMALLER CONTROLLERS!
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView, @Named("roundsNumber") int roundsNumber) {
         this.board = board;
@@ -87,10 +84,10 @@ public class AppController implements EventListener<BoardCell> {
         this.borderPane.getRight().setVisible(true);
     }
 
-    public void startRandomGame() {
+    public void startQuickGame() {
         gameUtil.resetGame();
         gameUtil.setUpRandomGame();
-        isRoundGame = false;
+        campaignMode = false;
         backToMenu.setVisible(false);
         Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
         TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
@@ -99,7 +96,7 @@ public class AppController implements EventListener<BoardCell> {
         gameState = GameState.PLAYING_RANDOM;
     }
 
-    public void startRoundGame() {
+    public void startCampaignGame() {
         roundNumber = roundNumber + 1;
         if (roundNumber > MAX_ROUNDS) {
             endGame();
@@ -107,7 +104,7 @@ public class AppController implements EventListener<BoardCell> {
         }
         gameUtil.resetGame();
         backToMenu.setVisible(false);
-        isRoundGame = true;
+        campaignMode = true;
         Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
         TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
         Teleport.setDisable(true);
@@ -180,12 +177,12 @@ public class AppController implements EventListener<BoardCell> {
     public void handlePlayRoundGame() {
         roundNumber = 0;
         showGame();
-        startRoundGame();
+        startCampaignGame();
     }
 
     public void handlePlayRandomGame() {
         showGame();
-        startRandomGame();
+        startQuickGame();
     }
 
     public void handlePauseGame() {

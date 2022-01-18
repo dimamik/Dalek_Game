@@ -1,6 +1,5 @@
 package controller;
 
-
 import enums.GameState;
 import interfaces.EventListener;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +15,13 @@ public class GameStateController implements EventListener<GameState> {
 
     @Override
     public void onEvent(GameState e) {
-
-//        if (e == GameState.GAME_RUNNING) {
-//            appController.startRandomGame();
-//            appController.setGameState(GameState.GAME_RUNNING);
-//        }
         if (e == GameState.DOCTOR_WON) {
 
             log.info("Doctor Won!");
 
-            if (appController.isRoundGame && appController.roundNumber < appController.MAX_ROUNDS) {
+            if (appController.campaignMode && appController.roundNumber < appController.MAX_ROUNDS) {
                 log.info("NEXT_ROUND");
-                appController.startRoundGame();
+                appController.startCampaignGame();
             } else {
                 log.info("Game Over");
                 appController.endGame();
@@ -37,7 +31,6 @@ public class GameStateController implements EventListener<GameState> {
             log.info("TELEPORT GAINED");
             appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
             appController.Teleport.setDisable(false);
-
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
             log.info("TIME_TRAVEL GAINED");
             appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
@@ -47,9 +40,8 @@ public class GameStateController implements EventListener<GameState> {
             if (appController.gameUtil.timeTravelNumber == 0) {
                 appController.endGame();
             } else {
-                appController.infoLabel.setText("Use teleport!");
+                appController.infoLabel.setText("Use time travel!");
             }
         }
-
     }
 }

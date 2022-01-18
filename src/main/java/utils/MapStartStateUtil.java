@@ -7,7 +7,6 @@ import model.BoardObject;
 import model.Vector2D;
 import model.board_object_instances.Dalek;
 import service.DatabaseService;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
