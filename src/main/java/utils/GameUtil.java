@@ -15,7 +15,6 @@ import model.Vector2D;
 import model.board_object_instances.Doctor;
 import model.board_object_instances.Teleport;
 import model.board_object_instances.TimeTravel;
-
 import java.util.*;
 
 @Slf4j
@@ -77,16 +76,16 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             teleportsNumber--;
 
             Optional<BoardCell> boardCell = findRandomEmptyCell();
-            if (boardCell.isEmpty()) {
-                return;
-            }
-
-            BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
-            doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
-            boardCell.get().addBoardObject(doctorObject);
-            occupiedCells.add(boardCell.get());
-            occupiedCells.remove(doctorCell);
-            doctorCell = boardCell.get();
+            boardCell.ifPresent(cell -> {
+                if (cell.isEmpty()) {
+                    BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
+                    doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
+                    boardCell.get().addBoardObject(doctorObject);
+                    occupiedCells.add(boardCell.get());
+                    occupiedCells.remove(doctorCell);
+                    doctorCell = boardCell.get();
+                }
+            });
         }
         if (teleportsNumber == 0) {
             teleport.setDisable(true);
@@ -148,8 +147,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     public void handleMove(String directionString) {
-//        TODO Add Previous State to StateTable
-//        FIXME This can be a commander pattern
         gameStateHistoryUtil.recordDay(board);
 
         Vector2D direction = positionUtil.getDirection(directionString);
@@ -169,28 +166,29 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
         spawnTeleport();
         spawnTimeTravel();
-
     }
 
     private void spawnTeleport() {
         if (Math.random() < TELEPORT_PROBABILITY) {
             Optional<BoardCell> boardCell = findRandomEmptyCell();
-            if (boardCell.isEmpty()) {
-                return;
-            }
-            board.addBoardObject(new Teleport(), boardCell.get().getPosition());
-            occupiedCells.add(boardCell.get());
+            boardCell.ifPresent(cell -> {
+                if (cell.isEmpty()) {
+                    board.addBoardObject(new Teleport(), boardCell.get().getPosition());
+                    occupiedCells.add(boardCell.get());
+                }
+            });
         }
     }
 
     private void spawnTimeTravel() {
         if (Math.random() < TIME_TRAVEL_PROBABILITY) {
             Optional<BoardCell> boardCell = findRandomEmptyCell();
-            if (boardCell.isEmpty()) {
-                return;
-            }
-            board.addBoardObject(new TimeTravel(), boardCell.get().getPosition());
-            occupiedCells.add(boardCell.get());
+            boardCell.ifPresent(cell -> {
+                if (cell.isEmpty()) {
+                    board.addBoardObject(new TimeTravel(), boardCell.get().getPosition());
+                    occupiedCells.add(boardCell.get());
+                }
+            });
         }
     }
 
@@ -226,7 +224,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         } else if (noDaleksOnBoard(occupiedCells)) {
             return true;
         }
-        throw new IllegalStateException("Game is not ended");
+        throw new IllegalStateException("Game is not ended!");
     }
 
 
@@ -245,7 +243,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     @Override
     public void onEvent(GameState e) {
         if (e == GameState.TELEPORT_GAINED) {
-//          FIXME This can be done in better way!
             teleportsNumber++;
             emit(GameState.TELEPORT_GAINED);
 
