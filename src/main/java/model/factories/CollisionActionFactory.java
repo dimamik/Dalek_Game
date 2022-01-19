@@ -23,7 +23,6 @@ public class CollisionActionFactory {
     }
 
     private void initOperations() {
-
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.DALEK), new DalekDalekReaction());
         operationMap.put(new PairOfObjects(ObjectType.DALEK, ObjectType.HEAP), new DalekHeapReaction());
         operationMap.put(new PairOfObjects(ObjectType.DOCTOR, ObjectType.DALEK), new DoctorDalekReaction());

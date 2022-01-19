@@ -4,7 +4,7 @@ import enums.ObjectType;
 import javafx.scene.paint.Color;
 
 public abstract class BoardObject {
-    protected boolean isMovable;
+    protected final boolean isMovable;
     private Color color;
 
     public BoardObject(Color color) {

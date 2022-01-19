@@ -6,7 +6,7 @@ import model.BoardObject;
 
 public class Teleport extends BoardObject {
     public Teleport() {
-        super(Color.BLUE);
+        super(Color.BLUE, false);
     }
 
     @Override

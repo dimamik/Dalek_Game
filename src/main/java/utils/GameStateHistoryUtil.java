@@ -10,13 +10,14 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class GameStateHistoryUtil {
-    LinkedList<HashMap<Vector2D, LinkedList<BoardObject>>> history;
+    final LinkedList<HashMap<Vector2D, LinkedList<BoardObject>>> history;
 
     public GameStateHistoryUtil() {
         this.history = new LinkedList<>();
     }
 
     public void recordDay(Board board) {
+//        There we can remember only object type and position
         HashMap<Vector2D, LinkedList<BoardObject>> currentDay = new HashMap<>();
 
         for (int i = 0; i < board.getRows(); i++) {

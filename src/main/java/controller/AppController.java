@@ -25,11 +25,14 @@ import views.BoardView;
  */
 public class AppController implements EventListener<BoardCell> {
     public final int MAX_ROUNDS;
+    public final GameUtil gameUtil;
+    public final BoardView boardView;
     private final Board board;
     private final GameStateController gameStateController;
-    public GameUtil gameUtil;
     public GameState gameState = GameState.GAME_PAUSED;
-    public BoardView boardView;
+    public int roundNumber = 0;
+    public boolean campaignMode;
+
     @FXML
     public VBox centerSide;
     @FXML
@@ -50,8 +53,6 @@ public class AppController implements EventListener<BoardCell> {
     public Button pauseGame;
     @FXML
     public Button backToMenu;
-    public int roundNumber = 0;
-    public boolean campaignMode;
 
     @Inject
     public AppController(Board board, GameUtil gameUtil, BoardView boardView, @Named("roundsNumber") int roundsNumber) {
@@ -84,6 +85,15 @@ public class AppController implements EventListener<BoardCell> {
         this.borderPane.getRight().setVisible(true);
     }
 
+    private void controlTeleport() {
+        Teleport.setDisable(gameUtil.teleportsNumber <= 0);
+    }
+
+    private void controlTimeTravel() {
+        TimeTravel.setDisable(gameUtil.timeTravelNumber <= 0);
+
+    }
+
     public void startQuickGame() {
         gameUtil.resetGame();
         gameUtil.setUpRandomGame();
@@ -91,9 +101,9 @@ public class AppController implements EventListener<BoardCell> {
         backToMenu.setVisible(false);
         Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
         TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
-        Teleport.setDisable(true);
-        TimeTravel.setDisable(true);
-        gameState = GameState.PLAYING_RANDOM;
+        controlTeleport();
+        controlTimeTravel();
+        setGameState(GameState.PLAYING_RANDOM);
     }
 
     public void startCampaignGame() {
@@ -107,9 +117,9 @@ public class AppController implements EventListener<BoardCell> {
         campaignMode = true;
         Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
         TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
-        Teleport.setDisable(true);
-        TimeTravel.setDisable(true);
-        gameState = GameState.PLAYING_ROUND;
+        controlTeleport();
+        controlTimeTravel();
+        setGameState(GameState.PLAYING_ROUND);
         gameUtil.startNewDefinedRound(roundNumber);
         infoLabel.setText("ROUND " + roundNumber);
     }

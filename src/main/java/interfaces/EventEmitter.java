@@ -3,7 +3,7 @@ package interfaces;
 import java.util.LinkedList;
 
 public abstract class EventEmitter<Event> {
-    protected LinkedList<EventListener<Event>> eventListeners = new LinkedList<>();
+    protected final LinkedList<EventListener<Event>> eventListeners = new LinkedList<>();
 
     public void addListener(EventListener<Event> listener) {
         eventListeners.add(listener);

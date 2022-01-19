@@ -5,13 +5,7 @@ import interfaces.EventListener;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class GameStateController implements EventListener<GameState> {
-
-    AppController appController;
-
-    public GameStateController(AppController appController) {
-        this.appController = appController;
-    }
+public record GameStateController(AppController appController) implements EventListener<GameState> {
 
     @Override
     public void onEvent(GameState e) {

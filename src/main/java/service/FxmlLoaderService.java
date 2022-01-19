@@ -8,12 +8,9 @@ import javafx.fxml.JavaFXBuilderFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FxmlLoaderService {
-    private final Injector injector;
-
+public record FxmlLoaderService(Injector injector) {
     @Inject
-    public FxmlLoaderService(final Injector injector) {
-        this.injector = injector;
+    public FxmlLoaderService {
     }
 
     public FXMLLoader getLoader(final URL location) {

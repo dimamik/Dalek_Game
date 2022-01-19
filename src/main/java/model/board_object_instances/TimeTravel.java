@@ -6,7 +6,7 @@ import model.BoardObject;
 
 public class TimeTravel extends BoardObject {
     public TimeTravel() {
-        super(Color.YELLOW);
+        super(Color.YELLOW, false);
     }
 
     @Override

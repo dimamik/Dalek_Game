@@ -1,5 +1,6 @@
 package model;
 
+import enums.ObjectType;
 import interfaces.EventEmitter;
 import interfaces.EventListener;
 import javafx.collections.FXCollections;
@@ -31,8 +32,13 @@ public class BoardCell extends EventEmitter<BoardCell> {
         return Optional.of(this.boardObjects.get(0));
     }
 
-    public ConditionallyMovableBoardObject getConditionallyMovableObject() {
-        return (ConditionallyMovableBoardObject) this.boardObjects.get(0);
+    public Optional<ConditionallyMovableBoardObject> getConditionallyMovableObject() {
+        List<BoardObject> listOfDaleks = boardObjects.stream().filter(boardObject -> boardObject.getType() == ObjectType.DALEK).toList();
+        if (listOfDaleks.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of((ConditionallyMovableBoardObject) listOfDaleks.get(0));
+        }
     }
 
     public void addBoardObject(BoardObject boardObject) {
@@ -49,9 +55,7 @@ public class BoardCell extends EventEmitter<BoardCell> {
 
 
     public void addListenerToListChange() {
-        boardObjects.addListener((ListChangeListener<BoardObject>) c -> {
-            emit(this);
-        });
+        boardObjects.addListener((ListChangeListener<BoardObject>) c -> emit(this));
     }
 
     public List<BoardObject> getBoardObjects() {

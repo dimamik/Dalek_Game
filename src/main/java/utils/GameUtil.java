@@ -20,6 +20,7 @@ import java.util.*;
 
 @Slf4j
 public class GameUtil extends EventEmitter<GameState> implements EventListener<GameState> {
+    final int numberOfDaleks;
     private final PositionUtil positionUtil;
     private final Board board;
     private final GameStateHistoryUtil gameStateHistoryUtil;
@@ -29,7 +30,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private final double TIME_TRAVEL_PROBABILITY;
     public int teleportsNumber = 0;
     public int timeTravelNumber = 0;
-    int numberOfDaleks;
     private BoardCell doctorCell;
 
     @Inject
@@ -82,7 +82,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
                     BoardObject doctorObject = doctorCell.getBoardObjects().get(0);
                     doctorCell.removeBoardObject(doctorCell.getBoardObjects().get(0));
                     boardCell.get().addBoardObject(doctorObject);
-                    occupiedCells.add(boardCell.get());
+                    addToOccupiedCells(boardCell.get());
                     occupiedCells.remove(doctorCell);
                     doctorCell = boardCell.get();
                 }
@@ -92,6 +92,14 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             teleport.setDisable(true);
         }
         teleport.setText("TELEPORT: " + teleportsNumber);
+    }
+
+    private void addToOccupiedCells(BoardCell boardCell) {
+        if (!occupiedCells.contains(boardCell)) {
+            occupiedCells.add(boardCell);
+        } else {
+            log.error("Cell already occupied");
+        }
     }
 
     public void handleTimeTravel(Button timeTravel) {
@@ -111,7 +119,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
                         cell.addBoardObject(object);
 
                     }
-                    occupiedCells.add(cell);
+                    addToOccupiedCells(cell);
                 }
             }
         }
@@ -149,7 +157,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     public void handleMove(String directionString) {
         gameStateHistoryUtil.recordDay(board);
-
         Vector2D direction = positionUtil.getDirection(directionString);
         doctorCell = positionUtil.move(doctorCell, direction);
         Vector2D doctorPositionAfterMove = doctorCell.getPosition();
@@ -158,9 +165,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             gameEnded();
             return;
         }
-
         positionUtil.moveAllDaleks(doctorPositionAfterMove, occupiedCells);
-
         if (isGameEnded()) {
             gameEnded();
         }
@@ -175,7 +180,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             boardCell.ifPresent(cell -> {
                 if (cell.isEmpty()) {
                     board.addBoardObject(new Teleport(), boardCell.get().getPosition());
-                    occupiedCells.add(boardCell.get());
+                    addToOccupiedCells(boardCell.get());
                 }
             });
         }
@@ -187,7 +192,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
             boardCell.ifPresent(cell -> {
                 if (cell.isEmpty()) {
                     board.addBoardObject(new TimeTravel(), boardCell.get().getPosition());
-                    occupiedCells.add(boardCell.get());
+                    addToOccupiedCells(boardCell.get());
                 }
             });
         }
@@ -195,7 +200,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     public boolean noDaleksOnBoard(List<BoardCell> occupiedCells) {
         for (BoardCell cell : occupiedCells) {
-            if (!cell.isEmpty() && cell.getBoardObjects().get(0).getType() == ObjectType.DALEK) {
+            if (!cell.isEmpty() && cell.getConditionallyMovableObject().isPresent()) {
                 return false;
             }
         }

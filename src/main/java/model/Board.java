@@ -3,7 +3,6 @@ package model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.Optional;
 
 public class Board {
     private final int cols;
@@ -28,24 +27,12 @@ public class Board {
         return rows;
     }
 
-    public BoardCell[][] getBoardCells() {
-        return boardCells;
-    }
-
     public BoardCell getBoardCell(Vector2D position) {
         return boardCells[position.x()][position.y()];
     }
 
-    public Optional<BoardObject> getBoardObject(Vector2D position) {
-        return getBoardCell(position).getTopBoardObject();
-    }
-
     public void addBoardObject(BoardObject boardObject, Vector2D position) {
         getBoardCell(position).addBoardObject(boardObject);
-    }
-
-    public void removeBoardObject(BoardObject boardObject, Vector2D position) {
-        getBoardCell(position).removeBoardObject(boardObject);
     }
 
     public void clearBoard() {

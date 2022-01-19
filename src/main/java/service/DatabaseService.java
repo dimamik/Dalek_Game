@@ -32,6 +32,7 @@ public record DatabaseService(int cols, int rows, String db_path) {
                 int x = Integer.parseInt(line.split(" ")[0]);
                 int y = Integer.parseInt(line.split(" ")[1]);
 
+//                Some basic validation
                 if (x >= 0 && x < cols && y >= 0 && y < rows) {
                     points.add(new Vector2D(x, y));
                 }

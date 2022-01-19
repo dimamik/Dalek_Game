@@ -43,43 +43,52 @@ public class PositionUtil extends EventEmitter<GameState> {
     public BoardCell changePosition(BoardCell sourceCell, Vector2D shift) {
         LinkedList<BoardObject> movableObjects = new LinkedList<>();
         sourceCell.getBoardObjects().stream().filter(BoardObject::isMovable).forEach(movableObjects::add);
-
         if (movableObjects.size() != 1) {
-            movableObjects.removeIf(boardObject -> boardObject.getType() != ObjectType.DOCTOR);
-        }
-
-        if (movableObjects.size() == 0) {
-            throw new RuntimeException("There is no movable object in the cell");
+            throw new RuntimeException("There are two movable objects on the cell");
         }
         BoardObject objectToMove = movableObjects.getFirst();
         BoardCell targetCell = board.getBoardCell(sourceCell.getPosition().add(shift));
+        checkForTeleportAndTimeTravel(objectToMove, targetCell);
+        targetCell.getBoardObjects().add(objectToMove);
+        sourceCell.removeBoardObject(objectToMove);
+        if (targetCell.getBoardObjects().size() > 1) {
+            collisionHandler.handleCollision(targetCell);
+        }
+        return targetCell;
+    }
 
+    private void checkForTeleportAndTimeTravel(BoardObject objectToMove, BoardCell targetCell) {
+        if (objectToMove.getType() != ObjectType.DOCTOR) {
+            return;
+        }
         targetCell.getBoardObjects().stream().filter(boardObject -> boardObject.getType() == ObjectType.TELEPORT || boardObject.getType() == ObjectType.TIME_TRAVEL)
                 .forEach(boardObject ->
                         emit(boardObject.getType() == ObjectType.TIME_TRAVEL ? GameState.TIME_TRAVEL_GAINED : GameState.TELEPORT_GAINED)
                 );
-        targetCell.getBoardObjects().add(objectToMove);
-        sourceCell.removeBoardObject(objectToMove);
-
-        if (targetCell.getBoardObjects().size() > 1) {
-            collisionHandler.handleCollision(targetCell);
-        }
-
-        return targetCell;
     }
 
-    public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
-        for (int i = 0; i < occupiedCells.size(); i++) {
-            BoardCell boardCell = occupiedCells.get(i);
-            if (boardCell.getTopBoardObject().isPresent() && boardCell.getTopBoardObject().get().getType() == ObjectType.DALEK) {
-                Vector2D currentPosition = occupiedCells.get(i).getPosition();
-                Vector2D singleMove = boardCell.getConditionallyMovableObject().getMove(currentPosition, doctorPosition);
 
+    public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
+        List<BoardCell> daleksCells =
+                occupiedCells.stream().filter(boardCell -> boardCell.getConditionallyMovableObject().isPresent()).toList();
+        for (BoardCell dalekCell : daleksCells) {
+            Vector2D currentPosition = dalekCell.getPosition();
+            if (dalekCell.getConditionallyMovableObject().isPresent()) {
+                Vector2D singleMove = dalekCell.getConditionallyMovableObject().get().getMove(currentPosition, doctorPosition);
                 if (this.isMovePossible(board.getBoardCell(currentPosition), singleMove)) {
                     BoardCell targetCell = this.changePosition(board.getBoardCell(currentPosition), singleMove);
-                    occupiedCells.set(i, targetCell);
+                    balanceOccupiedCells(occupiedCells, board.getBoardCell(currentPosition), targetCell);
                 }
             }
+        }
+    }
+
+    private void balanceOccupiedCells(List<BoardCell> occupiedCells, BoardCell sourceCell, BoardCell targetCell) {
+        if (sourceCell.getBoardObjects().size() == 1) {
+            occupiedCells.remove(sourceCell);
+        }
+        if (!occupiedCells.contains(targetCell)) {
+            occupiedCells.add(targetCell);
         }
     }
 

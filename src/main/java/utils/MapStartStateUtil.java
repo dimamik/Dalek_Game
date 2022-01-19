@@ -14,15 +14,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class MapStartStateUtil {
-
-    private final DatabaseService databaseService;
-    Board board;
-
+public record MapStartStateUtil(Board board, DatabaseService databaseService) {
     @Inject
-    public MapStartStateUtil(Board board, DatabaseService databaseService) {
-        this.board = board;
-        this.databaseService = databaseService;
+    public MapStartStateUtil {
     }
 
     public void placeFromDatabase(List<BoardCell> occupiedCells, int roundNumber) {
@@ -34,7 +28,6 @@ public class MapStartStateUtil {
             occupiedCells.add(board.getBoardCell(daleksPosition));
         }
     }
-
 
     public void placeRandomly(List<BoardCell> occupiedCells, int numberOfDaleks) {
         List<Vector2D> availableSpots = new ArrayList<>();
@@ -51,5 +44,4 @@ public class MapStartStateUtil {
             availableSpots.remove(randomIndex);
         }
     }
-
 }
