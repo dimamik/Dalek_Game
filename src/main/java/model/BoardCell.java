@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BoardCell extends EventEmitter<BoardCell> {
     private final Vector2D position;
@@ -33,7 +34,9 @@ public class BoardCell extends EventEmitter<BoardCell> {
     }
 
     public Optional<ConditionallyMovableBoardObject> getConditionallyMovableObject() {
-        List<BoardObject> listOfDaleks = boardObjects.stream().filter(boardObject -> boardObject.getType() == ObjectType.DALEK).toList();
+        List<BoardObject> listOfDaleks = boardObjects.stream()
+                .filter(boardObject -> boardObject.getType() == ObjectType.DALEK)
+                .collect(Collectors.toList());
         if (listOfDaleks.size() == 0) {
             return Optional.empty();
         } else {

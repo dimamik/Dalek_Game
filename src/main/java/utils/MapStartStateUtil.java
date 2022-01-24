@@ -31,10 +31,14 @@ public record MapStartStateUtil(Board board, DatabaseService databaseService) {
 
     public void placeRandomly(List<BoardCell> occupiedCells, int numberOfDaleks) {
         List<Vector2D> availableSpots = new ArrayList<>();
-        for (int i = 0; i < board.getRows(); i++)
-            for (int j = 0; j < board.getRows(); j++)
-                if (board.getBoardCell(new Vector2D(i, j)).isEmpty())
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getRows(); j++) {
+                if (board.getBoardCell(new Vector2D(i, j)).isEmpty()) {
                     availableSpots.add(new Vector2D(i, j));
+                }
+            }
+        }
+
 
         for (int i = 0; i < numberOfDaleks; i++) {
             int randomIndex = ThreadLocalRandom.current().nextInt(0, availableSpots.size());

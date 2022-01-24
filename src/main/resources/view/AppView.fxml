@@ -43,7 +43,7 @@
             <VBox fx:id="movementButtons">
                 <HBox maxHeight="-Infinity" prefHeight="40.0" prefWidth="200.0">
                     <VBox.margin>
-                        <Insets bottom="0.0" left="15.0" right="15.0" top="0.0"/>
+                        <Insets left="15.0" right="15.0"/>
                     </VBox.margin>
                     <Button fx:id="7" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="NW">
                         <HBox.margin>
@@ -64,14 +64,14 @@
 
                 <HBox maxHeight="-Infinity" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <VBox.margin>
-                        <Insets bottom="0.0" left="15.0" right="15.0" top="0.0"/>
+                        <Insets left="15.0" right="15.0"/>
                     </VBox.margin>
                     <Button fx:id="4" mnemonicParsing="false" onAction="#onDirectionPress" prefWidth="50" text="W">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
                     </Button>
-                    <Button fx:id="10" mnemonicParsing="false" prefWidth="50" text="" disable="true">
+                    <Button fx:id="10" mnemonicParsing="false" prefWidth="50" disable="true">
                         <HBox.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                         </HBox.margin>
@@ -111,7 +111,7 @@
                 </VBox.margin>
             </Label>
             <HBox alignment="CENTER">
-                <Button fx:id="Teleport" styleClass="power-up-button" mnemonicParsing="false"
+                <Button fx:id="teleport" styleClass="power-up-button" mnemonicParsing="false"
                         onAction="#onTeleportPress" disable="true"
                         text="TELEPORT: 0">
                     <VBox.margin>
@@ -120,7 +120,7 @@
                 </Button>
             </HBox>
             <HBox alignment="CENTER">
-                <Button fx:id="TimeTravel" styleClass="power-up-button" mnemonicParsing="false"
+                <Button fx:id="timeTravel" styleClass="power-up-button" mnemonicParsing="false"
                         onAction="#onTimeTravelPress"
                         text="TIME TRAVEL: 0">
                     <HBox.margin>

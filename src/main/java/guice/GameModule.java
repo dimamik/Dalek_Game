@@ -57,7 +57,7 @@ public class GameModule extends AbstractModule {
     }
 
     @Provides
-    @Named("db_path")
+    @Named("dbPath")
     private String provideDbPath() {
         return "db";
     }
