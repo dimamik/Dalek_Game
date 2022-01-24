@@ -22,7 +22,7 @@ public record GameStateController(AppController appController) implements EventL
 
     private void doctorWonAction() {
         log.info("Doctor Won!");
-        if (appController.campaignMode && appController.roundNumber < appController.MAX_ROUNDS) {
+        if (appController.campaignMode && appController.roundNumber < appController.maxRounds) {
             log.info("NEXT_ROUND");
             appController.startCampaignGame();
         } else {
@@ -33,14 +33,14 @@ public record GameStateController(AppController appController) implements EventL
 
     private void teleportGainedAction() {
         log.info("TELEPORT GAINED");
-        appController.Teleport.setText("TELEPORT: " + appController.gameUtil.teleportsNumber);
-        appController.Teleport.setDisable(false);
+        appController.updateTeleportButton();
+        appController.teleport.setDisable(false);
     }
 
     private void timeTravelGained() {
         log.info("TIME_TRAVEL GAINED");
-        appController.TimeTravel.setText("TIME TRAVEL: " + appController.gameUtil.timeTravelNumber);
-        appController.TimeTravel.setDisable(false);
+        appController.updateTimeTravelButton();
+        appController.timeTravel.setDisable(false);
     }
 
     private void gameEnded() {

@@ -24,7 +24,7 @@ import views.BoardView;
  * Later we will need to split this up into board controller and menu controller
  */
 public class AppController implements EventListener<BoardCell> {
-    public final int MAX_ROUNDS;
+    public final int maxRounds;
     public final GameUtil gameUtil;
     public final BoardView boardView;
     private final Board board;
@@ -46,9 +46,9 @@ public class AppController implements EventListener<BoardCell> {
     @FXML
     public Label infoLabel;
     @FXML
-    public Button Teleport;
+    public Button teleport;
     @FXML
-    public Button TimeTravel;
+    public Button timeTravel;
     @FXML
     public Button pauseGame;
     @FXML
@@ -59,7 +59,7 @@ public class AppController implements EventListener<BoardCell> {
         this.board = board;
         this.gameUtil = gameUtil;
         this.boardView = boardView;
-        this.MAX_ROUNDS = roundsNumber;
+        this.maxRounds = roundsNumber;
         this.gameStateController = new GameStateController(this);
     }
 
@@ -86,11 +86,11 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     private void controlTeleport() {
-        Teleport.setDisable(gameUtil.teleportsNumber <= 0);
+        teleport.setDisable(gameUtil.teleportsNumber <= 0);
     }
 
     private void controlTimeTravel() {
-        TimeTravel.setDisable(gameUtil.timeTravelNumber <= 0);
+        timeTravel.setDisable(gameUtil.timeTravelNumber <= 0);
 
     }
 
@@ -99,8 +99,8 @@ public class AppController implements EventListener<BoardCell> {
         gameUtil.setUpRandomGame();
         campaignMode = false;
         backToMenu.setVisible(false);
-        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
-        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
         controlTeleport();
         controlTimeTravel();
         setGameState(GameState.PLAYING_RANDOM);
@@ -108,15 +108,15 @@ public class AppController implements EventListener<BoardCell> {
 
     public void startCampaignGame() {
         roundNumber = roundNumber + 1;
-        if (roundNumber > MAX_ROUNDS) {
+        if (roundNumber > maxRounds) {
             endGame();
             roundNumber = 0;
         }
         gameUtil.resetGame();
         backToMenu.setVisible(false);
         campaignMode = true;
-        Teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
-        TimeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
         controlTeleport();
         controlTimeTravel();
         setGameState(GameState.PLAYING_ROUND);
@@ -127,8 +127,8 @@ public class AppController implements EventListener<BoardCell> {
     public void endGame() {
         setGameState(GameState.GAME_ENDED);
         movementButtons.setDisable(true);
-        Teleport.setDisable(true);
-        TimeTravel.setDisable(true);
+        teleport.setDisable(true);
+        timeTravel.setDisable(true);
         infoLabel.setText("Game over!");
         pauseGame.setVisible(false);
         backToMenu.setVisible(true);
@@ -158,13 +158,13 @@ public class AppController implements EventListener<BoardCell> {
 
     public void onTeleportPress() {
         if (isGameActive()) {
-            gameUtil.handleTeleport(Teleport);
+            gameUtil.handleTeleport(teleport);
         }
     }
 
     public void onTimeTravelPress() {
         if (isGameActive()) {
-            gameUtil.handleTimeTravel(TimeTravel);
+            gameUtil.handleTimeTravel(timeTravel);
         }
     }
 
@@ -205,5 +205,13 @@ public class AppController implements EventListener<BoardCell> {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public void updateTeleportButton() {
+        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+    }
+
+    public void updateTimeTravelButton() {
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
     }
 }
