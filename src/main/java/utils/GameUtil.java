@@ -26,17 +26,17 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     private final GameStateHistoryUtil gameStateHistoryUtil;
     private final MapStartStateUtil mapStartStateUtil;
     private final List<BoardCell> occupiedCells;
-    private final double TELEPORT_PROBABILITY;
-    private final double TIME_TRAVEL_PROBABILITY;
-    public int teleportsNumber = 0;
-    public int timeTravelNumber = 0;
+    private final double teleportProbability;
+    private final double timeTravelProbability;
+    private int teleportsNumber = 0;
+    private int timeTravelNumber = 0;
     private BoardCell doctorCell;
 
     @Inject
     public GameUtil(Board board, PositionUtil positionUtil, MapStartStateUtil mapStartStateUtil,
                     @Named("daleksNo") int daleksNo,
-                    @Named("TELEPORT_PROBABILITY") double TELEPORT_PROBABILITY,
-                    @Named("TIME_TRAVEL_PROBABILITY") double TIME_TRAVEL_PROBABILITY) {
+                    @Named("teleportProbability") double teleportProbability,
+                    @Named("timeTravelProbability") double timeTravelProbability) {
         super();
         this.board = board;
         this.numberOfDaleks = daleksNo;
@@ -44,8 +44,8 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         this.occupiedCells = new ArrayList<>();
         this.gameStateHistoryUtil = new GameStateHistoryUtil();
         this.mapStartStateUtil = mapStartStateUtil;
-        this.TELEPORT_PROBABILITY = TELEPORT_PROBABILITY;
-        this.TIME_TRAVEL_PROBABILITY = TIME_TRAVEL_PROBABILITY;
+        this.teleportProbability = teleportProbability;
+        this.timeTravelProbability = timeTravelProbability;
         init();
     }
 
@@ -175,7 +175,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     private void spawnTeleport() {
-        if (Math.random() < TELEPORT_PROBABILITY) {
+        if (Math.random() < teleportProbability) {
             Optional<BoardCell> boardCell = findRandomEmptyCell();
             boardCell.ifPresent(cell -> {
                 if (cell.isEmpty()) {
@@ -187,7 +187,7 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
     }
 
     private void spawnTimeTravel() {
-        if (Math.random() < TIME_TRAVEL_PROBABILITY) {
+        if (Math.random() < timeTravelProbability) {
             Optional<BoardCell> boardCell = findRandomEmptyCell();
             boardCell.ifPresent(cell -> {
                 if (cell.isEmpty()) {
@@ -244,6 +244,14 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
 
     public Board getBoard() {
         return board;
+    }
+
+    public int getTeleportsNumber() {
+        return teleportsNumber;
+    }
+
+    public int getTimeTravelNumber() {
+        return timeTravelNumber;
     }
 
     @Override

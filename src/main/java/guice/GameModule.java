@@ -45,14 +45,14 @@ public class GameModule extends AbstractModule {
     }
 
     @Provides
-    @Named("TELEPORT_PROBABILITY")
-    private double provideTELEPORT_PROBABILITY() {
+    @Named("teleportProbability")
+    private double provideTeleportProbability() {
         return 0.6;
     }
 
     @Provides
-    @Named("TIME_TRAVEL_PROBABILITY")
-    private double provideTIME_TRAVEL_PROBABILITY() {
+    @Named("timeTravelProbability")
+    private double provideTimeTravelProbability() {
         return 0.6;
     }
 

@@ -13,6 +13,7 @@ import model.Vector2D;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class PositionUtil extends EventEmitter<GameState> {
@@ -69,8 +70,9 @@ public class PositionUtil extends EventEmitter<GameState> {
 
 
     public void moveAllDaleks(Vector2D doctorPosition, List<BoardCell> occupiedCells) {
-        List<BoardCell> daleksCells =
-                occupiedCells.stream().filter(boardCell -> boardCell.getConditionallyMovableObject().isPresent()).toList();
+        List<BoardCell> daleksCells = occupiedCells.stream()
+                .filter(boardCell -> boardCell.getConditionallyMovableObject().isPresent())
+                .collect(Collectors.toList());
         for (BoardCell dalekCell : daleksCells) {
             Vector2D currentPosition = dalekCell.getPosition();
             if (dalekCell.getConditionallyMovableObject().isPresent()) {

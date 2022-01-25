@@ -86,11 +86,11 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     private void controlTeleport() {
-        teleport.setDisable(gameUtil.teleportsNumber <= 0);
+        teleport.setDisable(gameUtil.getTeleportsNumber() <= 0);
     }
 
     private void controlTimeTravel() {
-        timeTravel.setDisable(gameUtil.timeTravelNumber <= 0);
+        timeTravel.setDisable(gameUtil.getTimeTravelNumber() <= 0);
 
     }
 
@@ -99,8 +99,8 @@ public class AppController implements EventListener<BoardCell> {
         gameUtil.setUpRandomGame();
         campaignMode = false;
         backToMenu.setVisible(false);
-        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
-        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        teleport.setText("TELEPORT: " + gameUtil.getTeleportsNumber());
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.getTimeTravelNumber());
         controlTeleport();
         controlTimeTravel();
         setGameState(GameState.PLAYING_RANDOM);
@@ -115,8 +115,8 @@ public class AppController implements EventListener<BoardCell> {
         gameUtil.resetGame();
         backToMenu.setVisible(false);
         campaignMode = true;
-        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
-        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        teleport.setText("TELEPORT: " + gameUtil.getTeleportsNumber());
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.getTimeTravelNumber());
         controlTeleport();
         controlTimeTravel();
         setGameState(GameState.PLAYING_ROUND);
@@ -208,10 +208,10 @@ public class AppController implements EventListener<BoardCell> {
     }
 
     public void updateTeleportButton() {
-        teleport.setText("TELEPORT: " + gameUtil.teleportsNumber);
+        teleport.setText("TELEPORT: " + gameUtil.getTeleportsNumber());
     }
 
     public void updateTimeTravelButton() {
-        timeTravel.setText("TIME TRAVEL: " + gameUtil.timeTravelNumber);
+        timeTravel.setText("TIME TRAVEL: " + gameUtil.getTimeTravelNumber());
     }
 }

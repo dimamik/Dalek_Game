@@ -45,7 +45,7 @@ public record GameStateController(AppController appController) implements EventL
 
     private void gameEnded() {
         log.info("GAME ENDED!");
-        if (appController.gameUtil.timeTravelNumber == 0) {
+        if (appController.gameUtil.getTimeTravelNumber() == 0) {
             appController.endGame();
         } else {
             appController.infoLabel.setText("Use time travel!");
