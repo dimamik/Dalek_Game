@@ -21,13 +21,10 @@ public record DatabaseService(int cols, int rows, String dbPath) {
         this.dbPath = dbPath;
     }
 
-
     public LinkedList<Vector2D> loadRoundData(int roundNumber) {
         URL resource = URLClassLoader.getSystemResource(String.format("%s//round_%d.txt", dbPath, roundNumber));
-
         LinkedList<Vector2D> points = new LinkedList<>();
-        try (Scanner sc = new Scanner(new File(Objects.requireNonNull(resource).toURI()))){
-
+        try (Scanner sc = new Scanner(new File(Objects.requireNonNull(resource).toURI()))) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 int x = Integer.parseInt(line.split(" ")[0]);

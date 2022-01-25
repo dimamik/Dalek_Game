@@ -38,8 +38,6 @@ public record MapStartStateUtil(Board board, DatabaseService databaseService) {
                 }
             }
         }
-
-
         for (int i = 0; i < numberOfDaleks; i++) {
             int randomIndex = ThreadLocalRandom.current().nextInt(0, availableSpots.size());
             Vector2D spawnPlace = availableSpots.get(randomIndex);

@@ -17,9 +17,7 @@ public class GameStateHistoryUtil {
     }
 
     public void recordDay(Board board) {
-//        There we can remember only object type and position
         HashMap<Vector2D, LinkedList<BoardObject>> currentDay = new HashMap<>();
-
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {
                 BoardCell boardCell = board.getBoardCell(new Vector2D(i, j));
@@ -28,7 +26,6 @@ public class GameStateHistoryUtil {
                 }
             }
         }
-
         this.history.addLast(currentDay);
     }
 
@@ -38,7 +35,6 @@ public class GameStateHistoryUtil {
         } else {
             return Optional.empty();
         }
-
     }
 
     public void reset() {

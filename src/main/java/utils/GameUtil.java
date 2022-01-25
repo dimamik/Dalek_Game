@@ -160,7 +160,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         Vector2D direction = positionUtil.getDirection(directionString);
         doctorCell = positionUtil.move(doctorCell, direction);
         Vector2D doctorPositionAfterMove = doctorCell.getPosition();
-
         if (isGameEnded()) {
             gameEnded();
             return;
@@ -169,7 +168,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         if (isGameEnded()) {
             gameEnded();
         }
-
         spawnTeleport();
         spawnTimeTravel();
     }
@@ -259,7 +257,6 @@ public class GameUtil extends EventEmitter<GameState> implements EventListener<G
         if (e == GameState.TELEPORT_GAINED) {
             teleportsNumber++;
             emit(GameState.TELEPORT_GAINED);
-
         } else if (e == GameState.TIME_TRAVEL_GAINED) {
             timeTravelNumber++;
             emit(GameState.TIME_TRAVEL_GAINED);

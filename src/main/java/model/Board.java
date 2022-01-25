@@ -15,7 +15,6 @@ public class Board {
         this.cols = cols;
         this.rows = rows;
         this.boardCells = new BoardCell[cols][rows];
-
         this.initializeBoard();
     }
 
@@ -56,7 +55,6 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < this.cols; i++) {
             for (int j = 0; j < this.rows; j++) {
                 if (boardCells[i][j].getTopBoardObject().isPresent()) {
@@ -65,7 +63,6 @@ public class Board {
             }
             sb.append("\n");
         }
-
         return sb.toString();
     }
 }

@@ -70,6 +70,10 @@ public class AppController implements EventListener<BoardCell> {
         showMenu();
     }
 
+    public boolean moreRoundsExists() {
+        return this.roundNumber < this.maxRounds;
+    }
+
     private void showMenu() {
         borderPane.setCenter(centerSide);
         this.borderPane.getRight().setVisible(false);
@@ -94,15 +98,19 @@ public class AppController implements EventListener<BoardCell> {
 
     }
 
-    public void startQuickGame() {
+    private void prepareGame() {
         gameUtil.resetGame();
-        gameUtil.setUpRandomGame();
-        campaignMode = false;
-        backToMenu.setVisible(false);
         teleport.setText("TELEPORT: " + gameUtil.getTeleportsNumber());
         timeTravel.setText("TIME TRAVEL: " + gameUtil.getTimeTravelNumber());
+        backToMenu.setVisible(false);
         controlTeleport();
         controlTimeTravel();
+    }
+
+    public void startQuickGame() {
+        prepareGame();
+        gameUtil.setUpRandomGame();
+        campaignMode = false;
         setGameState(GameState.PLAYING_RANDOM);
     }
 
@@ -112,13 +120,8 @@ public class AppController implements EventListener<BoardCell> {
             endGame();
             roundNumber = 0;
         }
-        gameUtil.resetGame();
-        backToMenu.setVisible(false);
+        prepareGame();
         campaignMode = true;
-        teleport.setText("TELEPORT: " + gameUtil.getTeleportsNumber());
-        timeTravel.setText("TIME TRAVEL: " + gameUtil.getTimeTravelNumber());
-        controlTeleport();
-        controlTimeTravel();
         setGameState(GameState.PLAYING_ROUND);
         gameUtil.startNewDefinedRound(roundNumber);
         infoLabel.setText("ROUND " + roundNumber);

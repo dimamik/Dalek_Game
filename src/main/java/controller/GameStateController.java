@@ -22,7 +22,7 @@ public record GameStateController(AppController appController) implements EventL
 
     private void doctorWonAction() {
         log.info("Doctor Won!");
-        if (appController.campaignMode && appController.roundNumber < appController.maxRounds) {
+        if (appController.campaignMode && appController.moreRoundsExists()) {
             log.info("NEXT_ROUND");
             appController.startCampaignGame();
         } else {

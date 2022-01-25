@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 public class BoardCellView extends Parent {
 
+
     @Inject
     public BoardCellView(@Named("cellSize") int cellSize) {
         Rectangle rectangle = new Rectangle(cellSize, cellSize);
@@ -15,22 +16,19 @@ public class BoardCellView extends Parent {
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(0.2);
         getChildren().add(rectangle);
+
     }
 
     public void drawBoardObjectView(BoardObjectView boardObjectView) {
-        if (getChildren().size() > 2) {
+        int maxObjectsDisplayed = 2;
+        if (getChildren().size() > maxObjectsDisplayed) {
             getChildren().remove(2);
         }
         getChildren().add(boardObjectView);
     }
 
     public void clearBoardObjectView() {
-        if (getChildren().size() >= 3) {
-            getChildren().remove(1);
-            getChildren().remove(1);
-            return;
-        }
-        if (getChildren().size() >= 2) {
+        while (getChildren().size() > 1) {
             getChildren().remove(1);
         }
     }

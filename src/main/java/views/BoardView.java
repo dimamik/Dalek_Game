@@ -7,7 +7,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BoardView extends Parent {
-
     private final BoardCellView[][] arrayOfCells;
 
     @Inject
